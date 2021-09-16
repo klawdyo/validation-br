@@ -3,6 +3,7 @@ const isCNPJ = require('./cnpj');
 const isTitulo = require('./titulo-eleitor');
 const isPostalCode = require('./postal-code');
 const isCNH = require('./cnh');
+const isPIS = require('./pis-pasep');
 
 module.exports = {
   isCPF,
@@ -10,4 +11,5 @@ module.exports = {
   isTitulo,
   isPostalCode,
   isCNH,
+  isPIS,
 };

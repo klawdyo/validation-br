@@ -68,20 +68,9 @@ var isCNH = function isCNH(value) {
   var sum1 = sumElementsByMultipliers(cnh.substr(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10]);
   var sum2 = sumElementsByMultipliers(cnh.substr(0, 10), [3, 4, 5, 6, 7, 8, 9, 10, 11, 2]);
   var dv1 = sumToDV(sum1);
-  var dv2 = sumToDV(sum2); // console.log({
-  //   sum1,
-  //   res1: sum1 % 11,
-  //   sum2,
-  //   res2: sum2 % 11,
-  //   dv1Original: cnh.charAt(9),
-  //   dv1,
-  //   dv2Original: cnh.charAt(10),
-  //   dv2,
-  // });
-
+  var dv2 = sumToDV(sum2);
   return "".concat(dv1).concat(dv2) === cnh.substr(9, 2);
-}; // console.log(isCNH('58316794534'));
-
+};
 
 module.exports = isCNH;
 //# sourceMappingURL=cnh.js.map

@@ -10,11 +10,14 @@ var isPostalCode = require('./postal-code');
 
 var isCNH = require('./cnh');
 
+var isPIS = require('./pis-pasep');
+
 module.exports = {
   isCPF: isCPF,
   isCNPJ: isCNPJ,
   isTitulo: isTitulo,
   isPostalCode: isPostalCode,
-  isCNH: isCNH
+  isCNH: isCNH,
+  isPIS: isPIS
 };
 //# sourceMappingURL=index.js.map
