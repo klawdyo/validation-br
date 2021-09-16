@@ -33,7 +33,7 @@ import { isCPF, isCNPJ } from ('validation-br');
 - [isCNPJ](#isCNPJ) - Validação do CNPJ
 - [isTitulo](#isTitulo) - Validação do Título de Eleitor
 - [isCNH](#isCNH) - Validação do CNH
-- [isPostaCode](#isPostaCode) - Validação de Objetos Registrados dos Correios
+- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
 - [isPIS](#isPIS) - Validação de PIS, PASEP, NIS e NIT
 
 ### isCPF
@@ -120,7 +120,7 @@ isCNH('46190476839')
 //-> false
 ```
 
-### isPostaCode
+### isPostalCode
 
 Valida um código de rastreamento de objetos postais no formato XX000000000YY, onde:
 
@@ -165,6 +165,11 @@ isPIS('237.95126.95-5')
 isPIS('500.12973.80-1')
 //-> false
 ```
+
+## Tests
+![image](https://user-images.githubusercontent.com/100168/133695302-17744b22-2bf0-41e8-8907-58ea4770be3c.png)
+
+
 
 ## Changelog
 
