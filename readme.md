@@ -6,7 +6,7 @@ Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CN
 ![npm version](https://badge.fury.io/js/validation-br.svg)
 ![issues](https://img.shields.io/github/issues/klawdyo/validation-br)
 ![forks](https://img.shields.io/github/forks/klawdyo/validation-br)
-![license](https://img.shields.io/github/license/klawdyo/validation-br)
+![license](https://img.shields.io/github/license/klawdyo/VALIDATION-BR)
 ![tweet](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fklawdyo%2Fvalidation-br)
 
 ## Instalação
