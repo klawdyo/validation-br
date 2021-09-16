@@ -33,14 +33,14 @@
   "main": "index.js",
   "author": "Cláudio Medeiros",
   "repository": {
-    "url": "https://github.com/klawdyo/brazilidation"
+    "url": "https://github.com/klawdyo/validation-br"
   },
   "bugs": {
-    "url": "https://github.com/klawdyo/brazilidation/issues"
+    "url": "https://github.com/klawdyo/validation-br/issues"
   },
-  "homepage": "https://github.com/klawdyo/brazilidation#readme",
+  "homepage": "https://github.com/klawdyo/validation-br#readme",
   "keywords": [
-    "brazilidation",
+    "validation-br",
     "brazilian",
     "validation",
     "personal documents",
