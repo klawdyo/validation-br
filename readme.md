@@ -1,6 +1,6 @@
-# pix.js
+# Brazilidation
 
-Biblioteca de geração de códigos pix
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, Inscrições Estaduais, Placas de veículos, CEPs e objetos registrados dos correios.
 
 ## Instalação
 
@@ -29,7 +29,7 @@ import { isCPF, isCNPJ } from ('brazilidation');
 
 ## Métodos
 
-- [isCPF](#cpf) - Validação do CPF
+- [isCPF](#CPF) - Validação do CPF
 - [isCNPJ](#cnpj) - Validação do CNPJ
 - [isTitulo](#titulo) - Validação do Título de Eleitor
 - [isCNH](#cnpj) - Validação do CNH
@@ -44,22 +44,26 @@ Descrição
 // Importação
 import { isCPF } from ('brazilidation');
 
-// Devolve o pix copia e cola
+// Valida
 isCPF('01234567890')
 //-> true
+
+// Valida
+isCPF('012.345.678-90')
+//-> true
+
+// Valida
+isCPF('01234567891')
+//-> false
 ```
 
 ## Changelog
 
-- **10/09/2021**:
-  - 0.9.0 - Adicionada sanitizeKey() que limpa os caracteres não permitidos de acordo com o tipo da chave
-  - 0.8.0 - Adicionada getKeyType() que identifica o tipo da chave pix
-
-## To Do
-
-- Função parse() irá receber o código copia e cola e irá retornar as partes e os seus valores
+- **16/09/2021**:
+  - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
 
 ## Referências
 
-- [Manual do pix do BCB](https://www.bcb.gov.br/content/estabilidadefinanceira/SiteAssets/Manual%20do%20BR%20Code.pdf)
--
+- [Cálculo do DV do CPF](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-cpf/)
+- [Cálculo do DV do CNPJ](http://www.macoratti.net/alg_cnpj.htm)
+- [Cálculo do DV do Título Eleitoral](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-titulo-de-eleitor/)
