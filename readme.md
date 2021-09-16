@@ -1,4 +1,4 @@
-# Brazilidation
+# validation-br
 
 Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, Inscrições Estaduais, Placas de veículos, CEPs e objetos registrados dos correios.
 
@@ -6,11 +6,11 @@ Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CN
 
 ```sh
 # Usando yarn
-yarn add brazilidation
+yarn add validation-br
 
 ## OU
 # Usando npm
-npm install brazilidation
+npm install validation-br
 
 ```
 
@@ -19,10 +19,10 @@ npm install brazilidation
 ```js
 
 // Modules
-const { isCPF, isCNPJ } = require('brazilidation');
+const { isCPF, isCNPJ } = require('validation-br');
 
 // ES6
-import { isCPF, isCNPJ } from ('brazilidation');
+import { isCPF, isCNPJ } from ('validation-br');
 
 
 ```
@@ -42,7 +42,7 @@ Descrição
 
 ```js
 // Importação
-import { isCPF } from ('brazilidation');
+import { isCPF } from ('validation-br');
 
 // Valida
 isCPF('01234567890')
