@@ -34,6 +34,7 @@ import { isCPF, isCNPJ } from ('validation-br');
 - [isTitulo](#isTitulo) - Validação do Título de Eleitor
 - [isCNH](#isCNH) - Validação do CNH
 - [isPostaCode](#isPostaCode) - Validação de Objetos Registrados dos Correios
+- [isPIS](#isPIS) - Validação de PIS, PASEP, NIS e NIT
 
 ### isCPF
 
@@ -69,7 +70,7 @@ isCNPJ('73.797.980/0001-79')
 //-> true
 
 // Valida
-isCNPJ('55.585.709/0001-98')
+isCNPJ('55585709000198')
 //-> true
 
 // Valida
@@ -100,7 +101,7 @@ isTitulo('153016161686')
 
 ### isCNH
 
-Valida o documento da carteira nacional de habilitação
+Valida o documento da carteira nacional de habilitação.
 
 ```js
 // Importação
@@ -121,7 +122,11 @@ isCNH('46190476839')
 
 ### isPostaCode
 
-Valida um código de rastreamento de objetos postais
+Valida um código de rastreamento de objetos postais no formato XX000000000YY, onde:
+
+- XX: O código do objeto postal com 2 dígitos;
+- 000000000: Número sequencial do objeto com 9 dígitos;
+- YY: País de origem do objeto com 2 dígitos.
 
 ```js
 // Importação
@@ -140,14 +145,38 @@ isPostalCode('JT194624698BR')
 //-> false
 ```
 
+### isPIS
+
+Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita números com e sem pontos e traços.
+
+```js
+// Importação
+import { isPIS } from ('validation-br');
+
+// Valida
+isPIS('71282677380')
+//-> true
+
+// Valida
+isPIS('237.95126.95-5')
+//-> true
+
+// Valida
+isPIS('500.12973.80-1')
+//-> false
+```
+
 ## Changelog
 
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
+  - 0.8.0 - Adicionadas as funções isPIS
 
 ## Referências
 
 - [Cálculo do DV do CPF](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-cpf/)
 - [Cálculo do DV do CNPJ](http://www.macoratti.net/alg_cnpj.htm)
 - [Cálculo do DV do Título Eleitoral](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-titulo-de-eleitor/)
+- [Cálculo do PIS](http://www.macoratti.net/alg_pis.htm)
+- [Diferença entre PIS, PASEP, NIS e NIT](https://www.jornalcontabil.com.br/entenda-de-uma-vez-a-diferenca-entre-pis-pasep-nit-e-nis/#:~:text=NIS%20%E2%80%93%20N%C3%BAmero%20de%20Identifica%C3%A7%C3%A3o%20Social,do%20Patrim%C3%B4nio%20do%20Servidor%20P%C3%BAblico)
