@@ -62,10 +62,7 @@ const isCNPJ = (value = '') => {
   const dv1 = sumToDV(sum1);
   const dv2 = sumToDV(sum2);
 
-  if (dv1 !== Number(cnpj.charAt(12))) return false;
-  if (dv2 !== Number(cnpj.charAt(13))) return false;
-
-  return true;
+  return `${dv1}${dv2}` === cnpj.substr(12, 2);
 };
 
 module.exports = isCNPJ;

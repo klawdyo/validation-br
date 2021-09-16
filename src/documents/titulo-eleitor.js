@@ -64,10 +64,7 @@ const isTitulo = (value = '') => {
   const dv1 = (sum1 % 11) >= 10 ? 0 : sum1 % 11;
   const dv2 = (sum2 % 11) >= 10 ? 0 : sum2 % 11;
 
-  if (dv1 !== Number(titulo.charAt(10))) return false;
-  if (dv2 !== Number(titulo.charAt(11))) return false;
-
-  return true;
+  return `${dv1}${dv2}` === titulo.substr(10, 2);
 };
 
 module.exports = isTitulo;

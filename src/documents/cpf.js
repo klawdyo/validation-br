@@ -71,10 +71,7 @@ const isCPF = (value = '') => {
   const dv1 = sumToDV(sum1);
   const dv2 = sumToDV(sum2);
 
-  if (dv1 !== Number(cpf.charAt(9))) return false;
-  if (dv2 !== Number(cpf.charAt(10))) return false;
-
-  return true;
+  return `${dv1}${dv2}` === cpf.substr(9, 2);
 };
 
 module.exports = isCPF;

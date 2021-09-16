@@ -65,9 +65,7 @@ var isTitulo = function isTitulo() {
   var sum2 = sumElementsByMultipliers(titulo.substr(8, 3), [7, 8, 9]);
   var dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11;
   var dv2 = sum2 % 11 >= 10 ? 0 : sum2 % 11;
-  if (dv1 !== Number(titulo.charAt(10))) return false;
-  if (dv2 !== Number(titulo.charAt(11))) return false;
-  return true;
+  return "".concat(dv1).concat(dv2) === titulo.substr(10, 2);
 };
 
 module.exports = isTitulo;

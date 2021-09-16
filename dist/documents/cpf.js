@@ -74,9 +74,7 @@ var isCPF = function isCPF() {
   var sum2 = sumElementsByMultipliers(cpf.substr(0, 10), [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]);
   var dv1 = sumToDV(sum1);
   var dv2 = sumToDV(sum2);
-  if (dv1 !== Number(cpf.charAt(9))) return false;
-  if (dv2 !== Number(cpf.charAt(10))) return false;
-  return true;
+  return "".concat(dv1).concat(dv2) === cpf.substr(9, 2);
 };
 
 module.exports = isCPF;

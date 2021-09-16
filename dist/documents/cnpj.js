@@ -66,9 +66,7 @@ var isCNPJ = function isCNPJ() {
   var sum2 = sumElementsByMultipliers(cnpj.substr(0, 13), '6543298765432');
   var dv1 = sumToDV(sum1);
   var dv2 = sumToDV(sum2);
-  if (dv1 !== Number(cnpj.charAt(12))) return false;
-  if (dv2 !== Number(cnpj.charAt(13))) return false;
-  return true;
+  return "".concat(dv1).concat(dv2) === cnpj.substr(12, 2);
 };
 
 module.exports = isCNPJ;
