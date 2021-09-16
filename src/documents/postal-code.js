@@ -1,4 +1,5 @@
-const { sumElementsByMultipliers } = require('../../dist/lib/utils');
+// const { sumElementsByMultipliers } = require('../../dist/lib/utils');
+const { sumElementsByMultipliers } = require('../lib/utils');
 
 /**
  * isPostalCode()
