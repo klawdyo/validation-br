@@ -176,7 +176,7 @@ isPIS('500.12973.80-1')
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
-  - 0.8.0 - Adicionadas as funções isPIS
+  - 0.8.0 - Adicionada a função isPIS
 
 ## Referências
 
