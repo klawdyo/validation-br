@@ -2,8 +2,8 @@
 // require('./is-cpf.test');
 // require('./is-cnpj.test');
 // require('./is-titulo.test');
-require('./is-postal-code.test');
-// require('./is-cnh.test');
+// require('./is-postal-code.test');
+require('./is-cnh.test');
 // require('./is-renavam.test');
 
 // Funções Auxiliares

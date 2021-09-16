@@ -1,6 +1,7 @@
 "use strict";
 
-var _require = require('../../dist/lib/utils'),
+// const { sumElementsByMultipliers } = require('../../dist/lib/utils');
+var _require = require('../lib/utils'),
     sumElementsByMultipliers = _require.sumElementsByMultipliers;
 /**
  * isPostalCode()
@@ -40,9 +41,9 @@ var _require = require('../../dist/lib/utils'),
  *
  *
  *
- * Fonte: http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-cpf/
+ * Fonte:
  *
- * @param {String} value Título eleitoral
+ * @param {String} value Objeto postal no formato JT194690698BR
  * @returns {Boolean}
  */
 
@@ -66,6 +67,5 @@ var isPostalCode = function isPostalCode(value) {
   return true;
 };
 
-console.log(isPostalCode('JT194690698BR'));
 module.exports = isPostalCode;
 //# sourceMappingURL=postal-code.js.map
