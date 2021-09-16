@@ -1,6 +1,6 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, Inscrições Estaduais, Placas de veículos, CEPs e objetos registrados dos correios.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, e Objetos registrados de rastreamento dos Correios.
 
 ## Instalação
 
@@ -27,18 +27,17 @@ import { isCPF, isCNPJ } from ('validation-br');
 
 ```
 
-## Métodos
+## Tabela de Conteúdo
 
-- [isCPF](#CPF) - Validação do CPF
-- [isCNPJ](#cnpj) - Validação do CNPJ
-- [isTitulo](#titulo) - Validação do Título de Eleitor
-- [isCNH](#cnpj) - Validação do CNH
-- [isPIS](#cnpj) - Validação do PIS
-- [isRegisteredObject](#cnpj) - Validação de Objetos Registrados dos Correios
+- [isCPF](#isCPF) - Validação do CPF
+- [isCNPJ](#isCNPJ) - Validação do CNPJ
+- [isTitulo](#isTitulo) - Validação do Título de Eleitor
+- [isCNH](#isCNH) - Validação do CNH
+- [isPostaCode](#isPostaCode) - Validação de Objetos Registrados dos Correios
 
-### CPF
+### isCPF
 
-Descrição
+Valida um CPF
 
 ```js
 // Importação
@@ -57,10 +56,95 @@ isCPF('01234567891')
 //-> false
 ```
 
+### isCNPJ
+
+Valida um CNPJ
+
+```js
+// Importação
+import { isCNPJ } from ('validation-br');
+
+// Valida
+isCNPJ('73.797.980/0001-79')
+//-> true
+
+// Valida
+isCNPJ('55.585.709/0001-98')
+//-> true
+
+// Valida
+isCNPJ('99362238000180')
+//-> false
+```
+
+### isTitulo
+
+Valida um título eleitoral
+
+```js
+// Importação
+import { isTitulo } from ('validation-br');
+
+// Valida
+isTitulo('743650641660')
+//-> true
+
+// Valida
+isTitulo('525028881694')
+//-> true
+
+// Valida
+isTitulo('153016161686')
+//-> false
+```
+
+### isCNH
+
+Valida o documento da carteira nacional de habilitação
+
+```js
+// Importação
+import { isCNH } from ('validation-br');
+
+// Valida
+isCNH('69044271146')
+//-> true
+
+// Valida
+isCNH('62472927637')
+//-> true
+
+// Valida
+isCNH('46190476839')
+//-> false
+```
+
+### isPostaCode
+
+Valida um código de rastreamento de objetos postais
+
+```js
+// Importação
+import { isPostalCode } from ('validation-br');
+
+// Valida
+isPostalCode('PN718252423BR')
+//-> true
+
+// Valida
+isPostalCode('RY728187035CN')
+//-> true
+
+// Valida
+isPostalCode('JT194624698BR')
+//-> false
+```
+
 ## Changelog
 
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
+  - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
 
 ## Referências
 
