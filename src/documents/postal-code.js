@@ -44,7 +44,7 @@ const { sumElementsByMultipliers } = require('../lib/utils');
  * @param {String} value Objeto postal no formato JT194690698BR
  * @returns {Boolean}
  */
-const isPostalCode = (value) => {
+const isPostalCode = (value = '') => {
   const match = value.match(/^[a-z]{2}([\d]{9})[a-z]{2}$/ig, '');
   if (!match) return false;
 

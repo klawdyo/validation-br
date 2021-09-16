@@ -48,7 +48,8 @@ var _require = require('../lib/utils'),
  */
 
 
-var isPostalCode = function isPostalCode(value) {
+var isPostalCode = function isPostalCode() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var match = value.match(/^[a-z]{2}([\d]{9})[a-z]{2}$/ig, '');
   if (!match) return false;
   var postalCode = match[0].replace(/[^\d]+/g, '');

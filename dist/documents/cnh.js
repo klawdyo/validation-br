@@ -61,7 +61,8 @@ var _require = require('../lib/utils'),
  */
 
 
-var isCNH = function isCNH(value) {
+var isCNH = function isCNH() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var cnh = value.replace(/[^\d]+/g, '');
   var invalidList = invalidListGenerator(11);
   if (!cnh || invalidList.includes(cnh) || cnh.length !== 11) return false;

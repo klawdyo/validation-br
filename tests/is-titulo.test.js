@@ -35,3 +35,8 @@ test('Títulos de eleitor inválidos', (t) => {
 
   t.end();
 });
+
+test('Titulo não informado', (t) => {
+  t.false(isTitulo(''), 'Titulo vazio deve retornar false');
+  t.end();
+});

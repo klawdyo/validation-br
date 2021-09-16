@@ -34,3 +34,8 @@ test('PIS inválidos', (t) => {
 
   t.end();
 });
+
+test('PIS não informado', (t) => {
+  t.false(isPIS(''), 'PIS vazio deve retornar false');
+  t.end();
+});

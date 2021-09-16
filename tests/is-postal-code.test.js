@@ -41,3 +41,8 @@ test('Códigos Postais inválidos', (t) => {
 
   t.end();
 });
+
+test('Código Postal não informado', (t) => {
+  t.false(isPostalCode(''), 'Código Postal vazio deve retornar false');
+  t.end();
+});

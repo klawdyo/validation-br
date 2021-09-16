@@ -50,7 +50,7 @@ const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCNPJ = (value) => {
+const isCNPJ = (value = '') => {
   const cnpj = value.replace(/[^\d]+/g, '');
 
   const blackList = invalidListGenerator(14);

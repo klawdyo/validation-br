@@ -35,3 +35,8 @@ test('CNHs inválidas', (t) => {
 
   t.end();
 });
+
+test('CNH não informada', (t) => {
+  t.false(isCNH(''), 'CNH vazio deve retornar false');
+  t.end();
+});

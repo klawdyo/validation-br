@@ -65,7 +65,8 @@ var _require = require('../lib/utils'),
  */
 
 
-var isCPF = function isCPF(value) {
+var isCPF = function isCPF() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var cpf = value.replace(/[^\d]+/g, '');
   var blackList = invalidListGenerator(11);
   if (!cpf || cpf.length !== 11 || blackList.includes(cpf)) return false;

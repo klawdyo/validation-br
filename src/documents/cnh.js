@@ -55,7 +55,7 @@ const { sumElementsByMultipliers, sumToDV, invalidListGenerator } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCNH = (value) => {
+const isCNH = (value = '') => {
   const cnh = value.replace(/[^\d]+/g, '');
 
   const invalidList = invalidListGenerator(11);

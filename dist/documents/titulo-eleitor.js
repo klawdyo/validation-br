@@ -57,7 +57,8 @@ var _require = require('../lib/utils'),
  */
 
 
-var isTitulo = function isTitulo(value) {
+var isTitulo = function isTitulo() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var titulo = value.replace(/[^\d]+/g, '');
   if (!titulo || titulo.length !== 12) return false;
   var sum1 = sumElementsByMultipliers(titulo.substr(0, 8), [2, 3, 4, 5, 6, 7, 8, 9]);

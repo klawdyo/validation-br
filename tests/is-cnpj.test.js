@@ -39,3 +39,8 @@ test('CNPJs inválidos', (t) => {
 
   t.end();
 });
+
+test('CNPJ não informado', (t) => {
+  t.false(isCNPJ(''), 'CNPJ vazio deve retornar false');
+  t.end();
+});

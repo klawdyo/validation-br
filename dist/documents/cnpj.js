@@ -57,7 +57,8 @@ var _require = require('../lib/utils'),
  */
 
 
-var isCNPJ = function isCNPJ(value) {
+var isCNPJ = function isCNPJ() {
+  var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var cnpj = value.replace(/[^\d]+/g, '');
   var blackList = invalidListGenerator(14);
   if (!cnpj || cnpj.length !== 14 || blackList.includes(cnpj)) return false;

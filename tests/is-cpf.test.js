@@ -34,3 +34,8 @@ test('CPFs inválidos', (t) => {
 
   t.end();
 });
+
+test('CPF não informado', (t) => {
+  t.false(isCPF(''), 'CPF vazio deve retornar false');
+  t.end();
+});

@@ -53,7 +53,7 @@ const { sumElementsByMultipliers } = require('../lib/utils');
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isTitulo = (value) => {
+const isTitulo = (value = '') => {
   const titulo = value.replace(/[^\d]+/g, '');
 
   if (!titulo || titulo.length !== 12) return false;

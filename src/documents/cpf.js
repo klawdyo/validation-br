@@ -59,7 +59,7 @@ const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCPF = (value) => {
+const isCPF = (value = '') => {
   const cpf = value.replace(/[^\d]+/g, '');
 
   const blackList = invalidListGenerator(11);
