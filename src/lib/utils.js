@@ -39,3 +39,19 @@ export function sumElementsByMultipliers(value, multiplier) {
   return (Array.isArray(multiplier) ? multiplier : multiplier.split(''))
     .reduce((accu, curr, i) => accu + (curr * Number(value.charAt(i))), 0);
 }
+
+/**
+ * Cria um número aleatório com um tamanho especificado
+ *
+ * @example
+ *  fakeNumber(4)  // -> 4201
+ *  fakeNumber(5)  // -> 02201
+ *
+ * @param {Integer} length Número de caracteres do número fake
+ * @returns {String}
+ */
+export function fakeNumber(length) {
+  const value = parseInt(Math.random() * (10 ** length), 10);
+
+  return value.toString().padStart(length, '0');
+}
