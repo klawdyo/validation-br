@@ -5,9 +5,11 @@ require('./is-titulo.test');
 require('./is-postal-code.test');
 require('./is-cnh.test');
 require('./is-pis.test');
-// require('./is-renavam.test');
+require('./is-renavam.test');
 
 // Funções Auxiliares
-require('./sum-to-dv.test');
-require('./invalid-list-generator.test');
-require('./sum-elements-by-multipliers.test');
+require('./utils-sum-to-dv.test');
+require('./utils-invalid-list-generator.test');
+require('./utils-sum-elements-by-multipliers.test');
+require('./utils-fake-number.test');
+require('./utils-apply-mask.test');
