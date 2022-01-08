@@ -24,14 +24,11 @@ npm install validation-br
 ## Importação
 
 ```js
-
 // Modules
 const { isCPF, isCNPJ } = require('validation-br');
 
 // ES6
-import { isCPF, isCNPJ } from ('validation-br');
-
-
+import { isCPF, isCNPJ } from 'validation-br';
 ```
 
 ## Tabela de Conteúdo
@@ -49,18 +46,18 @@ Valida um CPF
 
 ```js
 // Importação
-import { isCPF } from ('validation-br');
+import { isCPF } from 'validation-br';
 
 // Valida
-isCPF('01234567890')
+isCPF('01234567890');
 //-> true
 
 // Valida
-isCPF('012.345.678-90')
+isCPF('012.345.678-90');
 //-> true
 
 // Valida
-isCPF('01234567891')
+isCPF('01234567891');
 //-> false
 ```
 
@@ -70,18 +67,18 @@ Valida um CNPJ
 
 ```js
 // Importação
-import { isCNPJ } from ('validation-br');
+import { isCNPJ } from 'validation-br';
 
 // Valida
-isCNPJ('73.797.980/0001-79')
+isCNPJ('73.797.980/0001-79');
 //-> true
 
 // Valida
-isCNPJ('55585709000198')
+isCNPJ('55585709000198');
 //-> true
 
 // Valida
-isCNPJ('99362238000180')
+isCNPJ('99362238000180');
 //-> false
 ```
 
@@ -91,18 +88,18 @@ Valida um título eleitoral
 
 ```js
 // Importação
-import { isTitulo } from ('validation-br');
+import { isTitulo } from 'validation-br';
 
 // Valida
-isTitulo('743650641660')
+isTitulo('743650641660');
 //-> true
 
 // Valida
-isTitulo('525028881694')
+isTitulo('525028881694');
 //-> true
 
 // Valida
-isTitulo('153016161686')
+isTitulo('153016161686');
 //-> false
 ```
 
@@ -112,19 +109,66 @@ Valida o documento da carteira nacional de habilitação.
 
 ```js
 // Importação
-import { isCNH } from ('validation-br');
+import { isCNH } from 'validation-br';
 
 // Valida
-isCNH('69044271146')
+isCNH('69044271146');
 //-> true
 
 // Valida
-isCNH('62472927637')
+isCNH('62472927637');
 //-> true
 
 // Valida
-isCNH('46190476839')
+isCNH('46190476839');
 //-> false
+```
+
+### isRenavam
+
+Valida o número de um RENAVAM de 11 dígitos
+
+```js
+// Importação
+import { isRenavam } from 'validation-br';
+
+// Valida
+isRenavam('14283256656');
+//-> true
+
+// Valida
+isRenavam('95059845976');
+//-> true
+
+// Valida
+isRenavam('67747331626');
+//-> false
+```
+
+Funções auxiliares específicas do RENAVAM
+
+```js
+// Importação
+import renavam from 'validation-br/renavam';
+
+// OU
+import { validate, fake, dv } from 'validation-br/renavam';
+
+// Valida um Renavam. Mesma função do isRenavam
+renavam.validate('14283256656');
+// -> true
+
+// Cria um renavam válido de forma aleatória
+renavam.fake();
+// -> 67747331627
+
+// Calcula o DV de um renavam completo. Ignora o último dígito.
+renavam.dv('67747331627');
+// -> 7
+
+// Aplica corretamente uma máscara de renavam ao número
+renavam.mask('67747331627');
+// -> 6774733162-7
 ```
 
 ### isPostalCode
@@ -137,18 +181,18 @@ Valida um código de rastreamento de objetos postais no formato XX000000000YY, o
 
 ```js
 // Importação
-import { isPostalCode } from ('validation-br');
+import { isPostalCode } from 'validation-br';
 
 // Valida
-isPostalCode('PN718252423BR')
+isPostalCode('PN718252423BR');
 //-> true
 
 // Valida
-isPostalCode('RY728187035CN')
+isPostalCode('RY728187035CN');
 //-> true
 
 // Valida
-isPostalCode('JT194624698BR')
+isPostalCode('JT194624698BR');
 //-> false
 ```
 
@@ -158,25 +202,24 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 
 ```js
 // Importação
-import { isPIS } from ('validation-br');
+import { isPIS } from 'validation-br';
 
 // Valida
-isPIS('71282677380')
+isPIS('71282677380');
 //-> true
 
 // Valida
-isPIS('237.95126.95-5')
+isPIS('237.95126.95-5');
 //-> true
 
 // Valida
-isPIS('500.12973.80-1')
+isPIS('500.12973.80-1');
 //-> false
 ```
 
 ## Tests
+
 ![image](https://user-images.githubusercontent.com/100168/133695302-17744b22-2bf0-41e8-8907-58ea4770be3c.png)
-
-
 
 ## Changelog
 

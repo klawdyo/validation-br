@@ -1,3 +1,3 @@
-const Brazilidation = require('./dist/documents');
+const ValidationBR = require('./dist/documents');
 
-module.exports = Brazilidation;
+module.exports = ValidationBR;

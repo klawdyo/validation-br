@@ -1,2 +1,4 @@
 node_modules
 docs.md
+dist
+src/documents/_modelo.js
