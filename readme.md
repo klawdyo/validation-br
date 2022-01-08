@@ -316,7 +316,6 @@ titulo.dv('5250288816'); // -> '94'
 
 ![image](https://user-images.githubusercontent.com/100168/148660802-e1d1b6e1-b447-4534-aa92-298849db6f47.png)
 
-
 # Changelog
 
 - **08/01/2022**:
@@ -333,3 +332,5 @@ titulo.dv('5250288816'); // -> '94'
 - [Cálculo do DV do Título Eleitoral](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-titulo-de-eleitor/)
 - [Cálculo do PIS](http://www.macoratti.net/alg_pis.htm)
 - [Diferença entre PIS, PASEP, NIS e NIT](https://www.jornalcontabil.com.br/entenda-de-uma-vez-a-diferenca-entre-pis-pasep-nit-e-nis/#:~:text=NIS%20%E2%80%93%20N%C3%BAmero%20de%20Identifica%C3%A7%C3%A3o%20Social,do%20Patrim%C3%B4nio%20do%20Servidor%20P%C3%BAblico)
+- [Documentação Oficial de Numeração de Processos Judiciais] (https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2)
+- [Cálculos de DV](http://ghiorzi.org/DVnew.htm)
