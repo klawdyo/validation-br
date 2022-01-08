@@ -13,8 +13,7 @@
     "extends": "airbnb"
   },
   "dependencies": {
-    "@babel/runtime": "^7.15.3",
-    "qrcode": "^1.4.4"
+    "@babel/runtime": "^7.15.3"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.8",
@@ -49,7 +48,16 @@
     "pis",
     "pasep",
     "cnh",
-    "titulo eleitor"
+    "titulo eleitor",
+    "eleitoral",
+    "titulo",
+    "renavam",
+    "processos",
+    "judiciais",
+    "judicial",
+    "justiça",
+    "protocolo",
+    "federal"
   ],
   "license": "MIT",
   "private": false
