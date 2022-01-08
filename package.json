@@ -1,7 +1,7 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh",
-  "version": "0.21.0",
+  "version": "0.21.1",
   "scripts": {
     "test": "yarn build && cls && node tests | tap-spec",
     "build": "babel src --source-maps -d dist",
@@ -12,14 +12,13 @@
   "eslintConfig": {
     "extends": "airbnb"
   },
-  "dependencies": {
-    "@babel/runtime": "^7.15.3"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
     "@babel/plugin-transform-runtime": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
+    "@babel/runtime": "^7.15.3",
     "babel-preset-minify": "^0.5.1",
     "core-js": "^3.16.2",
     "eslint": "^7.32.0",
