@@ -81,12 +81,12 @@ test('CPF não informado', (t) => {
 
 test('fake() - Gera CPFs fake sem máscara', (t) => {
   for (let i = 0; i < 5; i += 1) {
-    const cnpj = fake();
+    const cpf = fake();
 
-    t.true(validate(cnpj),
-      `CPF fake ${cnpj} deve ser válido`);
-    t.assert(cnpj.length === 11,
-      `CPF ${cnpj} precisa ter 11 caracteres`);
+    t.true(validate(cpf),
+      `CPF fake ${cpf} deve ser válido`);
+    t.assert(cpf.length === 11,
+      `CPF ${cpf} precisa ter 11 caracteres`);
   }
 
   t.end();
@@ -94,11 +94,11 @@ test('fake() - Gera CPFs fake sem máscara', (t) => {
 
 test('fake() - Gera CPFs fake com máscara', (t) => {
   for (let i = 0; i < 5; i += 1) {
-    const cnpj = fake(true);
+    const cpf = fake(true);
 
-    t.true(validate(cnpj), `CPF fake ${cnpj} deve ser válido`);
-    t.assert(cnpj.length === 14,
-      `CPF ${cnpj} precisa ter 14 caracteres`);
+    t.true(validate(cpf), `CPF fake ${cpf} deve ser válido`);
+    t.assert(cpf.length === 14,
+      `CPF ${cpf} precisa ter 14 caracteres`);
   }
 
   t.end();
