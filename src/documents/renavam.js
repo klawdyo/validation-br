@@ -9,7 +9,7 @@ export const dv = (value = '') => {
   // Verifica se o valor foi informado
   if (!value) throw new Error('Renavam não informado');
   // console.log({ value });
-  const renavam = value
+  const renavam = String(value)
     .replace(/[^\d]+/g, '') // Remove caracteres indesejado
     .substring(0, 10) // Pega somente os 10 primeiros caracteres
     .padStart(10, '0'); // Completa com zeros à esquerda
@@ -30,7 +30,7 @@ export const dv = (value = '') => {
  */
 export const validate = (value = '') => {
   try {
-    return dv(value) === +value.substring(10, 11);
+    return dv(value) === +(value.substring(10, 11));
   } catch (error) {
     return false;
   }
@@ -42,7 +42,7 @@ export const validate = (value = '') => {
  * @returns String Número fake de um renavam válido
  */
 export const fake = () => {
-  const value = fakeNumber(10);
+  const value = fakeNumber(10, true);
 
   return `${value}${dv(value)}`;
 };
