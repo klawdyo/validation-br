@@ -1,5 +1,3 @@
-const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../lib/utils');
-
 /**
  * isCPF()
  * Calcula se um CPF é válido
@@ -59,19 +57,96 @@ const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCPF = (value = '') => {
-  const cpf = value.replace(/[^\d]+/g, '');
 
-  const blackList = invalidListGenerator(11);
-  if (!cpf || cpf.length !== 11 || blackList.includes(cpf)) return false;
+const {
+  invalidListGenerator, sumElementsByMultipliers, sumToDV,
+  clearValue, fakeNumber, applyMask,
+} = require('../lib/utils');
 
-  const sum1 = sumElementsByMultipliers(cpf.substr(0, 9), [10, 9, 8, 7, 6, 5, 4, 3, 2]);
-  const sum2 = sumElementsByMultipliers(cpf.substr(0, 10), [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]);
+/**
+ * dv()
+ * Calcula o dígito verificador de um CPF
+ *
+ * @param {Number|String} value
+ * @returns {String}
+ */
+const dv = (value = '') => {
+  if (!value) throw new Error('CPF não informado');
 
+  const cpf = clearValue(value, 9);
+
+  const invalidList = invalidListGenerator(9);
+  if (invalidList.includes(cpf)) {
+    throw new Error('CPF não pode ser uma sequência de números iguais');
+  }
+
+  const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
   const dv1 = sumToDV(sum1);
+
+  const sum2 = sumElementsByMultipliers(cpf + dv1, [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]);
   const dv2 = sumToDV(sum2);
 
-  return `${dv1}${dv2}` === cpf.substr(9, 2);
+  return `${dv1}${dv2}`;
 };
 
-module.exports = isCPF;
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => applyMask(value, '000.000.000-00');
+
+/**
+ * fake()
+ * Gera um número válido
+ *
+ * @returns {String}
+ */
+const fake = (withMask = false) => {
+  const num = fakeNumber(9, true);
+
+  const cpf = `${num}${dv(num)}`;
+
+  if (withMask) return mask(cpf);
+  return cpf;
+};
+
+/**
+ * validateOrFail()
+ * Valida se um número de processo está correto e
+ * retorna uma exceção se não estiver
+ *
+ * @returns {Boolean}
+ */
+const validateOrFail = (value) => {
+  const cpf = clearValue(value, 11);
+
+  if (dv(cpf) !== cpf.substring(9, 11)) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ * @returns {Boolean}
+ */
+const validate = (value) => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+};

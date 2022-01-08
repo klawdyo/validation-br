@@ -1,19 +1,19 @@
-const isCPF = require('./cpf');
-const isCNPJ = require('./cnpj');
-const isTitulo = require('./titulo-eleitor');
-const isPostalCode = require('./postal-code');
-const isCNH = require('./cnh');
-const isPIS = require('./pis-pasep');
-const renavam = require('./renavam').validate;
-const judicialProcess = require('./judicial-process').validate;
+const isCNH = require('./cnh').validate;
+const isCNPJ = require('./cnpj').validate;
+const isCPF = require('./cpf').validate;
+const isJudicialProcess = require('./judicial-process').validate;
+const isPIS = require('./pis-pasep').validate;
+const isPostalCode = require('./postal-code').validate;
+const isRenavam = require('./renavam').validate;
+const isTitulo = require('./titulo-eleitor').validate;
 
 module.exports = {
-  isCPF,
-  isCNPJ,
-  isTitulo,
-  isPostalCode,
   isCNH,
+  isCNPJ,
+  isCPF,
+  isJudicialProcess,
   isPIS,
-  isRenavam: renavam,
-  isJudicialProcess: judicialProcess,
+  isPostalCode,
+  isRenavam,
+  isTitulo,
 };

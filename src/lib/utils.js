@@ -154,8 +154,8 @@ module.exports = {
   invalidListGenerator,
   sumElementsByMultipliers,
   fakeNumber,
+  applyMask,
   clearValue,
   insertAtPosition,
   removeFromPosition,
-  applyMask,
 };

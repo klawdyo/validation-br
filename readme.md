@@ -1,15 +1,8 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, e Objetos registrados de rastreamento dos Correios.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
 
-![JS](https://img.shields.io/badge/Language-JS-yellow)
-![npm version](https://badge.fury.io/js/validation-br.svg)
-![issues](https://img.shields.io/github/issues/klawdyo/validation-br)
-![forks](https://img.shields.io/github/forks/klawdyo/validation-br)
-![license](https://img.shields.io/github/license/klawdyo/VALIDATION-BR)
-![tweet](https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Fklawdyo%2Fvalidation-br)
-
-## Instalação
+# Instalação
 
 ```sh
 # Usando yarn
@@ -21,7 +14,11 @@ npm install validation-br
 
 ```
 
-## Importação
+# Importação
+
+## Importação direta
+
+Permite realizar diretamente uma validação a partir do objeto principal
 
 ```js
 // Modules
@@ -31,204 +28,304 @@ const { isCPF, isCNPJ } = require('validation-br');
 import { isCPF, isCNPJ } from 'validation-br';
 ```
 
+## Importação de submódulos
+
+Importando os submódulos, é possível criar máscaras, números fake para testes de desenvolvimento e calcular dígitos verificadores.
+
+### Exemplos
+
+```js
+// ES6
+import { dv, fake, mask, validate } from 'validation-br/cpf';
+
+// Modules
+const cpf = require('validation-br/cpf');
+const { dv, fake, mask, validate } = require('validation-br/cpf');
+
+// Calculo do dígito verificador de um CPF. Os métodos aceitam inteiros e strings, inclusive com máscaras.
+cpf.dv(906259666); // -> '51'
+cpf.dv('906259666'); // -> '51'
+cpf.dv('906.259.666'); // -> '51'
+
+// Cria um número fake de CPF para fins de testes.
+cpf.fake(); // -> 90625966651
+// Passe um parâmetro true para gerar o número com máscara
+cpf.fake(true); // -> 906.259.666-51
+
+// Aplique uma máscara a um cpf
+cpf.mask(90625966651); // -> 906.259.666-51
+
+// Valida um número
+cpf.validate('01234567890'); // -> true
+
+// Valida um número e retorna exceção se a validação falhar
+cpf.validateOrFail('01234567890'); // -> true
+```
+
 ## Tabela de Conteúdo
 
+- [isCNH](#isCNH) - Validação do CNH
 - [isCPF](#isCPF) - Validação do CPF
 - [isCNPJ](#isCNPJ) - Validação do CNPJ
-- [isTitulo](#isTitulo) - Validação do Título de Eleitor
-- [isCNH](#isCNH) - Validação do CNH
 - [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
+- [isJudicialProcess](#isJudicialProcess) - Validação de Números de Processos Judiciais
 - [isPIS](#isPIS) - Validação de PIS, PASEP, NIS e NIT
+- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
+- [isRenavam](#isRenavam) - Validação de RENAVAM
+- [isTitulo](#isTitulo) - Validação do Título de Eleitor
 
-### isCPF
-
-Valida um CPF
-
-```js
-// Importação
-import { isCPF } from 'validation-br';
-
-// Valida
-isCPF('01234567890');
-//-> true
-
-// Valida
-isCPF('012.345.678-90');
-//-> true
-
-// Valida
-isCPF('01234567891');
-//-> false
-```
-
-### isCNPJ
-
-Valida um CNPJ
-
-```js
-// Importação
-import { isCNPJ } from 'validation-br';
-
-// Valida
-isCNPJ('73.797.980/0001-79');
-//-> true
-
-// Valida
-isCNPJ('55585709000198');
-//-> true
-
-// Valida
-isCNPJ('99362238000180');
-//-> false
-```
-
-### isTitulo
-
-Valida um título eleitoral
-
-```js
-// Importação
-import { isTitulo } from 'validation-br';
-
-// Valida
-isTitulo('743650641660');
-//-> true
-
-// Valida
-isTitulo('525028881694');
-//-> true
-
-// Valida
-isTitulo('153016161686');
-//-> false
-```
-
-### isCNH
+### isCNH( `value` )
 
 Valida o documento da carteira nacional de habilitação.
 
 ```js
-// Importação
+// Importação somente da validação
 import { isCNH } from 'validation-br';
+// ou
+// Importação do submódulo
+import cnh from 'validation-br/cnh';
 
 // Valida
-isCNH('69044271146');
-//-> true
+isCNH('69044271146'); //-> true
+isCNH('62472927637'); //-> true
+isCNH('46190476839'); //-> false
+cnh.validate('62472927637'); //-> true
+cnh.validateOrFail('62472927637'); //-> true
 
-// Valida
-isCNH('62472927637');
-//-> true
+// Número fake com e sem máscara
+cnh.fake(); // -> 62472927637
+cnh.fake(true); // -> 624729276-37
 
-// Valida
-isCNH('46190476839');
-//-> false
+// Aplica uma máscara
+cnh.mask('62472927637'); // -> 624729276-37
+
+// Calcula o DV
+cnh.dv('624729276'); // -> '37'
 ```
 
-### isRenavam
+### isCNPJ( `value` )
 
-Valida o número de um RENAVAM de 11 dígitos
+Valida um CNPJ
 
 ```js
-// Importação
-import { isRenavam } from 'validation-br';
+// Importação somente da validação
+import { isCNPJ } from 'validation-br';
+// ou
+// Importação do submódulo
+import cnpj from 'validation-br/cnpj';
 
 // Valida
-isRenavam('14283256656');
-//-> true
+isCNPJ('73.797.980/0001-79'); //-> true
+isCNPJ('55585709000198'); //-> true
+isCNPJ('99362238000180'); //-> false
+cnpj.validate('99362238000180'); //-> true
+cnpj.validateOrFail('99362238000180'); //-> true
 
-// Valida
-isRenavam('95059845976');
-//-> true
+// Número fake com e sem máscara
+cnpj.fake(); // -> 55585709000198
+cnpj.fake(true); // -> 55.585.709/0001-98
 
-// Valida
-isRenavam('67747331626');
-//-> false
+// Aplica uma máscara
+cnpj.mask('99362238000180'); // -> 99.362.238/0001-80
+
+// Calcula o DV
+cnpj.dv('993622380001'); // -> '80'
 ```
 
-Funções auxiliares específicas do RENAVAM
+### isCPF( `value` )
+
+Valida um CPF
 
 ```js
-// Importação
-import renavam from 'validation-br/renavam';
+// Importação somente da validação
+import { isCPF } from 'validation-br';
+// ou
+// Importação do submódulo
+import cpf from 'validation-br/cpf';
 
-// OU
-import { validate, fake, dv } from 'validation-br/renavam';
+// Valida
+isCPF('01234567890'); //-> true
+isCPF('012.345.678-90'); //-> true
+isCPF('01234567891'); //-> false
+cpf.validate('01234567890'); //-> true
+cpf.validateOrFail('01234567890'); //-> true
 
-// Valida um Renavam. Mesma função do isRenavam
-renavam.validate('14283256656');
-// -> true
+// Número fake com e sem máscara
+cpf.fake(); // -> 01234567891
+cpf.fake(true); // -> 012.345.678-91
 
-// Cria um renavam válido de forma aleatória
-renavam.fake();
-// -> 67747331627
+// Aplica uma máscara
+cpf.mask('01234567890'); // -> 012.345.678-90
 
-// Calcula o DV de um renavam completo. Ignora o último dígito.
-renavam.dv('67747331627');
-// -> 7
-
-// Aplica corretamente uma máscara de renavam ao número
-renavam.mask('67747331627');
-// -> 6774733162-7
+// Calcula o DV
+cpf.dv('012345678'); // -> '90'
 ```
 
-### isPostalCode
-
-Valida um código de rastreamento de objetos postais no formato XX000000000YY, onde:
-
-- XX: O código do objeto postal com 2 dígitos;
-- 000000000: Número sequencial do objeto com 9 dígitos;
-- YY: País de origem do objeto com 2 dígitos.
-
-```js
-// Importação
-import { isPostalCode } from 'validation-br';
-
-// Valida
-isPostalCode('PN718252423BR');
-//-> true
-
-// Valida
-isPostalCode('RY728187035CN');
-//-> true
-
-// Valida
-isPostalCode('JT194624698BR');
-//-> false
-```
-
-### isPIS
+### isJudicialProcess( `value` )
 
 Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita números com e sem pontos e traços.
 
 ```js
-// Importação
-import { isPIS } from 'validation-br';
+// Importação somente da validação
+import { isJudicialProcess } from 'validation-br';
+// ou
+// Importação do submódulo
+import judicialProcess from 'validation-br/judicial-process';
 
 // Valida
-isPIS('71282677380');
-//-> true
+isJudicialProcess('71282677380'); //-> true
+isJudicialProcess('237.95126.95-5'); //-> true
+isJudicialProcess('500.12973.80-1'); //-> false
+judicialProcess.validate('71282677380'); //-> true
+judicialProcess.validateOrFail('71282677380'); //-> true
 
-// Valida
-isPIS('237.95126.95-5');
-//-> true
+// Número fake com e sem máscara
+judicialProcess.fake(); // -> 71282677380
+judicialProcess.fake(true); // -> 712.82677.38-0
 
-// Valida
-isPIS('500.12973.80-1');
-//-> false
+// Aplica uma máscara
+judicialProcess.mask('71282677380'); // -> 712.82677.38-0
+
+// Calcula o DV
+judicialProcess.dv('7128267738'); // -> '0'
 ```
 
-## Tests
+### isPIS( `value` )
+
+Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita números com e sem pontos e traços.
+
+```js
+// Importação somente da validação
+import { isPIS } from 'validation-br';
+// ou
+// Importação do submódulo
+import pis from 'validation-br/pis';
+
+// Valida
+isPIS('71282677380'); //-> true
+isPIS('237.95126.95-5'); //-> true
+isPIS('500.12973.80-1'); //-> false
+pis.validate('71282677380'); //-> true
+pis.validateOrFail('71282677380'); //-> true
+
+// Número fake com e sem máscara
+pis.fake(); // -> 71282677380
+pis.fake(true); // -> 712.82677.38-0
+
+// Aplica uma máscara
+pis.mask('71282677380'); // -> 712.82677.38-0
+
+// Calcula o DV
+pis.dv('7128267738'); // -> '0'
+```
+
+### isPostalCode( `value` )
+
+Valida um código de rastreamento de objetos postais no formato XX00000000DYY, onde:
+
+- XX: O código do objeto postal com 2 dígitos;
+- 00000000: Número sequencial do objeto com 8 dígitos;
+- D: Dígito Verificador
+- YY: País de origem do objeto com 2 dígitos.
+
+```js
+// Importação somente da validação
+import { isPostalCode } from 'validation-br';
+// ou
+// Importação do submódulo
+import postalCode from 'validation-br/postal-code';
+
+// Valida
+isPostalCode('PN718252423BR'); //-> true
+isPostalCode('RY728187035CN'); //-> true
+isPostalCode('JT194624698BR'); //-> false
+postalCode.validate('PN718252423BR'); //-> true
+postalCode.validateOrFail('PN718252423BR'); //-> true
+
+// Número fake com e sem máscara.
+postalCode.fake(); // -> PN718252423BR
+postalCode.fake(true); // -> PN718252423BR
+
+// Aplica uma máscara
+// No caso de PostalCode, a máscara apenas coloca as letras em maiúsculas
+postalCode.mask('pn718252423br'); // -> PN718252423BR
+
+// Calcula o DV
+postalCode.dv('PN718252423BR'); // -> '3'
+```
+
+### isRenavam( `value` )
+
+Valida o número de um RENAVAM de 11 dígitos
+
+```js
+// Importação somente da validação
+import { isRenavam } from 'validation-br';
+// ou
+// Importação do submódulo
+import renavam from 'validation-br/renavam';
+
+// Valida
+isRenavam('14283256656'); //-> true
+isRenavam('95059845976'); //-> true
+isRenavam('67747331626'); //-> false
+renavam.validate('95059845976'); //-> true
+renavam.validateOrFail('95059845976'); //-> true
+
+// Número fake com e sem máscara
+renavam.fake(); // -> 95059845976
+renavam.fake(true); // -> 9505984597-6
+
+// Aplica uma máscara
+renavam.mask('95059845976'); // -> 9505984597-6
+
+// Calcula o DV
+renavam.dv('950598459'); // -> '76'
+```
+
+### isTitulo( `value` )
+
+Valida um título eleitoral
+
+```js
+// Importação somente da validação
+import { isTitulo } from 'validation-br';
+// ou
+// Importação do submódulo
+import titulo from 'validation-br/titulo';
+
+// Valida
+isTitulo('743650641660'); //-> true
+isTitulo('525028881694'); //-> true
+isTitulo('153016161686'); //-> false
+titulo.validate('01234567890'); //-> true
+titulo.validateOrFail('01234567890'); //-> true
+
+// Número fake com e sem máscara
+titulo.fake(); // -> 153016161686
+titulo.fake(true); // -> 1530.1616.1686
+
+// Aplica uma máscara
+titulo.mask('525028881694'); // -> 5250.2888.1694
+
+// Calcula o DV
+titulo.dv('5250288816'); // -> '94'
+```
+
+# Tests
 
 ![image](https://user-images.githubusercontent.com/100168/133695302-17744b22-2bf0-41e8-8907-58ea4770be3c.png)
 
-## Changelog
+# Changelog
 
+- **08/01/2022**:
+  - 0.5.0 - Adicionadas as funções isRenavam e isJudicialProcess
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
   - 0.8.0 - Adicionada a função isPIS
 
-## Referências
+# Referências
 
 - [Cálculo do DV do CPF](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-cpf/)
 - [Cálculo do DV do CNPJ](http://www.macoratti.net/alg_cnpj.htm)
