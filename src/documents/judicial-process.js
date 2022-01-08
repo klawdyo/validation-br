@@ -100,10 +100,18 @@ const dv = (value) => {
 };
 
 /**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => applyMask(value, '0000000-00.0000.0.00.0000');
+
+/**
  *
  *
  */
-const fake = () => {
+const fake = (withMask = false) => {
   // const judicialProcess = fakeNumber(14, true);
   const num = fakeNumber(7, true);
   const year = (new Date()).getFullYear() - fakeNumber(1);
@@ -114,16 +122,11 @@ const fake = () => {
   const judicialProcess = `${num}${year}${courte}${origin}`;
   const digits = dv(judicialProcess);
 
-  return insertAtPosition(judicialProcess, digits, 7);
-};
+  const finalNumber = insertAtPosition(judicialProcess, digits, 7);
 
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-const mask = (value) => applyMask(value, '0000000-00.0000.0.00.0000');
+  if (withMask) return mask(finalNumber);
+  return finalNumber;
+};
 
 /**
  * validate()

@@ -71,10 +71,21 @@ test('validateOrFail() - Processos Judiciais inválidos devem lançar erro', (t)
   t.end();
 });
 
-test('fake() - Gera Processos Judiciais aleatórias e testa se estão corretas', (t) => {
-  for (let i = 0; i < 10; i += 1) {
+test('fake() - Gera Processos Judiciais fake sem máscara', (t) => {
+  for (let i = 0; i < 5; i += 1) {
     const judicialProcess = fake();
     t.true(validate(judicialProcess), `Processo fake ${judicialProcess} deve ser válido`);
+    t.assert(judicialProcess.length === 20, `Processo ${judicialProcess} precisa ter 20 caracteres`);
+  }
+
+  t.end();
+});
+
+test('fake() - Gera Processos Judiciais fake com máscara', (t) => {
+  for (let i = 0; i < 5; i += 1) {
+    const judicialProcess = fake(true);
+    t.true(validate(judicialProcess), `Processo fake ${judicialProcess} deve ser válido`);
+    t.assert(judicialProcess.length === 25, `Processo ${judicialProcess} precisa ter 25 caracteres`);
   }
 
   t.end();
