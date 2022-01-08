@@ -1,4 +1,6 @@
-const { sumElementsByMultipliers, fakeNumber, applyMask } = require('../lib/utils');
+const {
+  sumElementsByMultipliers, fakeNumber, applyMask, clearValue,
+} = require('../lib/utils');
 
 /**
  * Calcula o Dígito Verificador de um RENAVAM informado
@@ -6,50 +8,61 @@ const { sumElementsByMultipliers, fakeNumber, applyMask } = require('../lib/util
  * @returns String Número fake de um renavam válido
  */
 export const dv = (value = '') => {
-  // Verifica se o valor foi informado
   if (!value) throw new Error('Renavam não informado');
-  // console.log({ value });
-  const renavam = String(value)
-    .replace(/[^\d]+/g, '') // Remove caracteres indesejado
-    .substring(0, 10) // Pega somente os 10 primeiros caracteres
-    .padStart(10, '0'); // Completa com zeros à esquerda
 
-  // console.log(renavam);
+  const renavam = clearValue(value, 10); // só 10 para remover o DV
 
   const sum1 = sumElementsByMultipliers(renavam, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) * 10;
-
   const dv1 = (sum1 % 11) >= 10 ? 0 : sum1 % 11;
-  // console.log({ value, dv1 });
   return dv1;
 };
 
 /**
- * Cria um número fake
+ * Valida um número de renavam e retorna uma exceção caso seja inválido
  *
  * @returns String Número fake de um renavam válido
  */
+export const validateOrFail = (value = '') => {
+  const renavam = clearValue(value, 11);
+
+  if (dv(renavam) !== +(renavam.substring(10, 11))) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * Valida um número de renavam
+ *
+ * @returns String Valor a ser validado
+ */
 export const validate = (value = '') => {
   try {
-    return dv(value) === +(value.substring(10, 11));
+    return validateOrFail(value);
   } catch (error) {
     return false;
   }
 };
 
 /**
- * Cria um número fake
+ * Aplica uma máscara a uma string
  *
- * @returns String Número fake de um renavam válido
+ * @returns String string com a máscara aplicada
  */
-export const fake = () => {
-  const value = fakeNumber(10, true);
-
-  return `${value}${dv(value)}`;
-};
+export const mask = (value = '') => applyMask(value, '0000000000-0');
 
 /**
  * Cria um número fake
  *
- * @returns String Número fake de um renavam válido
+ * @returns String Número fake porém válido
  */
-export const mask = (value = '') => applyMask(value, '0000000000-0');
+export const fake = (withMask = false) => {
+  const value = fakeNumber(10, true);
+
+  const renavam = `${value}${dv(value)}`;
+
+  if (withMask) return mask(renavam);
+
+  return renavam;
+};
