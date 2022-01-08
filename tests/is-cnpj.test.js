@@ -135,9 +135,14 @@ test('mask() - Testando se a máscara foi gerada corretamente', (t) => {
     { num: '11222333000181', expected: '11.222.333/0001-81' },
     { num: 99360938000180, expected: '99.360.938/0001-80' },
     { num: '32432147000147', expected: '32.432.147/0001-47' },
+    { num: 432147000147, expected: '00.432.147/0001-47' },
   ].forEach((item) => {
-    t.equal(mask(item.num), item.expected,
+    const masked = mask(item.num);
+
+    t.equal(masked, item.expected,
       `${item.num} com máscara precisa ser igual a ${item.expected}`);
+
+    t.assert(masked.length === 18, `O CPF ${item.expected} precisa ter 14 caracteres com máscara`);
   });
 
   t.end();

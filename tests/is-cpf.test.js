@@ -6,10 +6,13 @@ const {
 
 test('isCPF() - CPFs válidos', (t) => {
   [
-    '087.967.420-20',
+    // masked
     '133.782.710-00',
     '400.448.260-79',
+    // integer
+    8796742020, // começa com zero
     74172316085,
+    // string
     '15886489070',
     '90889477086',
   ].forEach((key) => {
@@ -21,10 +24,13 @@ test('isCPF() - CPFs válidos', (t) => {
 
 test('validate() - CPFs válidos', (t) => {
   [
-    '087.967.420-20',
+    // masked
     '133.782.710-00',
     '400.448.260-79',
+    // integer
+    8796742020, // começa com zero
     74172316085,
+    // string
     '15886489070',
     '90889477086',
   ].forEach((key) => {
@@ -42,6 +48,7 @@ test('validate() - CPFs inválidos', (t) => {
     '24172316085',
     '25886489070',
     '20889477086',
+    '11111111111',
   ].forEach((key) => {
     t.false(validate(key), `CPF ${key} deve ser inválido`);
   });
@@ -57,6 +64,7 @@ test('validateOrFail() - CPFs inválidos', (t) => {
     '24172316085',
     '25886489070',
     '20889477086',
+    '11111111111',
   ].forEach((key) => {
     t.throws(() => validateOrFail(key), `CPF ${key} deve retornar uma exceção`);
   });
@@ -118,9 +126,14 @@ test('mask() - Testando se a máscara foi gerada corretamente', (t) => {
     { num: '74172316085', expected: '741.723.160-85' },
     { num: 15886489070, expected: '158.864.890-70' },
     { num: '90889477086', expected: '908.894.770-86' },
+    { num: 889477086, expected: '008.894.770-86' },
   ].forEach((item) => {
-    t.equal(mask(item.num), item.expected,
+    const masked = mask(item.num);
+
+    t.equal(masked, item.expected,
       `${item.num} com máscara precisa ser igual a ${item.expected}`);
+
+    t.assert(masked.length === 14, `O CPF ${item.expected} precisa ter 14 caracteres com máscara`);
   });
 
   t.end();

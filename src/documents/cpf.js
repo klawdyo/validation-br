@@ -71,12 +71,15 @@ const {
  * @returns {String}
  */
 const dv = (value = '') => {
+  if (!value) throw new Error('CPF não informado');
+
   const cpf = clearValue(value, 9);
 
-  const blackList = invalidListGenerator(9);
-  if (blackList.includes(cpf)) {
-    throw new Error('CPF é obrigatório');
+  const invalidList = invalidListGenerator(9);
+  if (invalidList.includes(cpf)) {
+    throw new Error('CPF não pode ser uma sequência de números iguais');
   }
+
   const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
   const dv1 = sumToDV(sum1);
 
