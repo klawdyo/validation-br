@@ -1,4 +1,3 @@
-const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../lib/utils');
 /**
  * isCNPJ()
  * Calcula se um CNPJ é válido
@@ -50,19 +49,82 @@ const { invalidListGenerator, sumElementsByMultipliers, sumToDV } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCNPJ = (value = '') => {
-  const cnpj = value.replace(/[^\d]+/g, '');
 
-  const blackList = invalidListGenerator(14);
-  if (!cnpj || cnpj.length !== 14 || blackList.includes(cnpj)) return false;
+const {
+  invalidListGenerator, sumElementsByMultipliers, sumToDV,
+  clearValue, fakeNumber, applyMask,
+} = require('../lib/utils');
 
-  const sum1 = sumElementsByMultipliers(cnpj.substr(0, 12), '543298765432');
-  const sum2 = sumElementsByMultipliers(cnpj.substr(0, 13), '6543298765432');
+const dv = (value = '') => {
+  const cnpj = clearValue(value, 12);
 
+  const blackList = invalidListGenerator(12);
+  if (blackList.includes(cnpj)) {
+    throw new Error('CNPJ é obrigatório');
+  }
+
+  const sum1 = sumElementsByMultipliers(cnpj.substring(0, 12), '543298765432');
   const dv1 = sumToDV(sum1);
+
+  const sum2 = sumElementsByMultipliers(cnpj.substring(0, 12) + dv1, '6543298765432');
   const dv2 = sumToDV(sum2);
 
-  return `${dv1}${dv2}` === cnpj.substr(12, 2);
+  return `${dv1}${dv2}`;
 };
 
-module.exports = isCNPJ;
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => applyMask(value, '00.000.000/0000-00');
+
+/**
+ *
+ *
+ */
+const fake = (withMask = false) => {
+  const num = fakeNumber(12, true);
+
+  const cnpj = `${num}${dv(num)}`;
+
+  if (withMask) return mask(cnpj);
+  return cnpj;
+};
+
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ */
+const validateOrFail = (value) => {
+  const cnpj = clearValue(value, 14);
+
+  if (dv(cnpj) !== cnpj.substring(12, 14)) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ */
+const validate = (value) => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+};
