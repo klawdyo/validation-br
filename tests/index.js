@@ -6,6 +6,7 @@ require('./is-postal-code.test');
 require('./is-cnh.test');
 require('./is-pis.test');
 require('./is-renavam.test');
+require('./is-judicial-process.test');
 
 // Funções Auxiliares
 require('./utils-sum-to-dv.test');

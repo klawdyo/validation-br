@@ -5,7 +5,7 @@
  *
  * @param {Integer} sum Soma
  */
-export function sumToDV(sum) {
+function sumToDV(sum) {
   return sum % 11 < 2 ? 0 : 11 - (sum % 11);
 }
 
@@ -21,7 +21,7 @@ export function sumToDV(sum) {
  * @param {Integer} size Tamanho da string gerada
  * @returns {Array} Lista de valores
  */
-export function invalidListGenerator(size) {
+function invalidListGenerator(size) {
   return [...Array(10).keys()].map((f) => String(f).repeat(size));
 }
 
@@ -35,25 +35,29 @@ export function invalidListGenerator(size) {
  * @param {String|Array} multiplier
  * @returns {Integer} Somatório
  */
-export function sumElementsByMultipliers(value, multiplier) {
+function sumElementsByMultipliers(value, multiplier) {
   return (Array.isArray(multiplier) ? multiplier : multiplier.split(''))
     .reduce((accu, curr, i) => accu + (curr * Number(value.charAt(i))), 0);
 }
 
 /**
- * Cria um número aleatório com um tamanho especificado
+ * fakeNumber()
+ * Cria um número aleatório com o número de caracteres
  *
  * @example
- *  fakeNumber(4)  // -> 4201
- *  fakeNumber(5)  // -> 02201
+ * fakeNumber(8, true) // -> 00083159
+ * fakeNumber(4) // -> 831
  *
- * @param {Integer} length Número de caracteres do número fake
+ * @param {Integer} length
+ * @param {Boolean} forceLength Adiciona zeros à esquerda para ter os números de caractes exatos
  * @returns {String}
  */
-export function fakeNumber(length) {
+function fakeNumber(length, forceLength = false) {
   const value = parseInt(Math.random() * (10 ** length), 10);
 
-  return value.toString().padStart(length, '0');
+  if (forceLength) return String(value).padStart(length, '0');
+
+  return value;
 }
 
 /**
@@ -71,10 +75,10 @@ export function fakeNumber(length) {
  *  clearValue(12345, 10) // -> 0000001234
  *
  * @param {Number|String} value
- * @param {Number} length Tamanho exato. Se for vazio, só faz a retirada dos caracteres
+ * @param {Number} length Tamanho exato. Se for null, só retira os caracteres não-numéricos
  * @returns {String} Número com o tamanho exato
  */
-export function clearValue(value, length = null) {
+function clearValue(value, length = null) {
   const clearedValue = String(value).replace(/([^\d]+)/ig, '');
 
   if (!length || clearedValue.length === length) return clearedValue;
@@ -84,29 +88,74 @@ export function clearValue(value, length = null) {
 }
 
 /**
- * Aplica uma máscara a um número passado.
- *
- * 1) Retira caracteres não-numéricos.
- * 2) Verifica o tamanho da máscara e o tamanho do número.
- *   2.1) A máscara é maior que o número? Preenche com zeros à esquerda.
- *   2.2) A máscara é menor que o número? Remove caracteres à direita.
- * 3) Aplica o formato da máscara ao número de entrada.
- * 4) Devolve o número com a máscara aplicada.
+ * insertAtPosition()
+ * Insere um conjunto de caracteres em um local específico de uma string
  *
  * @example
- *  applyMask(123456, '00000-0') // -> 12345-6
- *  applyMask(12345678, '0000-0') // -> 1234-5
- *  applyMask(12345, '00000000-0') // -> 00001234-5
+ * insertAtPosition('AAABBB', 'C', 3) // -> AAACBBB
+ * insertAtPosition('000011122223445555', 99, 7) // -> 00001119922223445555
+ *
+ * @param {String|Number} value Valor original
+ * @param {String|Number} insertValue Valor que será inserido
+ * @param {String|Number} position Posição que receberá o novo valor
+ * @returns {String}
  *
  */
-export function applyMask(value, mask) {
-  const maskLen = clearValue(mask).length;
-  let cleared = clearValue(value, maskLen);
+function insertAtPosition(value, insertValue, position) {
+  return `${value.substring(0, position)}${insertValue}${value.substring(position)}`;
+}
 
-  for (let i = mask.length; i > 0; i -= 1) {
-    const current = mask[i];
-    if (current !== '0') cleared = [cleared.slice(0, i), current, cleared.slice(i)].join('');
+/**
+ * removeFromPosition()
+ * Retira um conjunto de caracteres de um local específico de uma string
+ *
+ * @example
+ * removeFromPosition('00001119922223445555', 7,9) // -> 000011122223445555
+ * removeFromPosition('AAACBBB', 3,4) // -> AAABBB
+ *
+ * @param {String|Number} value Valor original
+ * @param {String|Number} startPosition
+ * @param {String|Number} endPosition
+ * @returns {String}
+ *
+ */
+function removeFromPosition(value, startPosition, endPosition) {
+  return [value.slice(0, startPosition), value.slice(endPosition)].join('');
+}
+
+/**
+ * applyMask()
+ * Aplica uma máscara a uma string
+ *
+ * @example
+ * applyMask('59650000', '00.000-000') // -> 59.650-000
+ * applyMask('99877665544', '(00) 0 0000-0000') // -> (99) 8 7766-5544
+ *
+ * @param {String|Number} value Valor original
+ * @param {String} mask
+ * @returns {String}
+ *
+ */
+function applyMask(value, mask) {
+  const maskLen = clearValue(mask).length;
+  let masked = clearValue(value, maskLen);
+  const specialChars = ['/', '-', '.', '(', ')', ' '];
+
+  for (let position = 0; position < mask.length; position += 1) {
+    const current = mask[position];
+    if (specialChars.includes(current)) masked = insertAtPosition(masked, current, position);
   }
 
-  return cleared;
+  return masked;
 }
+
+module.exports = {
+  sumToDV,
+  invalidListGenerator,
+  sumElementsByMultipliers,
+  fakeNumber,
+  clearValue,
+  insertAtPosition,
+  removeFromPosition,
+  applyMask,
+};
