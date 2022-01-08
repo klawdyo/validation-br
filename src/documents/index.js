@@ -5,7 +5,7 @@ const isJudicialProcess = require('./judicial-process').validate;
 const isPIS = require('./pis-pasep').validate;
 const isPostalCode = require('./postal-code').validate;
 const isRenavam = require('./renavam').validate;
-const isTitulo = require('./titulo-eleitor');
+const isTitulo = require('./titulo-eleitor').validate;
 
 module.exports = {
   isCNH,
