@@ -1,6 +1,8 @@
 const test = require('tape');
 const { isCNPJ } = require('../dist/documents');
-const { dv, fake, mask, validate, validateOrFail } = require('../dist/documents/cnpj');
+const {
+  dv, fake, mask, validate, validateOrFail,
+} = require('../dist/documents/cnpj');
 
 test('isCNPJ() - CNPJs válidos', (t) => {
   [
@@ -116,8 +118,13 @@ test('dv() - Testando se a DV foi calculado corretamente', (t) => {
     { num: 993609380001, expected: '80' },
     { num: '324321470001', expected: '47' },
   ].forEach((item) => {
-    t.equal(dv(item.num), item.expected,
+    const calcDV = dv(item.num);
+
+    t.equal(calcDV, item.expected,
       `${item.num} deve gerar um DV igual a ${item.expected}`);
+
+    t.assert(typeof calcDV === 'string', `O DV ${item.expected} precisa ser uma string`);
+    t.assert(calcDV.length === 2, `O DV ${item.expected} precisa ter 2 caracteres`);
   });
 
   t.end();
