@@ -314,12 +314,13 @@ titulo.dv('5250288816'); // -> '94'
 
 # Tests
 
-![image](https://user-images.githubusercontent.com/100168/133695302-17744b22-2bf0-41e8-8907-58ea4770be3c.png)
+![image](https://user-images.githubusercontent.com/100168/148660802-e1d1b6e1-b447-4534-aa92-298849db6f47.png)
+
 
 # Changelog
 
 - **08/01/2022**:
-  - 0.5.0 - Adicionadas as funções isRenavam e isJudicialProcess
+  - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
