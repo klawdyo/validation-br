@@ -1,6 +1,3 @@
-const { sumElementsByMultipliers, sumToDV } = require('../../dist/lib/utils');
-// const { sumElementsByMultipliers, sumToDV } = require('../lib/utils');
-
 /**
  * isPIS()
  * Calcula se um código de PIS/PASEP/NIS/NIT no formato 268.27649.96-0 é válido. Não
@@ -42,28 +39,93 @@ const { sumElementsByMultipliers, sumToDV } = require('../../dist/lib/utils');
  * @param {String} value Objeto postal no formato 268.27649.96-0
  * @returns {Boolean}
  */
-const isPIS = (value = '') => {
-  const pis = value.replace(/[^\d]+/g, '');
 
-  if (!pis || pis.length !== 11) return false;
+const {
+  invalidListGenerator,
+  sumElementsByMultipliers, sumToDV,
+  clearValue, fakeNumber, applyMask,
+} = require('../lib/utils');
 
-  const sum = sumElementsByMultipliers(pis.substr(0, 10), [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
-  const dv = sumToDV(sum);
+/**
+ * dv()
+ * Calcula o dígito verificador de um PIS
+ *
+ * @param {Number|String} value
+ * @returns {String}
+ */
+const dv = (value = '') => {
+  if (!value) throw new Error('PIS não informado');
 
-  // console.log({
-  //   pis,
-  //   sum,
-  //   dvOriginal: pis.charAt(10),
-  //   dvCalculado: dv,
-  // });
+  const pis = clearValue(value, 10);
 
-  return dv === Number(pis.charAt(10));
+  const invalidList = invalidListGenerator(10);
+  if (invalidList.includes(pis)) {
+    throw new Error('PIS não pode ser uma sequência de números iguais');
+  }
+
+  const sum = sumElementsByMultipliers(pis, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+
+  return String(sumToDV(sum));
 };
 
-// console.log(isPIS());
-// console.log(isPIS('11111111111'));
-// console.log(isPIS('26827649960'));
-// console.log(isPIS('712.82677.38-0'));
-// console.log(isPIS('237.95126.95-5'));
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => applyMask(value, '000.00000.00-0');
 
-module.exports = isPIS;
+/**
+ * fake()
+ * Gera um número válido
+ *
+ * @returns {String}
+ */
+const fake = (withMask = false) => {
+  const num = fakeNumber(10, true);
+
+  const pis = `${num}${dv(num)}`;
+
+  if (withMask) return mask(pis);
+  return pis;
+};
+
+/**
+ * validateOrFail()
+ * Valida se um número de processo está correto e
+ * retorna uma exceção se não estiver
+ *
+ * @returns {Boolean}
+ */
+const validateOrFail = (value) => {
+  const pis = clearValue(value, 11);
+
+  if (dv(pis) !== pis.substring(10, 11)) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ * @returns {Boolean}
+ */
+const validate = (value) => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+};

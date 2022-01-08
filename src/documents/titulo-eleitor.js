@@ -1,5 +1,3 @@
-const { sumElementsByMultipliers } = require('../lib/utils');
-
 /**
  * isTitulo()
  * Calcula se um título eleitoral é válido
@@ -53,18 +51,99 @@ const { sumElementsByMultipliers } = require('../lib/utils');
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isTitulo = (value = '') => {
-  const titulo = value.replace(/[^\d]+/g, '');
 
-  if (!titulo || titulo.length !== 12) return false;
+const {
+  sumElementsByMultipliers,
+  clearValue, fakeNumber, applyMask,
+  invalidListGenerator,
+} = require('../lib/utils');
 
-  const sum1 = sumElementsByMultipliers(titulo.substr(0, 8), [2, 3, 4, 5, 6, 7, 8, 9]);
-  const sum2 = sumElementsByMultipliers(titulo.substr(8, 3), [7, 8, 9]);
+/**
+ * dv()
+ * Calcula o dígito verificador de um CPF
+ *
+ * @param {Number|String} value
+ * @returns {String}
+ */
+const dv = (value = '') => {
+  if (!value) throw new Error('CPF não informado');
 
+  const titulo = clearValue(value, 10);
+
+  const invalidList = invalidListGenerator(10);
+  if (invalidList.includes(titulo)) {
+    throw new Error('Título não pode ser uma sequência de números iguais');
+  }
+
+  const sum1 = sumElementsByMultipliers(titulo.substring(0, 8), [2, 3, 4, 5, 6, 7, 8, 9]);
   const dv1 = (sum1 % 11) >= 10 ? 0 : sum1 % 11;
+
+  const sum2 = sumElementsByMultipliers(titulo.substring(8, 10) + dv1, [7, 8, 9]);
   const dv2 = (sum2 % 11) >= 10 ? 0 : sum2 % 11;
 
-  return `${dv1}${dv2}` === titulo.substr(10, 2);
+  return `${dv1}${dv2}`;
 };
 
-module.exports = isTitulo;
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => applyMask(value, '0000.0000.0000');
+
+/**
+ * fake()
+ * Gera um número válido
+ *
+ * @returns {String}
+ */
+const fake = (withMask = false) => {
+  const num = fakeNumber(8, true);
+
+  const uf = String(parseInt(Math.random() * 27 + 1, 10)).padStart(2, '0');
+
+  const titulo = `${num}${uf}${dv(num + uf)}`;
+
+  if (withMask) return mask(titulo);
+  return titulo;
+};
+
+/**
+ * validateOrFail()
+ * Valida se um número de processo está correto e
+ * retorna uma exceção se não estiver
+ *
+ * @returns {Boolean}
+ */
+const validateOrFail = (value) => {
+  const titulo = clearValue(value, 12);
+
+  if (dv(titulo) !== titulo.substring(10, 12)) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ * @returns {Boolean}
+ */
+const validate = (value) => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+};

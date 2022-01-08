@@ -1,5 +1,3 @@
-const { sumElementsByMultipliers, sumToDV, invalidListGenerator } = require('../lib/utils');
-
 /**
  * isCNH()
  * Calcula se uma CNH é válida
@@ -55,19 +53,89 @@ const { sumElementsByMultipliers, sumToDV, invalidListGenerator } = require('../
  * @param {String} value Título eleitoral
  * @returns {Boolean}
  */
-const isCNH = (value = '') => {
-  const cnh = value.replace(/[^\d]+/g, '');
 
-  const invalidList = invalidListGenerator(11);
-  if (!cnh || invalidList.includes(cnh) || cnh.length !== 11) return false;
+const {
+  sumElementsByMultipliers, sumToDV, invalidListGenerator,
+  clearValue, applyMask, fakeNumber,
+} = require('../lib/utils');
 
-  const sum1 = sumElementsByMultipliers(cnh.substr(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  const sum2 = sumElementsByMultipliers(cnh.substr(0, 10), [3, 4, 5, 6, 7, 8, 9, 10, 11, 2]);
+/**
+ * Calcula o Dígito Verificador de um RENAVAM informado
+ *
+ * @returns String Número fake de um cnh válido
+ */
+const dv = (value = '') => {
+  if (!value) throw new Error('CNH não informado');
 
+  const cnh = clearValue(value, 9);
+
+  const invalidList = invalidListGenerator(9);
+  if (invalidList.includes(cnh)) {
+    throw new Error('CNH não pode ser uma sequência de números iguais');
+  }
+
+  const sum1 = sumElementsByMultipliers(cnh.substring(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10]);
   const dv1 = sumToDV(sum1);
+
+  const sum2 = sumElementsByMultipliers(
+    cnh.substring(0, 9) + dv1,
+    [3, 4, 5, 6, 7, 8, 9, 10, 11, 2],
+  );
   const dv2 = sumToDV(sum2);
 
-  return `${dv1}${dv2}` === cnh.substr(9, 2);
+  return `${dv1}${dv2}`;
 };
 
-module.exports = isCNH;
+/**
+ * Valida um número de cnh e retorna uma exceção caso seja inválido
+ *
+ * @returns String Número fake de um cnh válido
+ */
+const validateOrFail = (value = '') => {
+  const cnh = clearValue(value, 11);
+
+  if (dv(cnh) !== (cnh.substring(9, 11))) {
+    throw new Error('Dígito verificador inválido');
+  }
+
+  return true;
+};
+
+/**
+ * Valida um número de cnh
+ *
+ * @returns String Valor a ser validado
+ */
+const validate = (value = '') => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+/**
+ * Aplica uma máscara a uma string
+ *
+ * @returns String string com a máscara aplicada
+ */
+const mask = (value = '') => applyMask(value, '000000000-00');
+
+/**
+ * Cria um número fake
+ *
+ * @returns String Número fake porém válido
+ */
+const fake = (withMask = false) => {
+  const value = fakeNumber(9, true);
+
+  const cnh = `${value}${dv(value)}`;
+
+  if (withMask) return mask(cnh);
+
+  return cnh;
+};
+
+module.exports = {
+  dv, fake, mask, validate, validateOrFail,
+};

@@ -1,6 +1,3 @@
-// const { sumElementsByMultipliers } = require('../../dist/lib/utils');
-const { sumElementsByMultipliers } = require('../lib/utils');
-
 /**
  * isPostalCode()
  * Calcula se um código de rastreamento postal no formato JT194690698BR é válido.
@@ -44,21 +41,100 @@ const { sumElementsByMultipliers } = require('../lib/utils');
  * @param {String} value Objeto postal no formato JT194690698BR
  * @returns {Boolean}
  */
-const isPostalCode = (value = '') => {
-  const match = value.match(/^[a-z]{2}([\d]{9})[a-z]{2}$/ig, '');
-  if (!match) return false;
 
-  const postalCode = match[0].replace(/[^\d]+/g, '');
+const {
+  sumElementsByMultipliers,
+  clearValue, fakeNumber,
+} = require('../lib/utils');
 
-  const sum = sumElementsByMultipliers(postalCode.substr(0, 8), [8, 6, 4, 2, 3, 5, 9, 7]);
+/**
+ * dv()
+ * Calcula o dígito verificador de um Objeto Postal
+ *
+ * @param {Number|String} value
+ * @returns {String}
+ */
+const dv = (value) => {
+  if (!value) throw new Error('PIS não informado');
+
+  const postalCode = clearValue(value, 8);
+
+  const sum = sumElementsByMultipliers(postalCode, [8, 6, 4, 2, 3, 5, 9, 7]);
 
   const rest = sum % 11;
   const specificities = { 0: { dv: 5 }, 1: { dv: 0 } };
-  const dv = specificities[rest] ? specificities[rest].dv : 11 - rest;
+  const DV = specificities[rest] ? specificities[rest].dv : 11 - rest;
 
-  if (dv !== Number(postalCode.charAt(8))) return false;
+  return String(DV);
+};
+
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+const mask = (value) => String(value).toLocaleUpperCase();
+
+/**
+ * fake()
+ * Gera um número válido
+ *
+ * @returns {String}
+ */
+const fake = (withMask = false) => {
+  const num = fakeNumber(8, true);
+
+  const randLetter = () => ([
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+    'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+  ][parseInt(Math.random() * 26, 10)]);
+
+  const postalCode = `${randLetter()}${randLetter()}${num}${dv(num)}BR`;
+
+  if (withMask) return mask(postalCode);
+  return postalCode;
+};
+
+/**
+ * validateOrFail()
+ * Valida se um número de processo está correto e
+ * retorna uma exceção se não estiver
+ *
+ * @returns {Boolean}
+ */
+const validateOrFail = (value) => {
+  const postalCode = clearValue(value, 9);
+
+  if (!/^[a-z]{2}([\d]{9})[a-z]{2}$/ig.test(value)) {
+    throw new Error('O número não está no formato "XX000000000XX"');
+  }
+
+  if (dv(value) !== postalCode.substring(8, 9)) {
+    throw new Error('Dígito verificador inválido');
+  }
 
   return true;
 };
 
-module.exports = isPostalCode;
+/**
+ * validate()
+ * Valida se um número de processo está correto
+ *
+ * @returns {Boolean}
+ */
+const validate = (value) => {
+  try {
+    return validateOrFail(value);
+  } catch (error) {
+    return false;
+  }
+};
+
+module.exports = {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+};

@@ -1,11 +1,11 @@
 const test = require('tape');
 const { isRenavam } = require('../dist/documents');
 const {
-  fake, mask, validate, dv,
+  fake, mask, validate, dv, validateOrFail,
 } = require('../dist/documents/renavam');
 
 test('isRenavam() - Renavams válidas', (t) => {
-  const valid = [
+  [
     // valores com máscara
     '1952519770-3',
     '3394038959-9',
@@ -15,9 +15,7 @@ test('isRenavam() - Renavams válidas', (t) => {
     // valores como string sem máscara
     '80499688374',
     '40650543741',
-  ];
-
-  valid.forEach((key) => {
+  ].forEach((key) => {
     t.true(isRenavam(key), `Renavam ${key} deve ser válida`);
   });
 
@@ -25,7 +23,7 @@ test('isRenavam() - Renavams válidas', (t) => {
 });
 
 test('validate() - Renavams válidas', (t) => {
-  const valid = [
+  [
     // valores com máscara
     '1952519770-3',
     '3394038959-9',
@@ -35,56 +33,56 @@ test('validate() - Renavams válidas', (t) => {
     // valores como string sem máscara
     '80499688374',
     '40650543741',
-  ];
-
-  valid.forEach((key) => {
+  ].forEach((key) => {
     t.true(validate(key), `Renavam ${key} deve ser válida`);
   });
 
   t.end();
 });
 
-test('Renavams inválidas', (t) => {
-  const invalid = [
+test('validate() - Renavams inválidas', (t) => {
+  [
     '19525227703',
     '33940229599',
     '03607226105',
     '64090226160',
     '80499228374',
-  ];
-
-  invalid.forEach((key) => {
-    t.false(isRenavam(key), `Renavam ${key} deve ser inválida`);
+  ].forEach((key) => {
+    t.false(validate(key), `Renavam ${key} deve ser inválida`);
   });
 
   t.end();
 });
 
-test('validateOrFail() - Renavams inválidas devem lançar exceção', (t) => {
-  const invalid = [
+test('validateOrFail() - Renavams inválidas', (t) => {
+  [
     '19525227703',
     '33940229599',
     '03607226105',
     '64090226160',
     '80499228374',
-  ];
-
-  invalid.forEach((key) => {
-    t.false(isRenavam(key), `Renavam ${key} deve ser inválida`);
+  ].forEach((key) => {
+    t.throws(() => validateOrFail(key), `Renavam ${key} deve ser inválida`);
   });
 
   t.end();
 });
 
-test('fake() - Gera renavams aleatórias e testa se estão corretas', (t) => {
+test('fake() - Gera RENAVAMs sem máscara', (t) => {
   for (let i = 0; i < 5; i += 1) {
     const renavam = fake();
+
     t.true(isRenavam(renavam), `Renavam ${renavam} deve ser válida`);
     t.assert(renavam.length === 11, `Renavam ${renavam} deve ter 11 caracteres`);
   }
 
+  t.end();
+});
+
+test('fake() - Gera RENAVAMs com máscara', (t) => {
   for (let i = 0; i < 5; i += 1) {
     const renavam = fake(true);
+
     t.true(isRenavam(renavam), `Renavam ${renavam} deve ser válida`);
     t.assert(renavam.length === 12, `Renavam ${renavam} deve ter 12 caracteres`);
   }
@@ -93,28 +91,24 @@ test('fake() - Gera renavams aleatórias e testa se estão corretas', (t) => {
 });
 
 test('dv() - Verificando se o DV gerado está correto', (t) => {
-  const dvs = {
-    1952519770: 3,
-    952519770: 6,
-    52519770: 2,
-  };
-
-  Object.keys(dvs).forEach((num) => {
-    t.equal(dv(num), dvs[num], `${num} com máscara precisa ser igual a ${dvs[num]}`);
+  [
+    { num: '1952519770', expected: 3 },
+    { num: 952519770, expected: 6 },
+    { num: 52519770, expected: 2 },
+  ].forEach((item) => {
+    t.equal(dv(item.num), item.expected, `${item.num} com máscara precisa ser igual a ${item.expected}`);
   });
 
   t.end();
 });
 
 test('mask() - Testando se a máscara foi gerada corretamente', (t) => {
-  const maskedValues = {
-    19525197703: '1952519770-3',
-    9525197703: '0952519770-3',
-    525197703: '0052519770-3',
-  };
-
-  Object.keys(maskedValues).forEach((key) => {
-    t.equal(mask(key), maskedValues[key], `${key} com máscara precisa ser igual a ${maskedValues[key]}`);
+  [
+    { num: '19525197703', expected: '1952519770-3' },
+    { num: 9525197703, expected: '0952519770-3' },
+    { num: 525197703, expected: '0052519770-3' },
+  ].forEach((item) => {
+    t.equal(mask(item.num), item.expected, `${item.num} com máscara precisa ser igual a ${item.expected}`);
   });
 
   t.end();
