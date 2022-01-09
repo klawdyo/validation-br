@@ -318,7 +318,7 @@ titulo.dv('5250288816'); // -> '94'
 
 # Tests
 
-![image](https://user-images.githubusercontent.com/100168/148660802-e1d1b6e1-b447-4534-aa92-298849db6f47.png)
+![image](https://user-images.githubusercontent.com/100168/148705204-7c42d5e2-1d17-4ed1-8a4c-7933c9e5aeb5.png)
 
 # Changelog
 
