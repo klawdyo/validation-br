@@ -1,6 +1,6 @@
 {
   "name": "validation-br",
-  "version": "0.1.0",
+  "version": "1.0.0-b",
   "main": "dist/index.js",
   "types": "./dist/types.d.ts",
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
