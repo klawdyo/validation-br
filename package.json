@@ -1,96 +1,48 @@
 {
   "name": "validation-br",
-  "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "0.21.4",
-  "scripts": {
-    "test": "yarn build && cls && node tests | tap-spec",
-    "build": "babel src --source-maps -d dist",
-    "lint": "eslint src/** --ignore-path .gitignore .",
-    "lint:fix": "eslint src/** --ignore-path .gitignore . --fix",
-    "prepublish": "yarn build"
-  },
-  "eslintConfig": {
-    "extends": "airbnb"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "@babel/cli": "^7.14.8",
-    "@babel/core": "^7.15.0",
-    "@babel/plugin-transform-runtime": "^7.15.0",
-    "@babel/preset-env": "^7.15.0",
-    "@babel/runtime": "^7.15.3",
-    "babel-preset-minify": "^0.5.1",
-    "core-js": "^3.16.2",
-    "eslint": "^7.32.0",
-    "eslint-config-airbnb-base": "^14.2.1",
-    "eslint-plugin-import": "^2.24.1",
-    "regenerator-runtime": "^0.13.9",
-    "tap-spec": "^2.2.2",
-    "tape": "^4.13.0"
-  },
-  "main": "index.js",
-  "author": "Cláudio Medeiros",
-  "repository": {
-    "url": "https://github.com/klawdyo/validation-br"
-  },
-  "bugs": {
-    "url": "https://github.com/klawdyo/validation-br/issues"
-  },
-  "homepage": "https://github.com/klawdyo/validation-br#readme",
-  "keywords": [
-    "validation-br",
-    "validation",
-    "personal documents",
-    "document",
-    "brazil",
-    "brasil",
-    "brazilian",
-    "brasileiro",
-    "cpf",
-    "cnpj",
-    "pis",
-    "pasep",
-    "cnh",
-    "titulo eleitor",
-    "eleitoral",
-    "titulo",
-    "renavam",
-    "processos",
-    "judiciais",
-    "judicial",
-    "justiça",
-    "protocolo",
-    "federal",
-    "fake",
-    "falso",
-    "mock",
-    "faker",
-    "mockup",
-    "mask",
-    "mascara",
-    "fake cpf",
-    "fake cnpj",
-    "fake cnh",
-    "fake pis",
-    "fake pasep",
-    "fake cadunico",
-    "fake renavam",
-    "fake titulo",
-    "fake titulo eleitor",
-    "fake titulo eleitoral",
-    "fake número processo",
-    "processo justiça",
-    "processo judicial",
-    "valida",
-    "validar",
-    "validação",
-    "valide",
-    "validate",
-    "format",
-    "formatar",
-    "formatador",
-    "formatter"
-  ],
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "./dist/types.d.ts",
+  "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
-  "private": false
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
+    "lint:list": "eslint */**/*.js --fix",
+    "format": "prettier --write \"./**/*.{js,ts,json}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsc --noEmit && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --write",
+      "eslint --cache --fix"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@types/node": "^14.14.2",
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
+    "@typescript-eslint/parser": "^3.10.1",
+    "eslint": "^7.11.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-config-prettier": "^6.14.0",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-no-only-tests": "^2.4.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "jest": "^27.4.7",
+    "lint-staged": "^10.4.2",
+    "prettier": "^2.1.2",
+    "ts-jest": "^27.1.2",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.3"
+  }
 }
