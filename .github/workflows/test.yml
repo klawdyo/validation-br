@@ -1,0 +1,39 @@
+name: Tests
+
+# on: [push]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      # Checks-out the repository under $GITHUB_WORKSPACE
+      - uses: actions/checkout@v2
+
+      # Install Node Js
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install Node Modules
+      - name: Install Node Modules
+        run: yarn install --frozen-lockfile
+
+      # Runs a set of commands using the runners shell
+      - name: Runs Unit Tests
+        run: yarn test
+
+      # Runs a set of commands using the runners shell
+      - name: Build typescript code
+        run: yarn build
