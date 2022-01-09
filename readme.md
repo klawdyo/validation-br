@@ -1,6 +1,8 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
+
+Validation-BR também permite a criação de números fake das numerações acima para fins de teste de desenvolvimento, além de aplicação de máscaras e cálculo do dígito verificador.
 
 # Instalação
 

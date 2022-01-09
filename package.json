@@ -1,7 +1,7 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh",
-  "version": "0.21.1",
+  "version": "0.21.2",
   "scripts": {
     "test": "yarn build && cls && node tests | tap-spec",
     "build": "babel src --source-maps -d dist",
@@ -56,7 +56,25 @@
     "judicial",
     "justiça",
     "protocolo",
-    "federal"
+    "federal",
+    "fake",
+    "falso",
+    "mask",
+    "mascara",
+    "validate",
+    "fake cpf",
+    "fake cnpj",
+    "fake cnh",
+    "fake pis",
+    "fake pasep",
+    "fake cadunico",
+    "fake renavam",
+    "fake titulo",
+    "fake titulo eleitor",
+    "fake titulo eleitoral",
+    "fake número processo",
+    "processo justiça",
+    "processo judicial"
   ],
   "license": "MIT",
   "private": false
