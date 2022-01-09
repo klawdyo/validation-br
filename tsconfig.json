@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "strict": true,
+    "allowJs": true,
+    "types": ["node", "jest"],
+    "typeRoots": ["node_modules/@types", "index.d.ts"],
+    "lib": ["es6"],
+    "paths": {
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": ["./src/**/*"]
+}
