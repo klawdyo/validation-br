@@ -116,7 +116,7 @@ const fake = (withMask = false) => {
   const num = fakeNumber(7, true);
   const year = (new Date()).getFullYear() - fakeNumber(1);
   const courte1 = fakeNumber(1, true);
-  const courte = (courte1 === '0' ? '1' : courte1) + fakeNumber(2, true);
+  const courte = (courte1 === '0' || courte1 >= '10' ? '1' : courte1) + fakeNumber(2, true);
   const origin = fakeNumber(4, true);
 
   const judicialProcess = `${num}${year}${courte}${origin}`;

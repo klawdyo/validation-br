@@ -1,6 +1,10 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH, RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
+
+Validation-BR também permite a criação de números fake das numerações acima para fins de teste de desenvolvimento, além de aplicação de máscaras e cálculo do dígito verificador.
+
+Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores. 
 
 # Instalação
 
@@ -64,15 +68,15 @@ cpf.validateOrFail('01234567890'); // -> true
 
 ## Tabela de Conteúdo
 
-- [isCNH](#isCNH) - Validação do CNH
-- [isCPF](#isCPF) - Validação do CPF
-- [isCNPJ](#isCNPJ) - Validação do CNPJ
-- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
-- [isJudicialProcess](#isJudicialProcess) - Validação de Números de Processos Judiciais
-- [isPIS](#isPIS) - Validação de PIS, PASEP, NIS e NIT
-- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
-- [isRenavam](#isRenavam) - Validação de RENAVAM
-- [isTitulo](#isTitulo) - Validação do Título de Eleitor
+- [isCNH](#isCNH-value-) - Validação do CNH
+- [isCPF](#isCPF-value-) - Validação do CPF
+- [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
+- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
+- [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
+- [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
+- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
+- [isRenavam](#isRenavam-value-) - Validação de RENAVAM
+- [isTitulo](#isTitulo-value-) - Validação do Título de Eleitor
 
 ### isCNH( `value` )
 
@@ -314,12 +318,12 @@ titulo.dv('5250288816'); // -> '94'
 
 # Tests
 
-![image](https://user-images.githubusercontent.com/100168/133695302-17744b22-2bf0-41e8-8907-58ea4770be3c.png)
+![image](https://user-images.githubusercontent.com/100168/148660802-e1d1b6e1-b447-4534-aa92-298849db6f47.png)
 
 # Changelog
 
 - **08/01/2022**:
-  - 0.5.0 - Adicionadas as funções isRenavam e isJudicialProcess
+  - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
 - **16/09/2021**:
   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTitulo
   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
@@ -332,3 +336,5 @@ titulo.dv('5250288816'); // -> '94'
 - [Cálculo do DV do Título Eleitoral](http://clubes.obmep.org.br/blog/a-matematica-nos-documentos-titulo-de-eleitor/)
 - [Cálculo do PIS](http://www.macoratti.net/alg_pis.htm)
 - [Diferença entre PIS, PASEP, NIS e NIT](https://www.jornalcontabil.com.br/entenda-de-uma-vez-a-diferenca-entre-pis-pasep-nit-e-nis/#:~:text=NIS%20%E2%80%93%20N%C3%BAmero%20de%20Identifica%C3%A7%C3%A3o%20Social,do%20Patrim%C3%B4nio%20do%20Servidor%20P%C3%BAblico)
+- [Documentação Oficial de Numeração de Processos Judiciais](https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2)
+- [Cálculos de DV](http://ghiorzi.org/DVnew.htm)
