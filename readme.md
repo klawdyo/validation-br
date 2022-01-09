@@ -4,6 +4,8 @@ Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CN
 
 Validation-BR também permite a criação de números fake das numerações acima para fins de teste de desenvolvimento, além de aplicação de máscaras e cálculo do dígito verificador.
 
+Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores. 
+
 # Instalação
 
 ```sh
@@ -66,15 +68,15 @@ cpf.validateOrFail('01234567890'); // -> true
 
 ## Tabela de Conteúdo
 
-- [isCNH](#isCNH) - Validação do CNH
-- [isCPF](#isCPF) - Validação do CPF
-- [isCNPJ](#isCNPJ) - Validação do CNPJ
-- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
-- [isJudicialProcess](#isJudicialProcess) - Validação de Números de Processos Judiciais
-- [isPIS](#isPIS) - Validação de PIS, PASEP, NIS e NIT
-- [isPostalCode](#isPostalCode) - Validação de Objetos Registrados dos Correios
-- [isRenavam](#isRenavam) - Validação de RENAVAM
-- [isTitulo](#isTitulo) - Validação do Título de Eleitor
+- [isCNH](#isCNH-value-) - Validação do CNH
+- [isCPF](#isCPF-value-) - Validação do CPF
+- [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
+- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
+- [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
+- [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
+- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
+- [isRenavam](#isRenavam-value-) - Validação de RENAVAM
+- [isTitulo](#isTitulo-value-) - Validação do Título de Eleitor
 
 ### isCNH( `value` )
 
