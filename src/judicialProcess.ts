@@ -132,11 +132,21 @@ export const fake = (withMask: boolean = false): string => {
 }
 
 /**
- * validate()
- * Valida se um número de processo está correto
+ * validateOrFail()
+ * Valida se um número é válido e
+ * retorna uma exceção se não estiver
  *
+ * @param {String} value Número a ser validado
+ * @returns {Boolean}
  */
-export const validateOrFail = (value: string | number): boolean => {
+/**
+ * validate()
+ * Valida se um número é valido
+ *
+ * @param {String} value Número a ser validado
+ * @returns {Boolean}
+ */
+export const validateOrFail = (value: string): boolean => {
   const judicialProcess = clearValue(value, 20)
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
@@ -156,7 +166,7 @@ export const validateOrFail = (value: string | number): boolean => {
  * Valida se um número de processo está correto
  *
  */
-export const validate = (value: string | number): boolean => {
+export const validate = (value: string): boolean => {
   try {
     return validateOrFail(value)
   } catch (error) {

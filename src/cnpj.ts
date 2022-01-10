@@ -98,9 +98,12 @@ export const fake = (withMask: boolean = false): string => {
 }
 
 /**
- * validate()
- * Valida se um número de processo está correto
+ * validateOrFail()
+ * Valida se um número é válido e
+ * retorna uma exceção se não estiver
  *
+ * @param {String|Number} value Número a ser validado
+ * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
   const cnpj = clearValue(value, 14)
@@ -114,8 +117,10 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é valido
  *
+ * @param {String|Number} value Número a ser validado
+ * @returns {Boolean}
  */
 export const validate = (value: string | number): boolean => {
   try {

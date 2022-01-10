@@ -128,12 +128,13 @@ export const fake = (withMask: boolean = false): string => {
 
 /**
  * validateOrFail()
- * Valida se um número de processo está correto e
+ * Valida se um número é válido e
  * retorna uma exceção se não estiver
  *
+ * @param {String} value Número a ser validado
  * @returns {Boolean}
  */
-export const validateOrFail = (value: string | number): boolean => {
+export const validateOrFail = (value: string): boolean => {
   const postalCode = clearValue(value, 9)
 
   if (!/^[a-z]{2}([\d]{9})[a-z]{2}$/gi.test(String(value))) {
@@ -149,11 +150,12 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é valido
  *
+ * @param {String} value Número a ser validado
  * @returns {Boolean}
  */
-export const validate = (value: string | number): boolean => {
+export const validate = (value: string): boolean => {
   try {
     return validateOrFail(value)
   } catch (error) {
