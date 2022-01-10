@@ -370,9 +370,9 @@ titulo.mask('525028881694') // -> 5250.2888.1694
 titulo.dv('5250288816') // -> '94'
 ```
 
-# Tests
+# Testes
 
-![image](https://user-images.githubusercontent.com/100168/148705528-7c810b3c-851a-49c4-bc08-f9631498d526.png)
+![Testes](https://user-images.githubusercontent.com/100168/148857050-df40e291-a13d-4643-b64d-6603cf0a06f1.png)
 
 # Changelog
 
