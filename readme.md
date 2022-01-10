@@ -71,6 +71,7 @@ cpf.validateOrFail('01234567890') // -> true
 - [isCNH](#isCNH-value-) - Validação do CNH
 - [isCPF](#isCPF-value-) - Validação do CPF
 - [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
+- [isNUP17](#isNUP17-value-) - Validação de Número Unificado de Protocolo do Governo Federal
 - [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
 - [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
 - [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
@@ -174,24 +175,39 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
-import judicialProcess from 'validation-br/judicial-process'
+
+### isNUP17( `value` )
+
+Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é usada pelo Governo Federal como forma única de numerar processos em todas os órgãos do executivo.
+
+1. Os primeiros 5 dígitos correspondem código do órgão
+2. Os dígitos de 6 a 11 são um número sequencial dado pelo órgão em questão e é reiniciado a cada ano
+3. Os dígitos 12 a 15 representam o ano de registro do protocolo
+4. Os caracteres 16 a 17 são o dígito verificador
+
+```js
+// Importação somente da validação
+import { isNUP17 } from 'validation-br'
+// ou
+// Importação do submódulo
+import nup from 'validation-br/nup17'
 
 // Valida
-isJudicialProcess('71282677380') //-> true
-isJudicialProcess('237.95126.95-5') //-> true
-isJudicialProcess('500.12973.80-1') //-> false
-judicialProcess.validate('71282677380') //-> true
-judicialProcess.validateOrFail('71282677380') //-> true
+isNUP17('23037001462202165') //-> true
+isNUP17('23037.001462/2021-65') //-> true
+isNUP17('23037.001462/2021-66') //-> false
+nup.validate('23037.001462/2021-65') //-> true
+nup.validateOrFail('23037.001462/2021-65') //-> true
 
 // Número fake com e sem máscara
-judicialProcess.fake() // -> 71282677380
-judicialProcess.fake(true) // -> 712.82677.38-0
+nup.fake() // -> 71282677380
+nup.fake(true) // -> 712.82677.38-0
 
 // Aplica uma máscara
-judicialProcess.mask('71282677380') // -> 712.82677.38-0
+nup.mask('23037001462202165') // -> 23037.001462/2021-65
 
 // Calcula o DV
-judicialProcess.dv('7128267738') // -> '0'
+nup.dv('230370014622021') // -> '65'
 ```
 
 ### isPIS( `value` )
@@ -340,3 +356,4 @@ titulo.dv('5250288816') // -> '94'
 - [Diferença entre PIS, PASEP, NIS e NIT](https://www.jornalcontabil.com.br/entenda-de-uma-vez-a-diferenca-entre-pis-pasep-nit-e-nis/#:~:text=NIS%20%E2%80%93%20N%C3%BAmero%20de%20Identifica%C3%A7%C3%A3o%20Social,do%20Patrim%C3%B4nio%20do%20Servidor%20P%C3%BAblico)
 - [Documentação Oficial de Numeração de Processos Judiciais](https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2)
 - [Cálculos de DV](http://ghiorzi.org/DVnew.htm)
+- [Cálculo do NUP17](https://www.gov.br/compras/pt-br/acesso-a-informacao/legislacao/portarias/portaria-interministerial-no-11-de-25-de-novembro-de-2019)

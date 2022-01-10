@@ -2,6 +2,7 @@ import isCNH from './cnh'
 import isCNPJ from './cnpj'
 import isCPF from './cpf'
 import isJudicialProcess from './judicialProcess'
+import isNUP17 from './nup17'
 import isPIS from './pisPasep'
 import isPostalCode from './postalCode'
 import isRenavam from './renavam'
@@ -16,4 +17,5 @@ export default {
   isPostalCode,
   isRenavam,
   isTituloEleitor,
+  isNUP17,
 }
