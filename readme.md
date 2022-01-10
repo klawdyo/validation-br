@@ -1,8 +1,6 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais e Objetos registrados de Rastreamento dos Correios.
-
-Validation-BR também permite a criação de números fake das numerações acima para fins de teste de desenvolvimento, além de aplicação de máscaras e cálculo do dígito verificador.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal e Objetos registrados de Rastreamento dos Correios.
 
 Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores.
 
@@ -168,13 +166,53 @@ cpf.dv('012345678') // -> '90'
 
 ### isJudicialProcess( `value` )
 
-Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita números com e sem pontos e traços.
+Valida números de processo da esfera judicial. Esta padronização foi adotada em 2010 e de lá para cá todos os processos judiciais abertos no país seguem o mesmo padrão, seja eleitoral, cível, militar etc.
+
+O número é composto por 6 partes:
+
+1. Número sequencial dado pelo órgão de registro, reiniciado a cada ano, com até 7 caracteres
+2. Dígito verificador com 2 caracteres
+3. Ano de registro com 4 caracteres
+4. Órgão do poder judiciário com 1 caractere, sendo eles:
+
+   - 1 - Supremo Tribunal Federal
+   - 2 - Conselho Nacional de Justiça
+   - 3 - Superior Tribunal de Justiça
+   - 4 - Justiça Federal
+   - 5 - Justiça do Trabalho
+   - 6 - Justiça Eleitoral
+   - 7 - Justiça Militar da União
+   - 8 - Justiça dos Estados e do Distrito Federal e Territórios
+   - 9 - Justiça Militar Estadual
+
+5. Tribunal do segmento do poder judiciário com 2 caracteres
+6. Código da unidade de origem do processo com 4 caracteres
 
 ```js
 // Importação somente da validação
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
+import judicialProcess from 'validation-br/judicialProcess'
+
+// Valida
+isJudicialProcess('20802520125150049') //-> true
+isJudicialProcess('0011006-07.2016.8.20.0100') //-> true
+isJudicialProcess('00110060720168200101') //-> false
+judicialProcess.validate('00110060720168200100') //-> true
+judicialProcess.validateOrFail('00110060720168200100') //-> true
+
+// Número fake com e sem máscara
+judicialProcess.fake() // -> 00110060720168200100
+judicialProcess.fake(true) // -> 0011006-07.2016.8.20.0100
+
+// Aplica uma máscara
+judicialProcess.mask('00110060720168200100') // -> 0011006-07.2016.8.20.0100
+
+// Calcula o DV.
+// Obs.: Antes do cálculo, é necessário que o número do processo não possua o dígito verificador para que o resultado seja correto. Isso é necessário pois o DV fica no meio da numeração, na posição 8 e 9.
+judicialProcess.dv('001100620168200100') // -> '07'
+```
 
 ### isNUP17( `value` )
 
@@ -253,7 +291,7 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 import { isPostalCode } from 'validation-br'
 // ou
 // Importação do submódulo
-import postalCode from 'validation-br/postal-code'
+import postalCode from 'validation-br/postalCode'
 
 // Valida
 isPostalCode('PN718252423BR') //-> true
@@ -312,7 +350,7 @@ Valida um título eleitoral
 import { isTituloEleitor } from 'validation-br'
 // ou
 // Importação do submódulo
-import titulo from 'validation-br/titulo'
+import titulo from 'validation-br/tituloEleitor'
 
 // Valida
 isTituloEleitor('743650641660') //-> true
@@ -338,6 +376,8 @@ titulo.dv('5250288816') // -> '94'
 
 # Changelog
 
+- **10/01/2022**:
+  - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
 - **09/01/2022**:
   - 1.0.0 - Biblioteca convertida para Typescript e testes convertidos para Jest
 - **08/01/2022**:

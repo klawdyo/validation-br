@@ -108,7 +108,7 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número é valido
+ * Valida se um número é válido
  *
  * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
