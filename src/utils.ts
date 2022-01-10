@@ -60,9 +60,9 @@ export function sumElementsByMultipliers(value: string, multiplier: string | num
  * @returns {String}
  */
 export function fakeNumber(length: number, forceLength: boolean = false): number | string {
-  const value = (Math.random() * 10 ** length).toFixed(0)
+  const value = Math.floor(Math.random() * 10 ** length)
 
-  if (forceLength) return value.padStart(length, '0')
+  if (forceLength) return String(value).padStart(length, '0')
 
   return +value
 }
