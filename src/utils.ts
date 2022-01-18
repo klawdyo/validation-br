@@ -86,12 +86,11 @@ export function fakeNumber(length: number, forceLength: boolean = false): number
  * @returns {String} Número com o tamanho exato
  */
 export function clearValue(value: string | number, length: number | null = null): string {
-  const clearedValue = String(value).replace(/([^\d]+)/gi, '')
+  const clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
   if (!length || clearedValue.length === length) return clearedValue
 
-  if (clearedValue.length > length) return clearedValue.substring(0, length)
-  return clearedValue.padStart(length, '0')
+  return clearedValue.padStart(length, '0').substring(0, length)
 }
 
 /**
