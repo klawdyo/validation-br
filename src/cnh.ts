@@ -88,9 +88,12 @@ export const dv = (value: string | number): string => {
 }
 
 /**
- * Valida um número de cnh e retorna uma exceção caso seja inválido
+ * validateOrFail()
+ * Valida se um número é válido e
+ * retorna uma exceção se não estiver
  *
- * @returns String Número fake de um cnh válido
+ * @param {String|Number} value Número a ser validado
+ * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
   const cnh = clearValue(value, 11)
@@ -103,9 +106,11 @@ export const validateOrFail = (value: string | number): boolean => {
 }
 
 /**
- * Valida um número de cnh
+ * validate()
+ * Valida se um número é válido
  *
- * @returns String Valor a ser validado
+ * @param {String|Number} value Número a ser validado
+ * @returns {Boolean}
  */
 export const validate = (value: string | number): boolean => {
   try {

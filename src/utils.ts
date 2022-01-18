@@ -60,9 +60,9 @@ export function sumElementsByMultipliers(value: string, multiplier: string | num
  * @returns {String}
  */
 export function fakeNumber(length: number, forceLength: boolean = false): number | string {
-  const value = (Math.random() * 10 ** length).toFixed(0)
+  const value = Math.floor(Math.random() * 10 ** length)
 
-  if (forceLength) return value.padStart(length, '0')
+  if (forceLength) return String(value).padStart(length, '0')
 
   return +value
 }
@@ -86,12 +86,11 @@ export function fakeNumber(length: number, forceLength: boolean = false): number
  * @returns {String} Número com o tamanho exato
  */
 export function clearValue(value: string | number, length: number | null = null): string {
-  const clearedValue = String(value).replace(/([^\d]+)/gi, '')
+  const clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
   if (!length || clearedValue.length === length) return clearedValue
 
-  if (clearedValue.length > length) return clearedValue.substring(0, length)
-  return clearedValue.padStart(length, '0')
+  return clearedValue.padStart(length, '0').substring(0, length)
 }
 
 /**
@@ -160,13 +159,17 @@ export function applyMask(value: string | number, mask: string): string {
   return masked
 }
 
-// module.exports = {
-//   sumToDV,
-//   invalidListGenerator,
-//   sumElementsByMultipliers,
-//   fakeNumber,
-//   applyMask,
-//   clearValue,
-//   insertAtPosition,
-//   removeFromPosition,
-// }
+/**
+ * randomLetter()
+ * Pega uma letra maiúscula aleatoriamente
+ *
+ * @example
+ * randomLetter() // -> A
+ * randomLetter() // -> S
+ *
+ * @returns {String}
+ */
+export function randomLetter(): string {
+  const idx = Math.floor(1 + Math.random() * 26)
+  return String.fromCharCode(idx + 64)
+}

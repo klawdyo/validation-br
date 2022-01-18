@@ -116,9 +116,13 @@ export const fake = (withMask: boolean = false): string => {
   const num = fakeNumber(7, true)
   const year = new Date().getFullYear() - +fakeNumber(1)
 
-  const courte1 = fakeNumber(1, true) // Não pode ser '0'
-  const courte2 = fakeNumber(2, true)
-  const courte = `${courte1 === '0' || courte1 === '10' ? '1' : courte1}${courte2}`
+  let courte1 = fakeNumber(1, true) // Não pode ser '0'
+  courte1 = courte1 === '0' ? '1' : courte1
+
+  let courte2 = fakeNumber(2, true)
+  courte2 = courte2 === '0' ? '01' : courte2
+
+  const courte = `${courte1}${courte2}`
 
   const origin = fakeNumber(4, true)
 
@@ -132,11 +136,14 @@ export const fake = (withMask: boolean = false): string => {
 }
 
 /**
- * validate()
- * Valida se um número de processo está correto
+ * validateOrFail()
+ * Valida se um número é válido e
+ * retorna uma exceção se não estiver
  *
+ * @param {String} value Número a ser validado
+ * @returns {Boolean}
  */
-export const validateOrFail = (value: string | number): boolean => {
+export const validateOrFail = (value: string): boolean => {
   const judicialProcess = clearValue(value, 20)
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
@@ -153,10 +160,12 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é válido
  *
+ * @param {String} value Número a ser validado
+ * @returns {Boolean}
  */
-export const validate = (value: string | number): boolean => {
+export const validate = (value: string): boolean => {
   try {
     return validateOrFail(value)
   } catch (error) {

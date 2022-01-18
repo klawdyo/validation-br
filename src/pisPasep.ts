@@ -96,9 +96,10 @@ export const fake = (withMask: boolean = false): string => {
 
 /**
  * validateOrFail()
- * Valida se um número de processo está correto e
+ * Valida se um número é válido e
  * retorna uma exceção se não estiver
  *
+ * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
@@ -113,8 +114,9 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é válido
  *
+ * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
 export const validate = (value: string | number): boolean => {

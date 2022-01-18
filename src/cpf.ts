@@ -69,19 +69,19 @@ import {
 
 /**
  * dv()
- * Calcula o dígito verificador de um CPF
+ * Calcula o dígito verificador
  *
  * @param {Number|String} value
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('CPF não informado')
+  if (!value) throw new Error('Número não informado')
 
   const cpf = clearValue(value, 9)
 
   const invalidList = invalidListGenerator(9)
   if (invalidList.includes(cpf)) {
-    throw new Error('CPF não pode ser uma sequência de números iguais')
+    throw new Error('Número não pode ser uma sequência de números iguais')
   }
 
   const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2])
@@ -118,9 +118,10 @@ export const fake = (withMask: boolean = false): string => {
 
 /**
  * validateOrFail()
- * Valida se um número de processo está correto e
+ * Valida se um número é válido e
  * retorna uma exceção se não estiver
  *
+ * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
@@ -135,8 +136,9 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é válido
  *
+ * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
 export const validate = (value: string | number): boolean => {

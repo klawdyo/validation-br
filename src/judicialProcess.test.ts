@@ -67,7 +67,7 @@ describe('JudicialProcess', () => {
   })
 
   test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 500; i += 1) {
       const judicialProcess = fake()
       expect(validate(judicialProcess)).toBeTruthy()
       expect(judicialProcess).toHaveLength(20)
@@ -75,7 +75,7 @@ describe('JudicialProcess', () => {
   })
 
   test('fake() - Gera fakes com máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 500; i += 1) {
       const judicialProcess = fake(true)
       expect(validate(judicialProcess)).toBeTruthy()
       expect(judicialProcess).toHaveLength(25)

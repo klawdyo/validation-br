@@ -42,7 +42,7 @@
  * @returns {Boolean}
  */
 
-import { sumElementsByMultipliers, clearValue, fakeNumber } from './utils'
+import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils'
 
 /**
  * dv()
@@ -52,9 +52,12 @@ import { sumElementsByMultipliers, clearValue, fakeNumber } from './utils'
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('PIS não informado')
+  if (!value) throw new Error('Código de Rastreamento não informado')
 
-  const postalCode = clearValue(value, 8)
+  const postalCode = String(value)
+    .replace(/[^0-9]+/gi, '')
+    .padStart(8, '0')
+    .substring(0, 8)
 
   const sum = sumElementsByMultipliers(postalCode, [8, 6, 4, 2, 3, 5, 9, 7])
 
@@ -90,37 +93,7 @@ export const mask = (value: string | number): string => String(value).toLocaleUp
 export const fake = (withMask: boolean = false): string => {
   const num = fakeNumber(8, true)
 
-  const randLetter = (): string =>
-    [
-      'A',
-      'B',
-      'C',
-      'D',
-      'E',
-      'F',
-      'G',
-      'H',
-      'I',
-      'J',
-      'K',
-      'L',
-      'M',
-      'N',
-      'O',
-      'P',
-      'Q',
-      'R',
-      'S',
-      'T',
-      'U',
-      'V',
-      'W',
-      'X',
-      'Y',
-      'Z',
-    ][+(Math.random() * 25).toFixed(0)]
-
-  const postalCode = `${randLetter()}${randLetter()}${num}${dv(num)}BR`
+  const postalCode = `${randomLetter()}${randomLetter()}${num}${dv(num)}BR`
 
   if (withMask) return mask(postalCode)
   return postalCode
@@ -128,19 +101,20 @@ export const fake = (withMask: boolean = false): string => {
 
 /**
  * validateOrFail()
- * Valida se um número de processo está correto e
+ * Valida se um número é válido e
  * retorna uma exceção se não estiver
  *
+ * @param {String} value Número a ser validado
  * @returns {Boolean}
  */
-export const validateOrFail = (value: string | number): boolean => {
-  const postalCode = clearValue(value, 9)
-
+export const validateOrFail = (value: string): boolean => {
   if (!/^[a-z]{2}([\d]{9})[a-z]{2}$/gi.test(String(value))) {
     throw new Error('O número não está no formato "XX000000000XX"')
   }
 
-  if (dv(value) !== postalCode.substring(8, 9)) {
+  const postalCode = clearValue(value.substring(2, 11), 9)
+
+  if (dv(value.substring(2, 11)) !== postalCode.substring(8, 9)) {
     throw new Error('Dígito verificador inválido')
   }
 
@@ -149,11 +123,12 @@ export const validateOrFail = (value: string | number): boolean => {
 
 /**
  * validate()
- * Valida se um número de processo está correto
+ * Valida se um número é válido
  *
+ * @param {String} value Número a ser validado
  * @returns {Boolean}
  */
-export const validate = (value: string | number): boolean => {
+export const validate = (value: string): boolean => {
   try {
     return validateOrFail(value)
   } catch (error) {
