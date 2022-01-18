@@ -370,6 +370,30 @@ titulo.mask('525028881694') // -> 5250.2888.1694
 titulo.dv('5250288816') // -> '94'
 ```
 
+# Usando com outras bibliotecas de validação
+
+## Vuelidate
+
+```js
+// Importação
+import { validation as isCPF } from 'validation-br/dist/cpf'
+
+const fnCpf = helpers.withMessage('CPF inválido', isCPF)
+
+// ou
+
+const fnCpf = { $validator: isCPF, $message: 'CPF inválido' }
+
+// Definição das regras do vuelidate
+import { required, minLength } from '@vuelidate/validators'
+
+const rules = {
+  cpf: { fnCpf },
+}
+```
+
+[Vuelidate](https://vuelidate-next.netlify.app/)
+
 # Testes
 
 ![Testes](https://user-images.githubusercontent.com/100168/148857050-df40e291-a13d-4643-b64d-6603cf0a06f1.png)
