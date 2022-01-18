@@ -1,7 +1,7 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "1.2.0-rc6",
+  "version": "1.4.0",
   "main": "dist/index.js",
   "types": "./dist/types.d.ts",
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
@@ -106,6 +106,21 @@
     "format",
     "formatar",
     "formatador",
-    "formatter"
+    "formatter",
+    "nest",
+    "nestjs",
+    "yup",
+    "next",
+    "nextjs",
+    "typeorm",
+    "class-validator",
+    "vuelidate",
+    "vue",
+    "vue3",
+    "indicative",
+    "adonis",
+    "adonisjs",
+    "adonis4",
+    "adonisjs4"
   ]
 }

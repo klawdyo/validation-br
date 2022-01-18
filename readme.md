@@ -66,6 +66,8 @@ cpf.validateOrFail('01234567890') // -> true
 
 ## Tabela de Conteúdo
 
+### Funções de Validação
+
 - [isCNH](#isCNH-value-) - Validação do CNH
 - [isCPF](#isCPF-value-) - Validação do CPF
 - [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
@@ -76,6 +78,13 @@ cpf.validateOrFail('01234567890') // -> true
 - [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
 - [isRenavam](#isRenavam-value-) - Validação de RENAVAM
 - [isTituloEleitor](#isTituloEleitor-value-) - Validação do Título de Eleitor
+
+### Usando em outras bibliotecas de validação
+
+- [Vuelidate](#vuelidate) - Usado para validação de estado no vuejs
+- [Class-Validator](#class-validator) - Usado em nest, typeorm E mais uma infinidade de frameworks
+- [Yup](#yup) - Yup é usado para validar estado em aplicações react.
+- [Indicative](#indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
 
 ### isCNH( `value` )
 
@@ -374,6 +383,9 @@ titulo.dv('5250288816') // -> '94'
 
 ## Vuelidate
 
+<details>
+  <summary>Mostrar exemplos do vuelidate</summary>
+
 ```js
 // Importação
 import { validation as isCPF } from 'validation-br/dist/cpf'
@@ -392,7 +404,188 @@ const rules = {
 }
 ```
 
-[Vuelidate](https://vuelidate-next.netlify.app/)
+**Saiba mais**
+
+- [Vuelidate](https://vuelidate-next.netlify.app/)
+
+</details>
+
+## class-validator
+
+<details>
+  <summary>Mostrar exemplos do class-validator</summary>
+
+Adiciona os decorators ao class-validator.
+
+Crie um arquivo iscpf.decorator.ts e adicione em seu diretório de validadores, exemplo:
+`src/validators/iscpf.decorator.ts` ou em qualquer outro diretório a seu critério.
+
+```js
+// src/validators/iscpf.decorator.ts
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
+} from 'class-validator'
+
+// Importa o isCPF do validation-br
+import { isCPF } from 'validation-br'
+
+@ValidatorConstraint({ async: false })
+export class IsCpfConstraint implements ValidatorConstraintInterface {
+  validate(cpf: any, args: ValidationArguments) {
+    return isCPF(cpf)
+  }
+  defaultMessage() {
+    return 'CPF inválido'
+  }
+}
+
+// Registra o decorator
+export function IsCpf(validationOptions?: ValidationOptions) {
+  return function (object: any, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: IsCpfConstraint,
+    })
+  }
+}
+```
+
+Forma de uso no DTO
+
+```ts
+import { IsCpf } from '../../validators/iscpf.decorator'
+
+export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsCpf()
+  cpf: string
+}
+```
+
+**Saiba mais**
+
+- [NestJS](https://nestjs.com)
+- [class-validator](https://github.com/typestack/class-validator)
+- [TypeORM](https://typeorm.io/)
+</details>
+
+## YUP
+
+<details>
+  <summary>Mostrar exemplos do Yup</summary>
+
+Aplica uma validação usando o Yup.
+
+Crie um arquivo `validation-br.ts` em seu diretório de bibliotecas auxiliares, exemplo ´/src/lib/validation-br.ts´
+
+```js
+// Importe o Yup
+import * as yup from 'yup'
+
+// Importe o validateOrFail do submódulo de CPF do validation-br
+import { validateOrFail } from 'validation-br/dist/cpf'
+
+// Crie seu método personalizado chamado cpf()
+function cpf(message) {
+  return this.test('cpf', message, function (value) {
+    const { path, createError } = this
+
+    try {
+      const valid = validateOrFail(value)
+      return true
+    } catch (error) {
+      // Cria um erro se cair no catch
+      return createError({
+        path,
+        // Exibe a mensagem do catch
+        message: message ?? error.message,
+      })
+    }
+  })
+}
+
+// Adiciona seu método cpf() ao grupo de strings do yup
+yup.addMethod(yup.string, 'cpf', cpf)
+```
+
+### Como usar
+
+cpf() já está disponível para uso dentro do Yup
+
+```js
+const validationSchema = yup.object().shape({
+  cpf: yup.string().required().cpf(),
+})
+```
+
+**Saiba mais**
+
+- [Yup](https://github.com/jquense/yup)
+
+</details>
+
+## Indicative
+
+<details>
+  <summary>Mostrar exemplos do AdonisJS (Indicative)</summary>
+
+[AdonisJS 4](https://legacy.adonisjs.com/docs/4.1/installation) usa [indicative](https://indicative-v5.adonisjs.com/) para realizar suas validações.
+
+Crie um arquivo `validation_br.js` em seu diretório de validações customizadas, exemplo ´/app/Validators/extend/validation_br.js´.
+
+```js
+const { isCPF } = require('validation-br')
+
+///app/Validators/extend/validation_br.js
+const _cpf = async (payload, fieldName, message, arguments, get) => {
+  // Pega o valor do campo
+  const cpf = get(payload, fieldName)
+  // Pulando caso esteja vazio
+  if (!cpf) return
+
+  if (!isCPF(cpf)) {
+    throw message
+  }
+}
+
+const Validator = use('Validator')
+Validator.extend('cpf', _cpf)
+```
+
+### Como usar
+
+Agora é necessário importar o arquivo na página que avalia as suas regras de validação do seu endpoint.
+
+```js
+
+// Importa o arquivo com as validações customizadas
+require('../extend/validation_br')
+
+// Inclui a regra criada para o campo cpf
+get rules() {
+return {
+    cpf: [
+      rule('required'),
+      rule('cpf'),
+    ]
+  }
+}
+```
+
+**Saiba mais**
+
+- [Adonis 4](https://legacy.adonisjs.com/docs/4.1/installation)
+- [Indicative](https://indicative-v5.adonisjs.com/)
+
+</details>
 
 # Testes
 
