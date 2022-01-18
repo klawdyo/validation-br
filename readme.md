@@ -38,11 +38,11 @@ Importando os submódulos, é possível criar máscaras, números fake para test
 
 ```js
 // ES6
-import { dv, fake, mask, validate } from 'validation-br/cpf'
+import { dv, fake, mask, validate } from 'validation-br/dist/cpf'
 
 // Modules
-const cpf = require('validation-br/cpf')
-const { dv, fake, mask, validate } = require('validation-br/cpf')
+const cpf = require('validation-br/dist/cpf')
+const { dv, fake, mask, validate } = require('validation-br/dist/cpf')
 
 // Calculo do dígito verificador de um CPF. Os métodos aceitam inteiros e strings, inclusive com máscaras.
 cpf.dv(906259666) // -> '51'
@@ -66,6 +66,8 @@ cpf.validateOrFail('01234567890') // -> true
 
 ## Tabela de Conteúdo
 
+### Funções de Validação
+
 - [isCNH](#isCNH-value-) - Validação do CNH
 - [isCPF](#isCPF-value-) - Validação do CPF
 - [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
@@ -77,6 +79,13 @@ cpf.validateOrFail('01234567890') // -> true
 - [isRenavam](#isRenavam-value-) - Validação de RENAVAM
 - [isTituloEleitor](#isTituloEleitor-value-) - Validação do Título de Eleitor
 
+### Usando em outras bibliotecas de validação
+
+- [Vuelidate](#vuelidate) - Usado para validação de estado no vuejs
+- [Class-Validator](#class-validator) - Usado em nest, typeorm E mais uma infinidade de frameworks
+- [Yup](#yup) - Yup é usado para validar estado em aplicações react.
+- [Indicative](#indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
+
 ### isCNH( `value` )
 
 Valida o documento da carteira nacional de habilitação.
@@ -86,7 +95,7 @@ Valida o documento da carteira nacional de habilitação.
 import { isCNH } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnh from 'validation-br/cnh'
+import cnh from 'validation-br/dist/cnh'
 
 // Valida
 isCNH('69044271146') //-> true
@@ -115,7 +124,7 @@ Valida um CNPJ
 import { isCNPJ } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnpj from 'validation-br/cnpj'
+import cnpj from 'validation-br/dist/cnpj'
 
 // Valida
 isCNPJ('73.797.980/0001-79') //-> true
@@ -144,7 +153,7 @@ Valida um CPF
 import { isCPF } from 'validation-br'
 // ou
 // Importação do submódulo
-import cpf from 'validation-br/cpf'
+import cpf from 'validation-br/dist/cpf'
 
 // Valida
 isCPF('01234567890') //-> true
@@ -193,7 +202,7 @@ O número é composto por 6 partes:
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
-import judicialProcess from 'validation-br/judicialProcess'
+import judicialProcess from 'validation-br/dist/judicialProcess'
 
 // Valida
 isJudicialProcess('20802520125150049') //-> true
@@ -228,7 +237,7 @@ Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é us
 import { isNUP17 } from 'validation-br'
 // ou
 // Importação do submódulo
-import nup from 'validation-br/nup17'
+import nup from 'validation-br/dist/nup17'
 
 // Valida
 isNUP17('23037001462202165') //-> true
@@ -257,7 +266,7 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 import { isPIS } from 'validation-br'
 // ou
 // Importação do submódulo
-import pis from 'validation-br/pis'
+import pis from 'validation-br/dist/pisPasep'
 
 // Valida
 isPIS('71282677380') //-> true
@@ -291,7 +300,7 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 import { isPostalCode } from 'validation-br'
 // ou
 // Importação do submódulo
-import postalCode from 'validation-br/postalCode'
+import postalCode from 'validation-br/dist/postalCode'
 
 // Valida
 isPostalCode('PN718252423BR') //-> true
@@ -321,7 +330,7 @@ Valida o número de um RENAVAM de 11 dígitos
 import { isRenavam } from 'validation-br'
 // ou
 // Importação do submódulo
-import renavam from 'validation-br/renavam'
+import renavam from 'validation-br/dist/renavam'
 
 // Valida
 isRenavam('14283256656') //-> true
@@ -350,7 +359,7 @@ Valida um título eleitoral
 import { isTituloEleitor } from 'validation-br'
 // ou
 // Importação do submódulo
-import titulo from 'validation-br/tituloEleitor'
+import titulo from 'validation-br/dist/tituloEleitor'
 
 // Valida
 isTituloEleitor('743650641660') //-> true
@@ -369,6 +378,214 @@ titulo.mask('525028881694') // -> 5250.2888.1694
 // Calcula o DV
 titulo.dv('5250288816') // -> '94'
 ```
+
+# Usando com outras bibliotecas de validação
+
+## Vuelidate
+
+<details>
+  <summary>Mostrar exemplos do vuelidate</summary>
+
+```js
+// Importação
+import { validation as isCPF } from 'validation-br/dist/cpf'
+
+const fnCpf = helpers.withMessage('CPF inválido', isCPF)
+
+// ou
+
+const fnCpf = { $validator: isCPF, $message: 'CPF inválido' }
+
+// Definição das regras do vuelidate
+import { required, minLength } from '@vuelidate/validators'
+
+const rules = {
+  cpf: { fnCpf },
+}
+```
+
+**Saiba mais**
+
+- [Vuelidate](https://vuelidate-next.netlify.app/)
+
+</details>
+
+## class-validator
+
+<details>
+  <summary>Mostrar exemplos do class-validator</summary>
+
+Adiciona os decorators ao class-validator.
+
+Crie um arquivo iscpf.decorator.ts e adicione em seu diretório de validadores, exemplo:
+`src/validators/iscpf.decorator.ts` ou em qualquer outro diretório a seu critério.
+
+```js
+// src/validators/iscpf.decorator.ts
+import {
+  registerDecorator,
+  ValidationOptions,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
+} from 'class-validator'
+
+// Importa o isCPF do validation-br
+import { isCPF } from 'validation-br'
+
+@ValidatorConstraint({ async: false })
+export class IsCpfConstraint implements ValidatorConstraintInterface {
+  validate(cpf: any, args: ValidationArguments) {
+    return isCPF(cpf)
+  }
+  defaultMessage() {
+    return 'CPF inválido'
+  }
+}
+
+// Registra o decorator
+export function IsCpf(validationOptions?: ValidationOptions) {
+  return function (object: any, propertyName: string) {
+    registerDecorator({
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      constraints: [],
+      validator: IsCpfConstraint,
+    })
+  }
+}
+```
+
+Forma de uso no DTO
+
+```ts
+import { IsCpf } from '../../validators/iscpf.decorator'
+
+export class CreateUserDto {
+  @IsString()
+  @IsNotEmpty()
+  @IsCpf()
+  cpf: string
+}
+```
+
+**Saiba mais**
+
+- [NestJS](https://nestjs.com)
+- [class-validator](https://github.com/typestack/class-validator)
+- [TypeORM](https://typeorm.io/)
+</details>
+
+## YUP
+
+<details>
+  <summary>Mostrar exemplos do Yup</summary>
+
+Aplica uma validação usando o Yup.
+
+Crie um arquivo `validation-br.ts` em seu diretório de bibliotecas auxiliares, exemplo ´/src/lib/validation-br.ts´
+
+```js
+// Importe o Yup
+import * as yup from 'yup'
+
+// Importe o validateOrFail do submódulo de CPF do validation-br
+import { validateOrFail } from 'validation-br/dist/cpf'
+
+// Crie seu método personalizado chamado cpf()
+function cpf(message) {
+  return this.test('cpf', message, function (value) {
+    const { path, createError } = this
+
+    try {
+      const valid = validateOrFail(value)
+      return true
+    } catch (error) {
+      // Cria um erro se cair no catch
+      return createError({
+        path,
+        // Exibe a mensagem do catch
+        message: message ?? error.message,
+      })
+    }
+  })
+}
+
+// Adiciona seu método cpf() ao grupo de strings do yup
+yup.addMethod(yup.string, 'cpf', cpf)
+```
+
+### Como usar
+
+cpf() já está disponível para uso dentro do Yup
+
+```js
+const validationSchema = yup.object().shape({
+  cpf: yup.string().required().cpf(),
+})
+```
+
+**Saiba mais**
+
+- [Yup](https://github.com/jquense/yup)
+
+</details>
+
+## Indicative
+
+<details>
+  <summary>Mostrar exemplos do AdonisJS (Indicative)</summary>
+
+[AdonisJS 4](https://legacy.adonisjs.com/docs/4.1/installation) usa [indicative](https://indicative-v5.adonisjs.com/) para realizar suas validações.
+
+Crie um arquivo `validation_br.js` em seu diretório de validações customizadas, exemplo ´/app/Validators/extend/validation_br.js´.
+
+```js
+const { isCPF } = require('validation-br')
+
+///app/Validators/extend/validation_br.js
+const _cpf = async (payload, fieldName, message, arguments, get) => {
+  // Pega o valor do campo
+  const cpf = get(payload, fieldName)
+  // Pulando caso esteja vazio
+  if (!cpf) return
+
+  if (!isCPF(cpf)) {
+    throw message
+  }
+}
+
+const Validator = use('Validator')
+Validator.extend('cpf', _cpf)
+```
+
+### Como usar
+
+Agora é necessário importar o arquivo na página que avalia as suas regras de validação do seu endpoint.
+
+```js
+
+// Importa o arquivo com as validações customizadas
+require('../extend/validation_br')
+
+// Inclui a regra criada para o campo cpf
+get rules() {
+return {
+    cpf: [
+      rule('required'),
+      rule('cpf'),
+    ]
+  }
+}
+```
+
+**Saiba mais**
+
+- [Adonis 4](https://legacy.adonisjs.com/docs/4.1/installation)
+- [Indicative](https://indicative-v5.adonisjs.com/)
+
+</details>
 
 # Testes
 
