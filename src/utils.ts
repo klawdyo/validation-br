@@ -160,13 +160,17 @@ export function applyMask(value: string | number, mask: string): string {
   return masked
 }
 
-// module.exports = {
-//   sumToDV,
-//   invalidListGenerator,
-//   sumElementsByMultipliers,
-//   fakeNumber,
-//   applyMask,
-//   clearValue,
-//   insertAtPosition,
-//   removeFromPosition,
-// }
+/**
+ * randomLetter()
+ * Pega uma letra maiúscula aleatoriamente
+ *
+ * @example
+ * randomLetter() // -> A
+ * randomLetter() // -> S
+ *
+ * @returns {String}
+ */
+export function randomLetter(): string {
+  const idx = Math.floor(1 + Math.random() * 26)
+  return String.fromCharCode(idx + 64)
+}
