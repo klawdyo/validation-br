@@ -72,7 +72,6 @@ cpf.validateOrFail('01234567890') // -> true
 - [isCPF](#isCPF-value-) - Validação do CPF
 - [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
 - [isNUP17](#isNUP17-value-) - Validação de Número Unificado de Protocolo do Governo Federal
-- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
 - [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
 - [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
 - [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
