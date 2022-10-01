@@ -86,10 +86,8 @@ import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition
  */
 export const dv = (value: string): string => {
   if (!value) throw new Error('Número do processo é obrigatório')
-  // if (typeof value !== 'string') throw new Error('Número do processo precisa ser string')
 
   const judicialProcess = clearValue(value, 18)
-
   const num = judicialProcess.substring(0, 7)
   const yearAndCourt = judicialProcess.substring(7, 14)
   const origin = judicialProcess.substring(14, 18)
@@ -119,8 +117,7 @@ export const fake = (withMask: boolean = false): string => {
   let courte1 = fakeNumber(1, true) // Não pode ser '0'
   courte1 = courte1 === '0' ? '1' : courte1
 
-  let courte2 = fakeNumber(2, true)
-  courte2 = courte2 === '0' ? '01' : courte2
+  const courte2 = _getSubCourt()
 
   const courte = `${courte1}${courte2}`
 
@@ -171,6 +168,28 @@ export const validate = (value: string): boolean => {
   } catch (error) {
     return false
   }
+}
+
+// ////////////////////////////////////////////
+//
+// Funções auxiliares
+//
+// ////////////////////////////////////////////
+
+/**
+ * Gera um número fake da sub corte de acordo com as regras:
+ * - Precisa ser uma string numérica de 2 dígitos.
+ * - Não pode ser '0'. CAso seja zero, mude para '01'.
+ *
+ * A função aceita um parâmetro para viabilizar os testes. Caso
+ * não seja definido, será gerado aleatoriamente.
+ *
+ * @param
+ *
+ */
+export function _getSubCourt(courte: string | undefined = undefined): string {
+  courte = courte ?? fakeNumber(2, true).toString()
+  return +courte === 0 ? '01' : courte
 }
 
 export default validate
