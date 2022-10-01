@@ -389,17 +389,19 @@ Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca f
 - [YUP](https://github.com/klawdyo/validation-br/wiki/YUP)
 - [Indicative](https://github.com/klawdyo/validation-br/wiki/Indicative)
 
-
 # Testes
 
 Todos os testes passando com 100% de cobertura
 
 ![Testes](https://user-images.githubusercontent.com/100168/193415244-22fea27a-2a50-42bc-ab71-d21fdc7e465b.png)
 
-
-
 # Changelog
 
+- **01/10/2022**:
+  - 1.4.1
+    - Correção na importação principal dos módulos
+    - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
+    - Inclusão de mais testes unitários para atingir 100% de cobertura
 - **10/01/2022**:
   - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
 - **09/01/2022**:
