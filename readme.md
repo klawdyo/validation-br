@@ -392,7 +392,11 @@ Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca f
 
 # Testes
 
-![Testes](https://user-images.githubusercontent.com/100168/148857050-df40e291-a13d-4643-b64d-6603cf0a06f1.png)
+Todos os testes passando com 100% de cobertura
+
+![Testes](https://user-images.githubusercontent.com/100168/193415244-22fea27a-2a50-42bc-ab71-d21fdc7e465b.png)
+
+
 
 # Changelog
 
