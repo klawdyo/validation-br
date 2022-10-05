@@ -1,4 +1,5 @@
 import isPostalCode, { dv, fake, mask, validate, validateOrFail } from './postalCode'
+import * as _postalCode from './postalCode'
 
 describe('PostalCode', () => {
   test('isPostalCode() - Números válidos', () => {
@@ -20,6 +21,7 @@ describe('PostalCode', () => {
 
     list.forEach((postalCode) => {
       expect(isPostalCode(postalCode)).toBeTruthy()
+      expect(_postalCode.validate(postalCode)).toBeTruthy()
     })
   })
 

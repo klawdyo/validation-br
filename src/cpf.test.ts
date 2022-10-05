@@ -1,4 +1,5 @@
 import isCPF, { dv, fake, mask, validate, validateOrFail } from './cpf'
+import * as _cpf from './cpf'
 
 describe('CPF', () => {
   test('isCPF() - Números válidos', () => {
@@ -16,6 +17,7 @@ describe('CPF', () => {
 
     list.forEach((cpf) => {
       expect(isCPF(cpf)).toBeTruthy()
+      expect(_cpf.validate(cpf)).toBeTruthy()
     })
   })
 

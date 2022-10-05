@@ -7,6 +7,8 @@ import isJudicialProcess, {
   _getSubCourt,
 } from './judicialProcess'
 
+import * as _judicialProcess from './judicialProcess'
+
 describe('JudicialProcess', () => {
   test('isJudicialProcess() - Números válidos', () => {
     const list = [
@@ -19,6 +21,7 @@ describe('JudicialProcess', () => {
 
     list.forEach((judicialProcess) => {
       expect(isJudicialProcess(judicialProcess)).toBeTruthy()
+      expect(_judicialProcess.validate(judicialProcess)).toBeTruthy()
     })
   })
 
