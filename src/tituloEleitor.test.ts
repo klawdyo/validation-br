@@ -1,4 +1,5 @@
 import isTituloEleitor, { dv, fake, mask, validate, validateOrFail } from './tituloEleitor'
+import * as _tituloEleitor from './tituloEleitor'
 
 describe('TituloEleitor', () => {
   test('isTituloEleitor() - Números válidos', () => {
@@ -16,6 +17,7 @@ describe('TituloEleitor', () => {
 
     list.forEach((tituloEleitor) => {
       expect(isTituloEleitor(tituloEleitor)).toBeTruthy()
+      expect(_tituloEleitor.validate(tituloEleitor)).toBeTruthy()
     })
   })
 

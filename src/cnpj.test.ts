@@ -1,5 +1,5 @@
-// import { isCNPJ } from './cnpj'
 import isCNPJ, { dv, fake, mask, validate, validateOrFail } from './cnpj'
+import * as _cnpj from './cnpj'
 
 describe('CNPJ', () => {
   test('isCNPJ() - Números válidos', () => {
@@ -20,6 +20,7 @@ describe('CNPJ', () => {
 
     list.forEach((cnpj) => {
       expect(isCNPJ(cnpj)).toBeTruthy()
+      expect(_cnpj.validate(cnpj)).toBeTruthy()
     })
   })
 

@@ -1,4 +1,5 @@
 import isRenavam, { dv, fake, mask, validate, validateOrFail } from './renavam'
+import * as _renavam from './renavam'
 
 describe('Renavam', () => {
   test('isRenavam() - Números válidos', () => {
@@ -16,6 +17,7 @@ describe('Renavam', () => {
 
     list.forEach((renavam) => {
       expect(isRenavam(renavam)).toBeTruthy()
+      expect(_renavam.validate(renavam)).toBeTruthy()
     })
   })
 

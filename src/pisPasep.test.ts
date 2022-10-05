@@ -1,4 +1,5 @@
 import isPIS, { dv, fake, mask, validate, validateOrFail } from './pisPasep'
+import * as _pisPasep from './pisPasep'
 
 describe('PIS', () => {
   test('isPIS() - Números válidos', () => {
@@ -16,6 +17,7 @@ describe('PIS', () => {
 
     list.forEach((pis) => {
       expect(isPIS(pis)).toBeTruthy()
+      expect(_pisPasep.validate(pis)).toBeTruthy()
     })
   })
 
