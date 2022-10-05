@@ -39,8 +39,10 @@ Importando os submódulos, é possível criar máscaras, números fake para test
 ```js
 // ES6
 import { dv, fake, mask, validate } from 'validation-br/dist/cpf'
+// ou
+import * as cpf from 'validation-br/dist/cpf'
 
-// Modules
+// CommonJS
 const cpf = require('validation-br/dist/cpf')
 const { dv, fake, mask, validate } = require('validation-br/dist/cpf')
 
@@ -72,7 +74,6 @@ cpf.validateOrFail('01234567890') // -> true
 - [isCPF](#isCPF-value-) - Validação do CPF
 - [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
 - [isNUP17](#isNUP17-value-) - Validação de Número Unificado de Protocolo do Governo Federal
-- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
 - [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
 - [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
 - [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
@@ -81,10 +82,14 @@ cpf.validateOrFail('01234567890') // -> true
 
 ### Usando em outras bibliotecas de validação
 
-- [Vuelidate](#vuelidate) - Usado para validação de estado no vuejs
-- [Class-Validator](#class-validator) - Usado em nest, typeorm E mais uma infinidade de frameworks
-- [Yup](#yup) - Yup é usado para validar estado em aplicações react.
-- [Indicative](#indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
+Validation-BR pode ser utilizado em conjunto com quaisquer bibliotecas de validação que permita estender seus métodos.
+Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca favorita em nosso wiki.
+
+- [Vuelidate](https://github.com/klawdyo/validation-br/wiki/Vuelidate) - Usado para validação de estado no vuejs
+- [Class-Validator](https://github.com/klawdyo/validation-br/wiki/ClassValidator) - Usado em nest, typeorm E mais uma infinidade de frameworks
+- [Indicative](https://github.com/klawdyo/validation-br/wiki/Indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
+- [Joi](https://github.com/klawdyo/validation-br/wiki/Joi) - Joi é um validador de esquemas usado em aplicações node, react, vue etc. 
+- [Yup](https://github.com/klawdyo/validation-br/wiki/Yup) - Yup é usado para validar estado em aplicações react.
 
 ### isCNH( `value` )
 
@@ -95,7 +100,10 @@ Valida o documento da carteira nacional de habilitação.
 import { isCNH } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnh from 'validation-br/dist/cnh'
+import {validate, mask} from 'validation-br/dist/cnh'
+// ou
+import * as cnh from 'validation-br/dist/cnh'
+
 
 // Valida
 isCNH('69044271146') //-> true
@@ -124,7 +132,9 @@ Valida um CNPJ
 import { isCNPJ } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnpj from 'validation-br/dist/cnpj'
+import {validate, mask} from 'validation-br/dist/cnpj'
+// ou
+import * as cnpj from 'validation-br/dist/cnpj'
 
 // Valida
 isCNPJ('73.797.980/0001-79') //-> true
@@ -153,7 +163,9 @@ Valida um CPF
 import { isCPF } from 'validation-br'
 // ou
 // Importação do submódulo
-import cpf from 'validation-br/dist/cpf'
+import {validate, mask} from 'validation-br/dist/cpf'
+// ou
+import * as cpf from 'validation-br/dist/cpf'
 
 // Valida
 isCPF('01234567890') //-> true
@@ -202,7 +214,9 @@ O número é composto por 6 partes:
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
-import judicialProcess from 'validation-br/dist/judicialProcess'
+import {validate, mask} from 'validation-br/dist/judicialProcess'
+// ou
+import * as judicialProcess from 'validation-br/dist/judicialProcess'
 
 // Valida
 isJudicialProcess('20802520125150049') //-> true
@@ -237,7 +251,9 @@ Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é us
 import { isNUP17 } from 'validation-br'
 // ou
 // Importação do submódulo
-import nup from 'validation-br/dist/nup17'
+import {validate, mask} from 'validation-br/dist/nup17'
+// ou
+import * as nup from 'validation-br/dist/nup17'
 
 // Valida
 isNUP17('23037001462202165') //-> true
@@ -266,7 +282,9 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 import { isPIS } from 'validation-br'
 // ou
 // Importação do submódulo
-import pis from 'validation-br/dist/pisPasep'
+import {validate, mask} from 'validation-br/dist/pisPasep'
+// ou
+import * as pis from 'validation-br/dist/pisPasep'
 
 // Valida
 isPIS('71282677380') //-> true
@@ -300,7 +318,9 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 import { isPostalCode } from 'validation-br'
 // ou
 // Importação do submódulo
-import postalCode from 'validation-br/dist/postalCode'
+import {validate, mask} from 'validation-br/dist/postalCode'
+// ou
+import * as postalCode from 'validation-br/dist/postalCode'
 
 // Valida
 isPostalCode('PN718252423BR') //-> true
@@ -330,7 +350,9 @@ Valida o número de um RENAVAM de 11 dígitos
 import { isRenavam } from 'validation-br'
 // ou
 // Importação do submódulo
-import renavam from 'validation-br/dist/renavam'
+import {validate, mask} from 'validation-br/dist/renavam'
+// ou
+import * as renavam from 'validation-br/dist/renavam'
 
 // Valida
 isRenavam('14283256656') //-> true
@@ -359,7 +381,9 @@ Valida um título eleitoral
 import { isTituloEleitor } from 'validation-br'
 // ou
 // Importação do submódulo
-import titulo from 'validation-br/dist/tituloEleitor'
+import {validate, mask} from 'validation-br/dist/tituloEleitor'
+// ou
+import * as titulo from 'validation-br/dist/tituloEleitor'
 
 // Valida
 isTituloEleitor('743650641660') //-> true
@@ -379,220 +403,19 @@ titulo.mask('525028881694') // -> 5250.2888.1694
 titulo.dv('5250288816') // -> '94'
 ```
 
-# Usando com outras bibliotecas de validação
-
-## Vuelidate
-
-<details>
-  <summary>Mostrar exemplos do vuelidate</summary>
-
-```js
-// Importação
-import { validation as isCPF } from 'validation-br/dist/cpf'
-
-const fnCpf = helpers.withMessage('CPF inválido', isCPF)
-
-// ou
-
-const fnCpf = { $validator: isCPF, $message: 'CPF inválido' }
-
-// Definição das regras do vuelidate
-import { required, minLength } from '@vuelidate/validators'
-
-const rules = {
-  cpf: { fnCpf },
-}
-```
-
-**Saiba mais**
-
-- [Vuelidate](https://vuelidate-next.netlify.app/)
-
-</details>
-
-## class-validator
-
-<details>
-  <summary>Mostrar exemplos do class-validator</summary>
-
-Adiciona os decorators ao class-validator.
-
-Crie um arquivo iscpf.decorator.ts e adicione em seu diretório de validadores, exemplo:
-`src/validators/iscpf.decorator.ts` ou em qualquer outro diretório a seu critério.
-
-```js
-// src/validators/iscpf.decorator.ts
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidatorConstraint,
-  ValidatorConstraintInterface,
-  ValidationArguments,
-} from 'class-validator'
-
-// Importa o isCPF do validation-br
-import { isCPF } from 'validation-br'
-
-@ValidatorConstraint({ async: false })
-export class IsCpfConstraint implements ValidatorConstraintInterface {
-  validate(cpf: any, args: ValidationArguments) {
-    return isCPF(cpf)
-  }
-  defaultMessage() {
-    return 'CPF inválido'
-  }
-}
-
-// Registra o decorator
-export function IsCpf(validationOptions?: ValidationOptions) {
-  return function (object: any, propertyName: string) {
-    registerDecorator({
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: IsCpfConstraint,
-    })
-  }
-}
-```
-
-Forma de uso no DTO
-
-```ts
-import { IsCpf } from '../../validators/iscpf.decorator'
-
-export class CreateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  @IsCpf()
-  cpf: string
-}
-```
-
-**Saiba mais**
-
-- [NestJS](https://nestjs.com)
-- [class-validator](https://github.com/typestack/class-validator)
-- [TypeORM](https://typeorm.io/)
-</details>
-
-## YUP
-
-<details>
-  <summary>Mostrar exemplos do Yup</summary>
-
-Aplica uma validação usando o Yup.
-
-Crie um arquivo `validation-br.ts` em seu diretório de bibliotecas auxiliares, exemplo ´/src/lib/validation-br.ts´
-
-```js
-// Importe o Yup
-import * as yup from 'yup'
-
-// Importe o validateOrFail do submódulo de CPF do validation-br
-import { validateOrFail } from 'validation-br/dist/cpf'
-
-// Crie seu método personalizado chamado cpf()
-function cpf(message) {
-  return this.test('cpf', message, function (value) {
-    const { path, createError } = this
-
-    try {
-      const valid = validateOrFail(value)
-      return true
-    } catch (error) {
-      // Cria um erro se cair no catch
-      return createError({
-        path,
-        // Exibe a mensagem do catch
-        message: message ?? error.message,
-      })
-    }
-  })
-}
-
-// Adiciona seu método cpf() ao grupo de strings do yup
-yup.addMethod(yup.string, 'cpf', cpf)
-```
-
-### Como usar
-
-cpf() já está disponível para uso dentro do Yup
-
-```js
-const validationSchema = yup.object().shape({
-  cpf: yup.string().required().cpf(),
-})
-```
-
-**Saiba mais**
-
-- [Yup](https://github.com/jquense/yup)
-
-</details>
-
-## Indicative
-
-<details>
-  <summary>Mostrar exemplos do AdonisJS (Indicative)</summary>
-
-[AdonisJS 4](https://legacy.adonisjs.com/docs/4.1/installation) usa [indicative](https://indicative-v5.adonisjs.com/) para realizar suas validações.
-
-Crie um arquivo `validation_br.js` em seu diretório de validações customizadas, exemplo ´/app/Validators/extend/validation_br.js´.
-
-```js
-const { isCPF } = require('validation-br')
-
-///app/Validators/extend/validation_br.js
-const _cpf = async (payload, fieldName, message, arguments, get) => {
-  // Pega o valor do campo
-  const cpf = get(payload, fieldName)
-  // Pulando caso esteja vazio
-  if (!cpf) return
-
-  if (!isCPF(cpf)) {
-    throw message
-  }
-}
-
-const Validator = use('Validator')
-Validator.extend('cpf', _cpf)
-```
-
-### Como usar
-
-Agora é necessário importar o arquivo na página que avalia as suas regras de validação do seu endpoint.
-
-```js
-
-// Importa o arquivo com as validações customizadas
-require('../extend/validation_br')
-
-// Inclui a regra criada para o campo cpf
-get rules() {
-return {
-    cpf: [
-      rule('required'),
-      rule('cpf'),
-    ]
-  }
-}
-```
-
-**Saiba mais**
-
-- [Adonis 4](https://legacy.adonisjs.com/docs/4.1/installation)
-- [Indicative](https://indicative-v5.adonisjs.com/)
-
-</details>
-
 # Testes
 
-![Testes](https://user-images.githubusercontent.com/100168/148857050-df40e291-a13d-4643-b64d-6603cf0a06f1.png)
+Todos os testes passando com 100% de cobertura
+
+![Testes](https://user-images.githubusercontent.com/100168/193415244-22fea27a-2a50-42bc-ab71-d21fdc7e465b.png)
 
 # Changelog
 
+- **01/10/2022**:
+  - 1.4.1
+    - Correção na importação principal dos módulos
+    - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
+    - Inclusão de mais testes unitários para atingir 100% de cobertura
 - **10/01/2022**:
   - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
 - **09/01/2022**:

@@ -1,4 +1,13 @@
-import isJudicialProcess, { dv, fake, mask, validate, validateOrFail } from './judicialProcess'
+import isJudicialProcess, {
+  dv,
+  fake,
+  mask,
+  validate,
+  validateOrFail,
+  _getSubCourt,
+} from './judicialProcess'
+
+import * as _judicialProcess from './judicialProcess'
 
 describe('JudicialProcess', () => {
   test('isJudicialProcess() - Números válidos', () => {
@@ -12,6 +21,7 @@ describe('JudicialProcess', () => {
 
     list.forEach((judicialProcess) => {
       expect(isJudicialProcess(judicialProcess)).toBeTruthy()
+      expect(_judicialProcess.validate(judicialProcess)).toBeTruthy()
     })
   })
 
@@ -114,5 +124,26 @@ describe('JudicialProcess', () => {
       expect(masked).toBe(item.expected)
       expect(masked).toHaveLength(25)
     })
+  })
+
+  test('_getSubCourt() - Valor diferente de zero', () => {
+    expect(_getSubCourt('01')).toBe('01')
+    expect(_getSubCourt('02')).toBe('02')
+    expect(_getSubCourt('03')).toBe('03')
+    expect(_getSubCourt('04')).toBe('04')
+    expect(_getSubCourt('05')).toBe('05')
+    expect(_getSubCourt('06')).toBe('06')
+    expect(_getSubCourt('07')).toBe('07')
+    expect(_getSubCourt('08')).toBe('08')
+    expect(_getSubCourt('09')).toBe('09')
+  })
+
+  test('_getSubCourt() - Valor igual a zero', () => {
+    expect(_getSubCourt('00')).toBe('01')
+    expect(_getSubCourt('0')).toBe('01')
+  })
+
+  test('_getSubCourt() - Valor vazio', () => {
+    expect(_getSubCourt().length).toBe(2)
   })
 })

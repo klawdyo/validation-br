@@ -1,5 +1,5 @@
-// import { isCNH } from './cnh'
 import isCNH, { dv, fake, mask, validate, validateOrFail } from './cnh'
+import * as _cnh from './cnh'
 
 describe('CNH', () => {
   test('isCNH() - Números válidos', () => {
@@ -16,8 +16,8 @@ describe('CNH', () => {
     ]
 
     list.forEach((cnh) => {
-      // t.true(isCNH(cnh), `CNH ${cnh} deve ser válida`)
       expect(isCNH(cnh)).toBeTruthy()
+      expect(_cnh.validate(cnh)).toBeTruthy()
     })
 
     // t.end()

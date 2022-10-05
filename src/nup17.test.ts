@@ -1,4 +1,5 @@
 import isNUP17, { dv, fake, mask, validate, validateOrFail } from './nup17'
+import * as _nup17 from './nup17'
 
 describe('NUP17', () => {
   test('isNUP17() - Números válidos', () => {
@@ -15,6 +16,7 @@ describe('NUP17', () => {
 
     list.forEach((nup17) => {
       expect(isNUP17(nup17)).toBeTruthy()
+      expect(_nup17.validate(nup17)).toBeTruthy()
     })
   })
 
