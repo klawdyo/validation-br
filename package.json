@@ -13,7 +13,8 @@
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
     "lint:list": "eslint */**/*.js --fix",
     "format": "prettier --write \"./**/*.{js,ts,json}\"",
-    "prepublish": "yarn build"
+    "prepublish": "yarn build",
+    "prepare": "husky install"
   },
   "husky": {
     "hooks": {
@@ -39,7 +40,7 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-no-only-tests": "^2.4.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "husky": "^4.3.0",
+    "husky": "^8.0.1",
     "jest": "^27.4.7",
     "lint-staged": "^10.4.2",
     "prettier": "^2.1.2",
