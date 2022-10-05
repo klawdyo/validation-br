@@ -39,8 +39,10 @@ Importando os submódulos, é possível criar máscaras, números fake para test
 ```js
 // ES6
 import { dv, fake, mask, validate } from 'validation-br/dist/cpf'
+// ou
+import * as cpf from 'validation-br/dist/cpf'
 
-// Modules
+// CommonJS
 const cpf = require('validation-br/dist/cpf')
 const { dv, fake, mask, validate } = require('validation-br/dist/cpf')
 
@@ -80,10 +82,14 @@ cpf.validateOrFail('01234567890') // -> true
 
 ### Usando em outras bibliotecas de validação
 
-- [Vuelidate](#vuelidate) - Usado para validação de estado no vuejs
-- [Class-Validator](#class-validator) - Usado em nest, typeorm E mais uma infinidade de frameworks
-- [Yup](#yup) - Yup é usado para validar estado em aplicações react.
-- [Indicative](#indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
+Validation-BR pode ser utilizado em conjunto com quaisquer bibliotecas de validação que permita estender seus métodos.
+Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca favorita em nosso wiki.
+
+- [Vuelidate](https://github.com/klawdyo/validation-br/wiki/Vuelidate) - Usado para validação de estado no vuejs
+- [Class-Validator](https://github.com/klawdyo/validation-br/wiki/ClassValidator) - Usado em nest, typeorm E mais uma infinidade de frameworks
+- [Indicative](https://github.com/klawdyo/validation-br/wiki/Indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
+- [Joi](https://github.com/klawdyo/validation-br/wiki/Joi) - Joi é um validador de esquemas usado em aplicações node, react, vue etc. 
+- [Yup](https://github.com/klawdyo/validation-br/wiki/Yup) - Yup é usado para validar estado em aplicações react.
 
 ### isCNH( `value` )
 
@@ -94,7 +100,10 @@ Valida o documento da carteira nacional de habilitação.
 import { isCNH } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnh from 'validation-br/dist/cnh'
+import {validate, mask} from 'validation-br/dist/cnh'
+// ou
+import * as cnh from 'validation-br/dist/cnh'
+
 
 // Valida
 isCNH('69044271146') //-> true
@@ -123,7 +132,9 @@ Valida um CNPJ
 import { isCNPJ } from 'validation-br'
 // ou
 // Importação do submódulo
-import cnpj from 'validation-br/dist/cnpj'
+import {validate, mask} from 'validation-br/dist/cnpj'
+// ou
+import * as cnpj from 'validation-br/dist/cnpj'
 
 // Valida
 isCNPJ('73.797.980/0001-79') //-> true
@@ -152,7 +163,9 @@ Valida um CPF
 import { isCPF } from 'validation-br'
 // ou
 // Importação do submódulo
-import cpf from 'validation-br/dist/cpf'
+import {validate, mask} from 'validation-br/dist/cpf'
+// ou
+import * as cpf from 'validation-br/dist/cpf'
 
 // Valida
 isCPF('01234567890') //-> true
@@ -201,7 +214,9 @@ O número é composto por 6 partes:
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
-import judicialProcess from 'validation-br/dist/judicialProcess'
+import {validate, mask} from 'validation-br/dist/judicialProcess'
+// ou
+import * as judicialProcess from 'validation-br/dist/judicialProcess'
 
 // Valida
 isJudicialProcess('20802520125150049') //-> true
@@ -236,7 +251,9 @@ Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é us
 import { isNUP17 } from 'validation-br'
 // ou
 // Importação do submódulo
-import nup from 'validation-br/dist/nup17'
+import {validate, mask} from 'validation-br/dist/nup17'
+// ou
+import * as nup from 'validation-br/dist/nup17'
 
 // Valida
 isNUP17('23037001462202165') //-> true
@@ -265,7 +282,9 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 import { isPIS } from 'validation-br'
 // ou
 // Importação do submódulo
-import pis from 'validation-br/dist/pisPasep'
+import {validate, mask} from 'validation-br/dist/pisPasep'
+// ou
+import * as pis from 'validation-br/dist/pisPasep'
 
 // Valida
 isPIS('71282677380') //-> true
@@ -299,7 +318,9 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 import { isPostalCode } from 'validation-br'
 // ou
 // Importação do submódulo
-import postalCode from 'validation-br/dist/postalCode'
+import {validate, mask} from 'validation-br/dist/postalCode'
+// ou
+import * as postalCode from 'validation-br/dist/postalCode'
 
 // Valida
 isPostalCode('PN718252423BR') //-> true
@@ -329,7 +350,9 @@ Valida o número de um RENAVAM de 11 dígitos
 import { isRenavam } from 'validation-br'
 // ou
 // Importação do submódulo
-import renavam from 'validation-br/dist/renavam'
+import {validate, mask} from 'validation-br/dist/renavam'
+// ou
+import * as renavam from 'validation-br/dist/renavam'
 
 // Valida
 isRenavam('14283256656') //-> true
@@ -358,7 +381,9 @@ Valida um título eleitoral
 import { isTituloEleitor } from 'validation-br'
 // ou
 // Importação do submódulo
-import titulo from 'validation-br/dist/tituloEleitor'
+import {validate, mask} from 'validation-br/dist/tituloEleitor'
+// ou
+import * as titulo from 'validation-br/dist/tituloEleitor'
 
 // Valida
 isTituloEleitor('743650641660') //-> true
@@ -377,17 +402,6 @@ titulo.mask('525028881694') // -> 5250.2888.1694
 // Calcula o DV
 titulo.dv('5250288816') // -> '94'
 ```
-
-# Usando com outras bibliotecas de validação
-
-Validation-BR pode ser utilizado em conjunto com quaisquer bibliotecas de validação que permita estender seus métodos.
-
-Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca favorita em nosso wiki.
-
-- [Vuelidate](https://github.com/klawdyo/validation-br/wiki/Vuelidate)
-- [class-validator](https://github.com/klawdyo/validation-br/wiki/class-validator)
-- [YUP](https://github.com/klawdyo/validation-br/wiki/YUP)
-- [Indicative](https://github.com/klawdyo/validation-br/wiki/Indicative)
 
 # Testes
 
