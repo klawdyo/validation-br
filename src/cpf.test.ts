@@ -51,7 +51,6 @@ describe('CPF', () => {
     ]
 
     list.forEach((cpf) => {
-      if (validate(cpf)) console.log('deveria ser falso', cpf)
       expect(validate(cpf)).toBeFalsy()
     })
   })
@@ -81,7 +80,6 @@ describe('CPF', () => {
     ]
 
     list.forEach((cpf) => {
-      if (validate(cpf)) console.log('deveria ser falso', cpf)
       expect(validate(cpf)).toBeFalsy()
     })
   })

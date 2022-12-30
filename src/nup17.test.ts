@@ -15,8 +15,6 @@ describe('NUP17', () => {
     ]
 
     list.forEach((nup17) => {
-      if (!isNUP17(nup17)) console.log('deveria ser true', nup17)
-
       expect(isNUP17(nup17)).toBeTruthy()
       expect(_nup17.validate(nup17)).toBeTruthy()
     })
