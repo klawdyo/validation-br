@@ -407,25 +407,31 @@ titulo.dv('5250288816') // -> '94'
 
 Todos os testes passando com 100% de cobertura
 
-![Testes](https://user-images.githubusercontent.com/100168/193415244-22fea27a-2a50-42bc-ab71-d21fdc7e465b.png)
+![Testes passando com 100% de cobertura](https://user-images.githubusercontent.com/100168/210075927-e13d8fad-f252-40a5-ad04-326a3198c0cb.png)
+
+
 
 # Changelog
 
+- **30/12/2022**: 
+   - 1.4.4 
+      - Correção de bug quando o documento válido tinha caracteres adicionais
+      - Refatoração de `clearValue()` para comportar configurações opcionais
 - **01/10/2022**:
-  - 1.4.1
-    - Correção na importação principal dos módulos
-    - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
-    - Inclusão de mais testes unitários para atingir 100% de cobertura
+   - 1.4.1
+      - Correção na importação principal dos módulos
+      - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
+      - Inclusão de mais testes unitários para atingir 100% de cobertura
 - **10/01/2022**:
-  - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
+   - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
 - **09/01/2022**:
-  - 1.0.0 - Biblioteca convertida para Typescript e testes convertidos para Jest
+   - 1.0.0 - Biblioteca convertida para Typescript e testes convertidos para Jest
 - **08/01/2022**:
-  - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
+   - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
 - **16/09/2021**:
-  - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTituloEleitor
-  - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
-  - 0.8.0 - Adicionada a função isPIS
+   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTituloEleitor
+   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
+   - 0.8.0 - Adicionada a função isPIS
 
 # Referências
 
