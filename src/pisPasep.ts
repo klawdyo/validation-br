@@ -40,14 +40,8 @@
  * @returns {Boolean}
  */
 
-import {
-  invalidListGenerator,
-  sumElementsByMultipliers,
-  sumToDV,
-  clearValue,
-  fakeNumber,
-  applyMask,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
  * dv()
@@ -57,14 +51,10 @@ import {
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('PIS não informado')
-
-  const pis = clearValue(value, 10, { trimAtRight: true, rejectEmpty: true })
-
-  const invalidList = invalidListGenerator(10)
-  if (invalidList.includes(pis)) {
-    throw new Error('PIS não pode ser uma sequência de números iguais')
-  }
+  const pis = clearValue(value, 10, {
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
   const sum = sumElementsByMultipliers(pis, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
 
@@ -107,10 +97,11 @@ export const validateOrFail = (value: string | number): boolean => {
     fillZerosAtLeft: true,
     rejectEmpty: true,
     rejectHigherLength: true,
+    rejectEqualSequence: true,
   })
 
   if (dv(pis) !== pis.substring(10, 11)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

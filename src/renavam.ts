@@ -34,6 +34,7 @@
  *
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -97,7 +98,7 @@ export const validateOrFail = (value: string | number): boolean => {
   })
 
   if (dv(renavam) !== renavam.substring(10, 11)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

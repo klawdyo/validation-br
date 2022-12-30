@@ -78,6 +78,7 @@
  * Fonte: https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition } from './utils'
 
 /**
@@ -152,7 +153,7 @@ export const validateOrFail = (value: string): boolean => {
   }
 
   if (dv(processWithoutDV) !== judicialProcess.substring(7, 9)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

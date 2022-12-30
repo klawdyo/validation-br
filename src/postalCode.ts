@@ -42,6 +42,7 @@
  * @returns {Boolean}
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils'
 
 /**
@@ -52,7 +53,7 @@ import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from '
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('Código de Rastreamento não informado')
+  if (!value) throw ValidationBRError.EMPTY_VALUE
 
   const postalCode = String(value)
     .replace(/[^0-9]+/gi, '')
@@ -115,7 +116,7 @@ export const validateOrFail = (value: string): boolean => {
   const postalCode = clearValue(value.substring(2, 11), 9)
 
   if (dv(value.substring(2, 11)) !== postalCode.substring(8, 9)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

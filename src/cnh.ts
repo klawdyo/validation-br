@@ -54,14 +54,8 @@
  * @returns {Boolean}
  */
 
-import {
-  sumElementsByMultipliers,
-  sumToDV,
-  invalidListGenerator,
-  clearValue,
-  applyMask,
-  fakeNumber,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, sumToDV, clearValue, applyMask, fakeNumber } from './utils'
 
 /**
  * Calcula o Dígito Verificador de um RENAVAM informado
@@ -69,14 +63,10 @@ import {
  * @returns String Número fake de um cnh válido
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('CNH não informado')
-
-  const cnh = clearValue(value, 9, { trimAtRight: true, rejectEmpty: true })
-
-  const invalidList = invalidListGenerator(9)
-  if (invalidList.includes(cnh)) {
-    throw new Error('CNH não pode ser uma sequência de números iguais')
-  }
+  const cnh = clearValue(value, 9, {
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
   const sum1 = sumElementsByMultipliers(cnh.substring(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10])
   const dv1 = sumToDV(sum1)
@@ -100,10 +90,11 @@ export const validateOrFail = (value: string | number): boolean => {
     fillZerosAtLeft: true,
     rejectEmpty: true,
     rejectHigherLength: true,
+    rejectEqualSequence: true,
   })
 
   if (dv(cnh) !== cnh.substring(9, 11)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

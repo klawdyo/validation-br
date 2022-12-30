@@ -60,6 +60,7 @@
  * @returns {Boolean}
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -129,7 +130,7 @@ export const validateOrFail = (value: string): boolean => {
   })
 
   if (dv(nup) !== nup.substring(15, 17)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true
