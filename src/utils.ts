@@ -1,3 +1,5 @@
+import ValidationBRError from './data/ValidationBRError'
+
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
  * O valor da soma é dividido por 11. O resultado é o resto da divisão. Caso o resto seja
@@ -92,25 +94,27 @@ export function clearValue(
 ): string {
   let clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
-  if (options?.rejectEmpty === true && clearedValue.length === 0) {
-    throw new Error('Valor não informado')
-  }
-
-  if (options?.rejectHigherLength === true && length && clearedValue.length > length) {
-    throw new Error('Número de caracteres excedido')
-  }
-
-  if (options?.rejectEqualSequence === true && length) {
-    const invalidList = invalidListGenerator(length)
-    if (invalidList.includes(clearedValue)) {
-      throw new Error('Número inválido')
+  if (options) {
+    if (options.rejectEmpty === true && clearedValue.length === 0) {
+      throw ValidationBRError.EMPTY_VALUE
     }
+
+    if (options.rejectHigherLength === true && length && clearedValue.length > length) {
+      throw ValidationBRError.MAX_LEN_EXCEDEED
+    }
+
+    if (options.rejectEqualSequence === true && length) {
+      const invalidList = invalidListGenerator(length)
+      if (invalidList.includes(clearedValue)) {
+        throw ValidationBRError.SEQUENCE_REPEATED
+      }
+    }
+
+    // if (!length || clearedValue.length === length) return clearedValue
+
+    if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
+    if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length)
   }
-
-  if (!length || clearedValue.length === length) return clearedValue
-
-  if (options?.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
-  if (options?.trimAtRight) clearedValue = clearedValue.substring(0, length)
 
   return clearedValue
 }

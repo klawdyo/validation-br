@@ -38,6 +38,10 @@ describe('clearValue()', () => {
     valid.forEach((item) => {
       expect(clearValue(item.value, item.size, { fillZerosAtLeft: true })).toBe(item.expected)
     })
+
+    // Não completa com zeros
+    expect(clearValue(1234, 6, { fillZerosAtLeft: false })).toBe('1234')
+    expect(clearValue('1234', 6, { fillZerosAtLeft: false })).toBe('1234')
   })
 
   test('Deve limpar o valor os caracteres não numéricos e remover os caracteres que passarem de size', () => {
@@ -51,6 +55,10 @@ describe('clearValue()', () => {
     valid.forEach((item) => {
       expect(clearValue(item.value, item.size, { trimAtRight: true })).toBe(item.expected)
     })
+
+    // Não corta à direita
+    expect(clearValue(12345678, 6, { trimAtRight: false })).toBe('12345678')
+    expect(clearValue('12345678', 6, { trimAtRight: false })).toBe('12345678')
   })
 
   test('Deve retornar erro se receber um valor vazio', () => {
@@ -66,5 +74,12 @@ describe('clearValue()', () => {
   test('Deve retornar erro se receber um valor com mais caracteres que o máximo', () => {
     expect(clearValue('1234', 4, { rejectHigherLength: true })).toBe('1234')
     expect(() => clearValue('12345', 4, { rejectHigherLength: true })).toThrow()
+  })
+
+  test('Deve retornar o mesmo valor inicial', () => {
+    expect(clearValue(1234, 4)).toBe('1234')
+    expect(clearValue('1234', 4)).toBe('1234')
+    expect(clearValue(1234, 4, {})).toBe('1234')
+    expect(clearValue('1234', 4, {})).toBe('1234')
   })
 })
