@@ -60,6 +60,7 @@
  * @returns {Boolean}
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -70,36 +71,22 @@ import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './u
  * @returns {String}
  */
 export const dv = (value: string): string => {
-  if (!value) throw new Error('Número do protocolo é obrigatório')
-
-  const nup = clearValue(value, 15) // não pega os 2 últimos dígitos
+  const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true })
   const nupReverse = nup.split('').reverse().join('')
-
-  const sumToDV = (sum: number): number => {
-    const rest = 11 - (sum % 11)
-    const exceptions = [
-      { rest: 11, dv: 1 },
-      { rest: 10, dv: 0 },
-    ]
-
-    const inExceptions = exceptions.find((item) => item.rest === rest)
-
-    return !inExceptions ? rest : inExceptions.dv
-  }
 
   const sum1 = sumElementsByMultipliers(
     nupReverse,
     [...Array(15)].map((_, i) => i + 2),
   )
 
-  const dv1 = sumToDV(sum1)
+  const dv1 = _specificSumToDV(sum1)
 
   const sum2 = sumElementsByMultipliers(
     dv1 + nupReverse,
     [...Array(16)].map((_, i) => i + 2),
   )
 
-  const dv2 = sumToDV(sum2)
+  const dv2 = _specificSumToDV(sum2)
 
   return `${dv1}${dv2}`
 }
@@ -137,10 +124,13 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const nup = clearValue(value, 17)
+  const nup = clearValue(value, 17, {
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 
-  if (dv(nup) !== nup.substr(-2, 2)) {
-    throw new Error('Dígito verificador inválido')
+  if (dv(nup) !== nup.substring(15, 17)) {
+    throw ValidationBRError.INVALID_DV
   }
 
   return true
@@ -162,3 +152,15 @@ export const validate = (value: string): boolean => {
 }
 
 export default validate
+
+function _specificSumToDV(sum: number): number {
+  const rest = 11 - (sum % 11)
+  const exceptions = [
+    { rest: 11, dv: 1 },
+    { rest: 10, dv: 0 },
+  ]
+
+  const inExceptions = exceptions.find((item) => item.rest === rest)
+
+  return !inExceptions ? rest : inExceptions.dv
+}

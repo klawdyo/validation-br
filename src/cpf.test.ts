@@ -71,6 +71,19 @@ describe('CPF', () => {
     })
   })
 
+  test('validate() - Números válidos com caracteres adicionais', () => {
+    const list = [
+      '24172316085000000',
+      '25886489070999999',
+      '20889477086888888',
+      '11111111111777777',
+    ]
+
+    list.forEach((cpf) => {
+      expect(validate(cpf)).toBeFalsy()
+    })
+  })
+
   test('Parâmetro não informado', () => {
     expect(isCPF('')).toBeFalsy()
     expect(validate('')).toBeFalsy()

@@ -1,3 +1,5 @@
+import ValidationBRError from './data/ValidationBRError'
+
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
  * O valor da soma é dividido por 11. O resultado é o resto da divisão. Caso o resto seja
@@ -85,12 +87,36 @@ export function fakeNumber(length: number, forceLength: boolean = false): number
  * @param {Number} length Tamanho exato. Se for null, só retira os caracteres não-numéricos
  * @returns {String} Número com o tamanho exato
  */
-export function clearValue(value: string | number, length: number | null = null): string {
-  const clearedValue = String(value).replace(/([/.-]+)/gi, '')
+export function clearValue(
+  value: string | number,
+  length: number | null = null,
+  options?: ClearValueOptions,
+): string {
+  let clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
-  if (!length || clearedValue.length === length) return clearedValue
+  if (options) {
+    if (options.rejectEmpty === true && clearedValue.length === 0) {
+      throw ValidationBRError.EMPTY_VALUE
+    }
 
-  return clearedValue.padStart(length, '0').substring(0, length)
+    if (options.rejectHigherLength === true && length && clearedValue.length > length) {
+      throw ValidationBRError.MAX_LEN_EXCEDEED
+    }
+
+    if (options.rejectEqualSequence === true && length) {
+      const invalidList = invalidListGenerator(length)
+      if (invalidList.includes(clearedValue)) {
+        throw ValidationBRError.SEQUENCE_REPEATED
+      }
+    }
+
+    // if (!length || clearedValue.length === length) return clearedValue
+
+    if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
+    if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length)
+  }
+
+  return clearedValue
 }
 
 /**
@@ -148,7 +174,7 @@ export function removeFromPosition(
  */
 export function applyMask(value: string | number, mask: string): string {
   const maskLen = clearValue(mask).length
-  let masked = clearValue(value, maskLen)
+  let masked = clearValue(value, maskLen, { fillZerosAtLeft: true, trimAtRight: true })
   const specialChars = ['/', '-', '.', '(', ')', ' ']
 
   for (let position = 0; position < mask.length; position += 1) {
@@ -172,4 +198,24 @@ export function applyMask(value: string | number, mask: string): string {
 export function randomLetter(): string {
   const idx = Math.floor(1 + Math.random() * 26)
   return String.fromCharCode(idx + 64)
+}
+
+/**
+ * Opções do clearValue
+ */
+interface ClearValueOptions {
+  // Preenche 0 à esquerda se for menor que o limite
+  fillZerosAtLeft?: boolean
+
+  // Corta à direita caso sejam superiores ao limite
+  trimAtRight?: boolean
+
+  // Permite número vazio?
+  rejectEmpty?: boolean
+
+  // Rejeita se o número for maior que o tamanho definido
+  rejectHigherLength?: boolean
+
+  // Rejeita uma sequência de números iguais
+  rejectEqualSequence?: boolean
 }

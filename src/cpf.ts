@@ -58,14 +58,8 @@
  * @returns {Boolean}
  */
 
-import {
-  invalidListGenerator,
-  sumElementsByMultipliers,
-  sumToDV,
-  clearValue,
-  fakeNumber,
-  applyMask,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
  * dv()
@@ -75,14 +69,10 @@ import {
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('Número não informado')
-
-  const cpf = clearValue(value, 9)
-
-  const invalidList = invalidListGenerator(9)
-  if (invalidList.includes(cpf)) {
-    throw new Error('Número não pode ser uma sequência de números iguais')
-  }
+  const cpf = clearValue(value, 9, {
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
   const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2])
   const dv1 = sumToDV(sum1)
@@ -125,10 +115,15 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cpf = clearValue(value, 11)
+  const cpf = clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 
   if (dv(cpf) !== cpf.substring(9, 11)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

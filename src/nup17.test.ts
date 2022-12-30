@@ -65,6 +65,19 @@ describe('NUP17', () => {
     })
   })
 
+  test('validateOrFail() - Números válidos com caracteres adicionais', () => {
+    const list = [
+      // Números válidos com 1 caractere a mais no final
+      '230370014622021650',
+      '230370015372021160',
+      '230370010862021170',
+    ]
+
+    list.forEach((nup17) => {
+      expect(() => validateOrFail(nup17)).toThrow()
+    })
+  })
+
   test('Parâmetro não informado', () => {
     expect(isNUP17('')).toBeFalsy()
     expect(validate('')).toBeFalsy()

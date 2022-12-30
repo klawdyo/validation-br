@@ -78,6 +78,7 @@
  * Fonte: https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2
  */
 
+import ValidationBRError from './data/ValidationBRError'
 import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition } from './utils'
 
 /**
@@ -85,9 +86,8 @@ import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition
  *
  */
 export const dv = (value: string): string => {
-  if (!value) throw new Error('Número do processo é obrigatório')
+  const judicialProcess = clearValue(value, 18, { trimAtRight: true, rejectEmpty: true })
 
-  const judicialProcess = clearValue(value, 18)
   const num = judicialProcess.substring(0, 7)
   const yearAndCourt = judicialProcess.substring(7, 14)
   const origin = judicialProcess.substring(14, 18)
@@ -141,7 +141,11 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const judicialProcess = clearValue(value, 20)
+  const judicialProcess = clearValue(value, 20, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
   if (processWithoutDV.substring(11, 12) === '0') {
@@ -149,7 +153,7 @@ export const validateOrFail = (value: string): boolean => {
   }
 
   if (dv(processWithoutDV) !== judicialProcess.substring(7, 9)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

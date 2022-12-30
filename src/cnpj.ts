@@ -50,22 +50,14 @@
  * @returns {Boolean}
  */
 
-import {
-  invalidListGenerator,
-  sumElementsByMultipliers,
-  sumToDV,
-  clearValue,
-  fakeNumber,
-  applyMask,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 export const dv = (value: string | number): string => {
-  const cnpj = clearValue(value, 12)
-
-  const blackList = invalidListGenerator(12)
-  if (blackList.includes(cnpj)) {
-    throw new Error('CNPJ é obrigatório')
-  }
+  const cnpj = clearValue(value, 12, {
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
   const sum1 = sumElementsByMultipliers(cnpj.substring(0, 12), '543298765432')
   const dv1 = sumToDV(sum1)
@@ -106,10 +98,15 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnpj = clearValue(value, 14)
+  const cnpj = clearValue(value, 14, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 
   if (dv(cnpj) !== cnpj.substring(12, 14)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

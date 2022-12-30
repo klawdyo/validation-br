@@ -34,13 +34,8 @@
  *
  */
 
-import {
-  sumElementsByMultipliers,
-  clearValue,
-  fakeNumber,
-  applyMask,
-  invalidListGenerator,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
  * dv()
@@ -50,17 +45,15 @@ import {
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('Renavam não informado')
-
-  const renavam = clearValue(value, 10) // só 10 para remover o DV
-
-  const invalidList = invalidListGenerator(10)
-  if (invalidList.includes(renavam)) {
-    throw new Error('RENAVAM não pode ser uma sequência de números iguais')
-  }
+  const renavam = clearValue(value, 10, {
+    fillZerosAtLeft: true,
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
   const sum1 = sumElementsByMultipliers(renavam, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) * 10
   const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11
+
   return `${dv1}`
 }
 
@@ -97,10 +90,15 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const renavam = clearValue(value, 11)
+  const renavam = clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 
   if (dv(renavam) !== renavam.substring(10, 11)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true
