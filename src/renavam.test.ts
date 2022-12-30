@@ -80,7 +80,7 @@ describe('Renavam', () => {
     }
   })
 
-  test('dv() - Verificando se o DV gerado está correto', () => {
+  test('renavam.dv() - Verificando se o DV gerado está correto', () => {
     const list = [
       { num: '1952519770', expected: '3' },
       { num: 952519770, expected: '6' },

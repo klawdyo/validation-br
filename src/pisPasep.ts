@@ -59,7 +59,7 @@ import {
 export const dv = (value: string | number): string => {
   if (!value) throw new Error('PIS não informado')
 
-  const pis = clearValue(value, 10)
+  const pis = clearValue(value, 10, { trimAtRight: true, rejectEmpty: true })
 
   const invalidList = invalidListGenerator(10)
   if (invalidList.includes(pis)) {
@@ -103,7 +103,11 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const pis = clearValue(value, 11)
+  const pis = clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 
   if (dv(pis) !== pis.substring(10, 11)) {
     throw new Error('Dígito verificador inválido')

@@ -52,13 +52,8 @@
  * @returns {Boolean}
  */
 
-import {
-  sumElementsByMultipliers,
-  clearValue,
-  fakeNumber,
-  applyMask,
-  invalidListGenerator,
-} from './utils'
+import ValidationBRError from './data/ValidationBRError'
+import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
  * dv()
@@ -68,14 +63,13 @@ import {
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw new Error('CPF não informado')
+  const titulo = clearValue(value, 10, {
+    fillZerosAtLeft: true,
+    trimAtRight: true,
+    rejectEmpty: true,
+  })
 
-  const titulo = clearValue(value, 10)
-
-  const invalidList = invalidListGenerator(10)
-  if (invalidList.includes(titulo)) {
-    throw new Error('Título não pode ser uma sequência de números iguais')
-  }
+  // console.log('dv()', { value, titulo })
 
   const sum1 = sumElementsByMultipliers(titulo.substring(0, 8), [2, 3, 4, 5, 6, 7, 8, 9])
   const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11
@@ -93,7 +87,6 @@ export const dv = (value: string | number): string => {
  * @returns {String} Valor com a máscara
  */
 export const mask = (value: string | number): string => applyMask(value, '0000.0000.0000')
-// const mask = (value) => applyMask(value, '0000.0000.0000');
 
 /**
  * fake()
@@ -121,10 +114,15 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const titulo = clearValue(value, 12)
+  const titulo = clearValue(value, 12, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 
   if (dv(titulo) !== titulo.substring(10, 12)) {
-    throw new Error('Dígito verificador inválido')
+    throw ValidationBRError.INVALID_DV
   }
 
   return true

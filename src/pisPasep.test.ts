@@ -39,6 +39,23 @@ describe('PIS', () => {
     })
   })
 
+  test('validate() - Números válidos com caracteres adicionais', () => {
+    const list = [
+      // string
+      '712826773809',
+      '237951269559',
+      // integer
+      500129738039,
+      278901411449,
+      // masked
+      '268.27649.96-09',
+      '613.01862.91-79',
+    ]
+
+    list.forEach((pis) => {
+      expect(validate(pis)).toBeFalsy()
+    })
+  })
   test('validate() - Números inválidos', () => {
     const list = [
       '712.82677.38-2',

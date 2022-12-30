@@ -20,5 +20,6 @@
       "*": ["node_modules/*"]
     }
   },
+  "exclude": ["./tsconfig.json"],
   "include": ["./src/**/*"]
 }

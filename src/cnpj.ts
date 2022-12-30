@@ -60,11 +60,11 @@ import {
 } from './utils'
 
 export const dv = (value: string | number): string => {
-  const cnpj = clearValue(value, 12)
+  const cnpj = clearValue(value, 12, { trimAtRight: true, rejectEmpty: true })
 
   const blackList = invalidListGenerator(12)
   if (blackList.includes(cnpj)) {
-    throw new Error('CNPJ é obrigatório')
+    throw new Error('CNPJ não permite sequência de caracteres iguais')
   }
 
   const sum1 = sumElementsByMultipliers(cnpj.substring(0, 12), '543298765432')
@@ -106,7 +106,11 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnpj = clearValue(value, 14)
+  const cnpj = clearValue(value, 14, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 
   if (dv(cnpj) !== cnpj.substring(12, 14)) {
     throw new Error('Dígito verificador inválido')

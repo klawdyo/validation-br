@@ -77,9 +77,10 @@ import {
 export const dv = (value: string | number): string => {
   if (!value) throw new Error('Número não informado')
 
-  const cpf = clearValue(value, 9)
+  const cpf = clearValue(value, 9, { trimAtRight: true, rejectEmpty: true })
 
   const invalidList = invalidListGenerator(9)
+
   if (invalidList.includes(cpf)) {
     throw new Error('Número não pode ser uma sequência de números iguais')
   }
@@ -125,7 +126,11 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cpf = clearValue(value, 11)
+  const cpf = clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 
   if (dv(cpf) !== cpf.substring(9, 11)) {
     throw new Error('Dígito verificador inválido')

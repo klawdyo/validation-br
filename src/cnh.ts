@@ -71,7 +71,7 @@ import {
 export const dv = (value: string | number): string => {
   if (!value) throw new Error('CNH não informado')
 
-  const cnh = clearValue(value, 9)
+  const cnh = clearValue(value, 9, { trimAtRight: true, rejectEmpty: true })
 
   const invalidList = invalidListGenerator(9)
   if (invalidList.includes(cnh)) {
@@ -96,7 +96,11 @@ export const dv = (value: string | number): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnh = clearValue(value, 11)
+  const cnh = clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 
   if (dv(cnh) !== cnh.substring(9, 11)) {
     throw new Error('Dígito verificador inválido')

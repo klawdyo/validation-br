@@ -51,6 +51,7 @@ describe('CPF', () => {
     ]
 
     list.forEach((cpf) => {
+      if (validate(cpf)) console.log('deveria ser falso', cpf)
       expect(validate(cpf)).toBeFalsy()
     })
   })
@@ -68,6 +69,20 @@ describe('CPF', () => {
 
     list.forEach((cpf) => {
       expect(() => validateOrFail(cpf)).toThrow()
+    })
+  })
+
+  test('validate() - Números válidos com caracteres adicionais', () => {
+    const list = [
+      '24172316085000000',
+      '25886489070999999',
+      '20889477086888888',
+      '11111111111777777',
+    ]
+
+    list.forEach((cpf) => {
+      if (validate(cpf)) console.log('deveria ser falso', cpf)
+      expect(validate(cpf)).toBeFalsy()
     })
   })
 

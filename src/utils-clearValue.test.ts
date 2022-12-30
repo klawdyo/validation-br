@@ -36,7 +36,7 @@ describe('clearValue()', () => {
     ]
 
     valid.forEach((item) => {
-      expect(clearValue(item.value, item.size)).toBe(item.expected)
+      expect(clearValue(item.value, item.size, { fillZerosAtLeft: true })).toBe(item.expected)
     })
   })
 
@@ -49,7 +49,22 @@ describe('clearValue()', () => {
     ]
 
     valid.forEach((item) => {
-      expect(clearValue(item.value, item.size)).toBe(item.expected)
+      expect(clearValue(item.value, item.size, { trimAtRight: true })).toBe(item.expected)
     })
+  })
+
+  test('Deve retornar erro se receber um valor vazio', () => {
+    expect(clearValue('1112', 4, { rejectEmpty: true })).toBe('1112')
+    expect(() => clearValue('', null, { rejectEmpty: true })).toThrow()
+  })
+
+  test('Deve retornar erro se receber uma sequência de números iguais', () => {
+    expect(clearValue('1112', 4, { rejectEqualSequence: true })).toBe('1112')
+    expect(() => clearValue('1111', 4, { rejectEqualSequence: true })).toThrow()
+  })
+
+  test('Deve retornar erro se receber um valor com mais caracteres que o máximo', () => {
+    expect(clearValue('1234', 4, { rejectHigherLength: true })).toBe('1234')
+    expect(() => clearValue('12345', 4, { rejectHigherLength: true })).toThrow()
   })
 })

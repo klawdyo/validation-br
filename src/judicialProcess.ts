@@ -85,9 +85,8 @@ import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition
  *
  */
 export const dv = (value: string): string => {
-  if (!value) throw new Error('Número do processo é obrigatório')
+  const judicialProcess = clearValue(value, 18, { trimAtRight: true, rejectEmpty: true })
 
-  const judicialProcess = clearValue(value, 18)
   const num = judicialProcess.substring(0, 7)
   const yearAndCourt = judicialProcess.substring(7, 14)
   const origin = judicialProcess.substring(14, 18)
@@ -141,7 +140,11 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const judicialProcess = clearValue(value, 20)
+  const judicialProcess = clearValue(value, 20, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
   if (processWithoutDV.substring(11, 12) === '0') {
