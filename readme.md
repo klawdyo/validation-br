@@ -88,7 +88,7 @@ Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca f
 - [Vuelidate](https://github.com/klawdyo/validation-br/wiki/Vuelidate) - Usado para validação de estado no vuejs
 - [Class-Validator](https://github.com/klawdyo/validation-br/wiki/ClassValidator) - Usado em nest, typeorm E mais uma infinidade de frameworks
 - [Indicative](https://github.com/klawdyo/validation-br/wiki/Indicative) - Indicative é a biblioteca padrão de validação usada no Adonis.
-- [Joi](https://github.com/klawdyo/validation-br/wiki/Joi) - Joi é um validador de esquemas usado em aplicações node, react, vue etc. 
+- [Joi](https://github.com/klawdyo/validation-br/wiki/Joi) - Joi é um validador de esquemas usado em aplicações node, react, vue etc.
 - [Yup](https://github.com/klawdyo/validation-br/wiki/Yup) - Yup é usado para validar estado em aplicações react.
 
 ### isCNH( `value` )
@@ -100,10 +100,9 @@ Valida o documento da carteira nacional de habilitação.
 import { isCNH } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/cnh'
+import { validate, mask } from 'validation-br/dist/cnh'
 // ou
 import * as cnh from 'validation-br/dist/cnh'
-
 
 // Valida
 isCNH('69044271146') //-> true
@@ -132,7 +131,7 @@ Valida um CNPJ
 import { isCNPJ } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/cnpj'
+import { validate, mask } from 'validation-br/dist/cnpj'
 // ou
 import * as cnpj from 'validation-br/dist/cnpj'
 
@@ -163,7 +162,7 @@ Valida um CPF
 import { isCPF } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/cpf'
+import { validate, mask } from 'validation-br/dist/cpf'
 // ou
 import * as cpf from 'validation-br/dist/cpf'
 
@@ -214,7 +213,7 @@ O número é composto por 6 partes:
 import { isJudicialProcess } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/judicialProcess'
+import { validate, mask } from 'validation-br/dist/judicialProcess'
 // ou
 import * as judicialProcess from 'validation-br/dist/judicialProcess'
 
@@ -251,7 +250,7 @@ Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é us
 import { isNUP17 } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/nup17'
+import { validate, mask } from 'validation-br/dist/nup17'
 // ou
 import * as nup from 'validation-br/dist/nup17'
 
@@ -282,7 +281,7 @@ Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita númer
 import { isPIS } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/pisPasep'
+import { validate, mask } from 'validation-br/dist/pisPasep'
 // ou
 import * as pis from 'validation-br/dist/pisPasep'
 
@@ -318,7 +317,7 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 import { isPostalCode } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/postalCode'
+import { validate, mask } from 'validation-br/dist/postalCode'
 // ou
 import * as postalCode from 'validation-br/dist/postalCode'
 
@@ -350,7 +349,7 @@ Valida o número de um RENAVAM de 11 dígitos
 import { isRenavam } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/renavam'
+import { validate, mask } from 'validation-br/dist/renavam'
 // ou
 import * as renavam from 'validation-br/dist/renavam'
 
@@ -381,7 +380,7 @@ Valida um título eleitoral
 import { isTituloEleitor } from 'validation-br'
 // ou
 // Importação do submódulo
-import {validate, mask} from 'validation-br/dist/tituloEleitor'
+import { validate, mask } from 'validation-br/dist/tituloEleitor'
 // ou
 import * as titulo from 'validation-br/dist/tituloEleitor'
 
@@ -407,31 +406,38 @@ titulo.dv('5250288816') // -> '94'
 
 Todos os testes passando com 100% de cobertura
 
-![Testes passando com 100% de cobertura](https://user-images.githubusercontent.com/100168/210075927-e13d8fad-f252-40a5-ad04-326a3198c0cb.png)
+![Testes passando com 100% de cobertura](https://github.com/klawdyo/validation-br/assets/100168/bb83df1e-774c-4a92-bf83-7b451682264e)
 
+# Github Actions
 
+Github actions executados nas versões 12, 14, 16, 18 e 20 do Node.
+
+![Github actions executados nas versões 12, 14, 16, 18 e 20 do Node](https://github.com/klawdyo/validation-br/assets/100168/50f5b3c3-f1b0-46ac-a6b1-e31a366b27c7)
 
 # Changelog
 
-- **30/12/2022**: 
-   - 1.4.4 
-      - Correção de bug quando o documento válido tinha caracteres adicionais
-      - Refatoração de `clearValue()` para comportar configurações opcionais
+- **16/12/2023**:
+  - 1.4.5
+    - Corrige o caminho da definição dos types. (Thanks @ishigami)
+- **30/12/2022**:
+  - 1.4.4
+    - Correção de bug quando o documento válido tinha caracteres adicionais
+    - Refatoração de `clearValue()` para comportar configurações opcionais
 - **01/10/2022**:
-   - 1.4.1
-      - Correção na importação principal dos módulos
-      - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
-      - Inclusão de mais testes unitários para atingir 100% de cobertura
+  - 1.4.1
+    - Correção na importação principal dos módulos
+    - Refatoração do isJudicialProcess para permitir 100% de cobertura dos testes
+    - Inclusão de mais testes unitários para atingir 100% de cobertura
 - **10/01/2022**:
-   - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
+  - 1.1.0 - Adicionado NUP17 - Número Unificado de Protocolo de 17 dígitos do Governo Federal
 - **09/01/2022**:
-   - 1.0.0 - Biblioteca convertida para Typescript e testes convertidos para Jest
+  - 1.0.0 - Biblioteca convertida para Typescript e testes convertidos para Jest
 - **08/01/2022**:
-   - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
+  - 0.21.1 - Adicionadas as funções isRenavam e isJudicialProcess
 - **16/09/2021**:
-   - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTituloEleitor
-   - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
-   - 0.8.0 - Adicionada a função isPIS
+  - 0.5.0 - Adicionadas as funções isCPF, isCNPJ e isTituloEleitor
+  - 0.7.0 - Adicionadas as funções isPostalCode e isCNH
+  - 0.8.0 - Adicionada a função isPIS
 
 # Referências
 
