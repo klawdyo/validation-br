@@ -1,4 +1,4 @@
-const { invalidListGenerator } = require('./utils')
+import { invalidListGenerator } from '../src/utils'
 
 describe('invalidListGenerator()', () => {
   test('invalidListGenerator - Número de itens', () => {

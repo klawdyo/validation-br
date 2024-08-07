@@ -1,5 +1,5 @@
-import isPostalCode, { dv, fake, mask, validate, validateOrFail } from './postalCode'
-import * as _postalCode from './postalCode'
+import isPostalCode, { dv, fake, mask, validate, validateOrFail } from '../src/postalCode'
+import * as _postalCode from '../src/postalCode'
 
 describe('PostalCode', () => {
   test('isPostalCode() - Números válidos', () => {

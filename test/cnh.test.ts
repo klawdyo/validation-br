@@ -1,5 +1,5 @@
-import isCNH, { dv, fake, mask, validate, validateOrFail } from './cnh'
-import * as _cnh from './cnh'
+import isCNH, { dv, fake, mask, validate, validateOrFail } from '../src/cnh'
+import * as _cnh from '../src/cnh'
 
 describe('CNH', () => {
   test('isCNH() - Números válidos', () => {

@@ -1,5 +1,5 @@
-import isCNPJ, { dv, fake, mask, validate, validateOrFail } from './cnpj'
-import * as _cnpj from './cnpj'
+import isCNPJ, { dv, fake, mask, validate, validateOrFail } from '../src/cnpj'
+import * as _cnpj from '../src/cnpj'
 
 describe('CNPJ', () => {
   test('isCNPJ() - Números válidos', () => {

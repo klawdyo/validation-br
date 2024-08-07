@@ -1,4 +1,4 @@
-const { sumToDV } = require('./utils')
+import { sumToDV } from '../src/utils'
 
 describe('sumToDV()', () => {
   test('Os resultados devem ser os esperados', () => {

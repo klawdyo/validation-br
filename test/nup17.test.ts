@@ -1,5 +1,5 @@
-import isNUP17, { dv, fake, mask, validate, validateOrFail } from './nup17'
-import * as _nup17 from './nup17'
+import isNUP17, { dv, fake, mask, validate, validateOrFail } from '../src/nup17'
+import * as _nup17 from '../src/nup17'
 
 describe('NUP17', () => {
   test('isNUP17() - Números válidos', () => {
