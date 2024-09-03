@@ -8,13 +8,14 @@ describe('invalidListGenerator()', () => {
     expect(Array.isArray(list)).toBeTruthy()
   })
 
-  test('invalidListGenerator - Tamanho dos itens', () => {
-    const valid = [
-      { length: 10, size: 8 },
-      { length: 10, size: 4 },
-    ]
+  test.each([
 
-    valid.forEach((item) => {
+    { length: 10, size: 8 },
+    { length: 10, size: 4 },
+  ])('invalidListGenerator - Tamanho dos itens %s %s', (item) => {
+
+
+    // valid.forEach((item) => {
       const list = invalidListGenerator(item.size)
 
       expect(list).toHaveLength(10)
@@ -22,6 +23,5 @@ describe('invalidListGenerator()', () => {
       list.forEach((num: string) => {
         expect(num).toHaveLength(item.size)
       })
-    })
   })
 })
