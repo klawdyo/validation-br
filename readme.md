@@ -411,13 +411,14 @@ titulo.dv('5250288816') // -> '94'
 
 Todos os testes passando com 100% de cobertura
 
-![Testes passando com 100% de cobertura](https://github.com/klawdyo/validation-br/assets/100168/bb83df1e-774c-4a92-bf83-7b451682264e)
+![Testes passando com 100% de cobertura](https://github.com/user-attachments/assets/86c75eda-077f-4386-ba9c-20b588b6bd36)
+
 
 # Github Actions
 
 Github actions executados nas versões 18, 20 e 22 do Node.
 
-![Github actions executados nas versões 12, 14, 16, 18 e 20 do Node](https://github.com/klawdyo/validation-br/assets/100168/50f5b3c3-f1b0-46ac-a6b1-e31a366b27c7)
+![Github actions executados nas versões 18, 20 e 22 do Node](https://github.com/user-attachments/assets/34b2b82d-67e3-4c00-b9c6-7160279123d2)
 
 # Changelog
 
