@@ -116,14 +116,17 @@ export function mask(value: string | number): string {
  */
 export function fake(options?: FakeInput): string;
 export function fake(withMask?: boolean): string;
-export function fake(options: FakeInput | boolean = false): string {
-  const num = fakeNumber(12, true);
+export function fake(input: FakeInput | boolean = false): string {
+
+  const options = typeof input === 'boolean'
+    ? { withMask: input, alphanumeric: true }
+    : { withMask: false, alphanumeric: true, ...input }
+
+  const num = fakeNumber(12, true, options.alphanumeric);
 
   const cnpj = `${num}${dv(num)}`;
 
-  const withMask = typeof options === 'boolean' ? options : options.withMask;
-  if (withMask) return mask(cnpj)
-
+  if (options.withMask) return mask(cnpj)
   return cnpj
 }
 
