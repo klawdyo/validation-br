@@ -109,14 +109,18 @@ export function clearValue(
   let clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
   if (options) {
-    if (options.rejectEmpty === true && clearedValue.length === 0) {
+    const shouldRejectEmpty = options.rejectEmpty === true && clearedValue.length === 0;
+    if (shouldRejectEmpty) {
       throw ValidationBRError.EMPTY_VALUE
     }
 
-    if (options.rejectHigherLength === true && length && clearedValue.length > length) {
+    const shouldRejectHigherLength = options.rejectHigherLength === true && length && clearedValue.length > length;
+    if (shouldRejectHigherLength) {
       throw ValidationBRError.MAX_LEN_EXCEDEED
     }
 
+    const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
+    if (shouldRejectEqualSequence) {
       if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE
     }
 
