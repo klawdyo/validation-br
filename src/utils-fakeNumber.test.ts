@@ -1,4 +1,4 @@
-const { fakeNumber } = require('./utils')
+import  { fakeNumber } from'./utils'
 
 describe('fakeNumber()', () => {
   test('forceLength = true', () => {

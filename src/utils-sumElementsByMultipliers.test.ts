@@ -1,4 +1,4 @@
-const { sumElementsByMultipliers } = require('./utils')
+import { sumElementsByMultipliers } from './utils'
 
 describe('sumElementsByMultipliers()', () => {
   test('Tipo do retorno', () => {
