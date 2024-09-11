@@ -13,22 +13,6 @@ export function sumToDV(sum: number): number {
 }
 
 /**
- * Cria uma lista de valores repetidos no tamanho do documento para eliminar
- * valores que já conhecemos como inválidos
- *
- * @example
- * invalidListGenerator(10, 11)
- * //-> [00000000000, 11111111111, ....., 99999999999]
- *
- * @param {Integer} length Número de itens do array
- * @param {Integer} size Tamanho da string gerada
- * @returns {Array} Lista de valores
- */
-export function invalidListGenerator(size: number): string[] {
-  return [...Array(10).keys()].map((f) => String(f).repeat(size))
-}
-
-/**
  * Checa se o número repassado possui todos os digitos iguais
  * 
  * @example
