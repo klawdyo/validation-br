@@ -1,7 +1,7 @@
 /**
  * isCNPJ()
  * Calcula se um CNPJ é válido
- *
+ * 
  * A partir da Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024, CNPJ passa 
  * a poder ser criado com letras e números, ao invés de apenas números. Esta alteração entra
  * em vigor em 2026.
@@ -80,17 +80,22 @@
 import ValidationBRError from './data/ValidationBRError'
 import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
-export const dv = (value: string | number): string => {
+type FakeInput = {
+  withMask?: boolean;
+  alphanumeric?: boolean
+}
+
+export function dv(value: string | number): string {
   const cnpj = clearValue(value, 12, {
     trimAtRight: true,
     rejectEmpty: true,
   })
 
-  const sum1 = sumElementsByMultipliers(cnpj.substring(0, 12), '543298765432')
-  const dv1 = sumToDV(sum1)
+  const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+  const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors)
 
-  const sum2 = sumElementsByMultipliers(cnpj.substring(0, 12) + dv1, '6543298765432')
-  const dv2 = sumToDV(sum2)
+  const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
+  const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors)
 
   return `${dv1}${dv2}`
 }
@@ -101,18 +106,24 @@ export const dv = (value: string | number): string => {
  * @param {String} value Número de Processo
  * @returns {String} Valor com a máscara
  */
-export const mask = (value: string | number): string => applyMask(value, '00.000.000/0000-00')
+export function mask(value: string | number): string {
+  return applyMask(value, '00.000.000/0000-00');
+}
 
 /**
  *
  *
  */
-export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(12, true)
+export function fake(options?: FakeInput): string;
+export function fake(withMask?: boolean): string;
+export function fake(options: FakeInput | boolean = false): string {
+  const num = fakeNumber(12, true);
 
-  const cnpj = `${num}${dv(num)}`
+  const cnpj = `${num}${dv(num)}`;
 
+  const withMask = typeof options === 'boolean' ? options : options.withMask;
   if (withMask) return mask(cnpj)
+
   return cnpj
 }
 
@@ -124,9 +135,9 @@ export const fake = (withMask: boolean = false): string => {
  * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
-export const validateOrFail = (value: string | number): boolean => {
+export function validateOrFail(value: string | number): boolean {
   const cnpj = clearValue(value, 14, {
-    fillZerosAtLeft: true,
+    fillZerosAtLeft: false,
     rejectEmpty: true,
     rejectHigherLength: true,
     rejectEqualSequence: true,
@@ -146,7 +157,7 @@ export const validateOrFail = (value: string | number): boolean => {
  * @param {String|Number} value Número a ser validado
  * @returns {Boolean}
  */
-export const validate = (value: string | number): boolean => {
+export function validate(value: string | number): boolean {
   try {
     return validateOrFail(value)
   } catch (error) {
@@ -155,3 +166,30 @@ export const validate = (value: string | number): boolean => {
 }
 
 export default validate
+
+
+/**
+ * 
+ * Converte o número para
+ * 
+ * 
+ */
+function asciiTableConverter(character: string): number {
+  if (/^\d$/.test(character)) return +character;
+  const ascii = character.toLocaleUpperCase().charCodeAt(0) - 48;
+
+  return ascii;
+}
+
+/**
+ * 
+ * 
+ * 
+ */
+function sumToDvWithAlpha(value: string, multiplier: number[]) {
+  const sum = [...value]
+    .map(character => asciiTableConverter(character))
+    .reduce((sum: number, asciiChar: any, index: number) => sum + asciiChar * multiplier[index], 0);
+
+  return sumToDV(sum);
+}
