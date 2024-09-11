@@ -56,7 +56,7 @@ module.exports = {
     'no-unused-vars': 'off',
     'no-use-before-define': ['warn', { functions: false, classes: false }],
     'prefer-destructuring': 'off',
-    semi: ['error', 'never'],
+    semi: ['error', 'always'],
     'sort-imports': 'off',
     'no-unused-expressions': 'off',
     quotes: ['error', 'single', { avoidEscape: true }],
