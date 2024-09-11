@@ -1,4 +1,4 @@
-const { applyMask } = require('./utils')
+import { applyMask } from './utils'
 
 describe('applyMask()', () => {
   const items = [

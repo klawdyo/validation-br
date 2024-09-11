@@ -38,11 +38,9 @@ export function checkRepeatedSequence(value: string) {
  * @param {String|Array} multiplier
  * @returns {Integer} Somatório
  */
-export function sumElementsByMultipliers(value: string, multiplier: string | number[]): number {
-  if (typeof multiplier === 'string') multiplier = multiplier.split('').map((n) => Number(n))
-
+export function sumElementsByMultipliers(value: string, multiplier: number[]): number {
   return multiplier.reduce(
-    (accu: number, curr: any, i: number) => accu + curr * Number(value.charAt(i)),
+    (accu: number, curr: any, i: number) => accu + curr * Number(value[i]),
     0,
   )
 }
@@ -59,12 +57,15 @@ export function sumElementsByMultipliers(value: string, multiplier: string | num
  * @param {Boolean} forceLength Adiciona zeros à esquerda para ter os números de caractes exatos
  * @returns {String}
  */
-export function fakeNumber(length: number, forceLength: boolean = false): number | string {
-  const value = Math.floor(Math.random() * 10 ** length)
+export function fakeNumber(length: number, forceLength = false, isAlpha = false): string {
+  let value: string;
+
+  if (isAlpha) value = Math.round(Math.random() * 36 ** length).toString(36).toLocaleUpperCase()
+  else value = Math.floor(Math.random() * 10 ** length).toString()
 
   if (forceLength) return String(value).padStart(length, '0')
 
-  return +value
+  return String(value)
 }
 
 /**
@@ -201,17 +202,17 @@ export function randomLetter(): string {
  */
 interface ClearValueOptions {
   // Preenche 0 à esquerda se for menor que o limite
-  fillZerosAtLeft?: boolean
+  fillZerosAtLeft?: boolean;
 
   // Corta à direita caso sejam superiores ao limite
-  trimAtRight?: boolean
+  trimAtRight?: boolean;
 
   // Permite número vazio?
-  rejectEmpty?: boolean
+  rejectEmpty?: boolean;
 
   // Rejeita se o número for maior que o tamanho definido
-  rejectHigherLength?: boolean
+  rejectHigherLength?: boolean;
 
   // Rejeita uma sequência de números iguais
-  rejectEqualSequence?: boolean
+  rejectEqualSequence?: boolean;
 }
