@@ -39,10 +39,12 @@ export function checkRepeatedSequence(value: string) {
  * @returns {Integer} Somatório
  */
 export function sumElementsByMultipliers(value: string, multiplier: string | number[]): number {
-  if (typeof multiplier === 'string') multiplier = multiplier.split('').map((n) => Number(n))
+  if (!Array.isArray(multiplier)) {
+    multiplier = [...multiplier].map((n) => Number(n));
+  }
 
   return multiplier.reduce(
-    (accu: number, curr: any, i: number) => accu + curr * Number(value.charAt(i)),
+    (accu: number, curr: any, i: number) => accu + curr * Number(value[i]),
     0,
   )
 }
@@ -201,17 +203,17 @@ export function randomLetter(): string {
  */
 interface ClearValueOptions {
   // Preenche 0 à esquerda se for menor que o limite
-  fillZerosAtLeft?: boolean
+  fillZerosAtLeft?: boolean;
 
   // Corta à direita caso sejam superiores ao limite
-  trimAtRight?: boolean
+  trimAtRight?: boolean;
 
   // Permite número vazio?
-  rejectEmpty?: boolean
+  rejectEmpty?: boolean;
 
   // Rejeita se o número for maior que o tamanho definido
-  rejectHigherLength?: boolean
+  rejectHigherLength?: boolean;
 
   // Rejeita uma sequência de números iguais
-  rejectEqualSequence?: boolean
+  rejectEqualSequence?: boolean;
 }
