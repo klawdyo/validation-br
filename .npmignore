@@ -1,6 +1,8 @@
 src
 node_modules
 coverage
+docs
+.github
 dist/*.test.js
 dist/*.test.js.map
-docs/*
+dist/*.test.d.ts

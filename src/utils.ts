@@ -1,4 +1,4 @@
-import ValidationBRError from './data/ValidationBRError'
+import ValidationBRError from './ValidationBRError'
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
