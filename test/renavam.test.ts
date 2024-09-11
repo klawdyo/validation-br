@@ -1,5 +1,5 @@
-import isRenavam, { dv, fake, mask, validate, validateOrFail } from './renavam'
-import * as _renavam from './renavam'
+import isRenavam, { dv, fake, mask, validate, validateOrFail } from '../src/renavam'
+import * as _renavam from '../src/renavam'
 
 describe('Renavam', () => {
   test('isRenavam() - Números válidos', () => {

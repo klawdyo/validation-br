@@ -1,4 +1,4 @@
-import { sumElementsByMultipliers } from './utils'
+import { sumElementsByMultipliers } from '../src/utils'
 
 describe('sumElementsByMultipliers()', () => {
   test('Tipo do retorno', () => {

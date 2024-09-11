@@ -1,4 +1,4 @@
-import  { fakeNumber } from'./utils'
+import  { fakeNumber } from'../src/utils'
 
 describe('fakeNumber()', () => {
   test.each([...Array(10)])('forceLength = true', () => {
