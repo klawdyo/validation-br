@@ -11,7 +11,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
-    "lint:list": "eslint */**/*.js --fix --no-warn-ignored",
     "format": "prettier --write \"./**/*.{js,ts,json}\""
   },
   "lint-staged": {
@@ -23,9 +22,7 @@
   "devDependencies": {
     "@types/jest": "^27.4.0",
     "@types/node": "^14.14.2",
-    "eslint": "^9.10.0",
     "jest": "^29.7.0",
-    "prettier": "^2.1.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^9.0.0",
     "typescript": "^5.6.2"
