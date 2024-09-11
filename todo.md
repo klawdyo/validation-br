@@ -1,4 +1,4 @@
-- [ ] isCarPlate
+- [x] isCarPlate
 
 - [ ] isPhone
 
