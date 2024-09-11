@@ -13,19 +13,17 @@ export function sumToDV(sum: number): number {
 }
 
 /**
- * Cria uma lista de valores repetidos no tamanho do documento para eliminar
- * valores que já conhecemos como inválidos
- *
+ * Checa se o número repassado possui todos os digitos iguais
+ * 
  * @example
- * invalidListGenerator(10, 11)
- * //-> [00000000000, 11111111111, ....., 99999999999]
- *
- * @param {Integer} length Número de itens do array
- * @param {Integer} size Tamanho da string gerada
- * @returns {Array} Lista de valores
+ * checkRepeatedSequence(12345678) 
+ * // -> false
+ * checkRepeatedSequence(11111111) 
+ * // -> true
+ * 
  */
-export function invalidListGenerator(size: number): string[] {
-  return [...Array(10).keys()].map((f) => String(f).repeat(size))
+export function checkRepeatedSequence(value: string) {
+  return [...value].every(digit => digit === value[0])
 }
 
 /**
@@ -95,22 +93,20 @@ export function clearValue(
   let clearedValue = String(value).replace(/([/.-]+)/gi, '')
 
   if (options) {
-    if (options.rejectEmpty === true && clearedValue.length === 0) {
+    const shouldRejectEmpty = options.rejectEmpty === true && clearedValue.length === 0;
+    if (shouldRejectEmpty) {
       throw ValidationBRError.EMPTY_VALUE
     }
 
-    if (options.rejectHigherLength === true && length && clearedValue.length > length) {
+    const shouldRejectHigherLength = options.rejectHigherLength === true && length && clearedValue.length > length;
+    if (shouldRejectHigherLength) {
       throw ValidationBRError.MAX_LEN_EXCEDEED
     }
 
-    if (options.rejectEqualSequence === true && length) {
-      const invalidList = invalidListGenerator(length)
-      if (invalidList.includes(clearedValue)) {
-        throw ValidationBRError.SEQUENCE_REPEATED
-      }
+    const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
+    if (shouldRejectEqualSequence) {
+      if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE
     }
-
-    // if (!length || clearedValue.length === length) return clearedValue
 
     if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
     if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length)
