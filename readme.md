@@ -1,6 +1,6 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ, Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal e Objetos registrados de Rastreamento dos Correios.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ (numérico e alfanumérico), Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal e Objetos registrados de Rastreamento dos Correios.
 
 Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores.
 
@@ -126,6 +126,8 @@ cnh.dv('624729276') // -> '37'
 
 Valida um CNPJ
 
+> A partir da [Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024](https://github.com/user-attachments/files/15851229/Nota.COCAD.SUARA.2024.05.49.CNPJ.Alfanumerico-1.pdf), os números de CNPJ poderão ser alfanuméricos. A alteração entra em uso em 2026.
+
 ```js
 // Importação somente da validação
 import { isCNPJ } from 'validation-br'
@@ -145,6 +147,9 @@ cnpj.validateOrFail('99362238000180') //-> true
 // Número fake com e sem máscara
 cnpj.fake() // -> 55585709000198
 cnpj.fake(true) // -> 55.585.709/0001-98
+cnpj.fake({ withMask: true}) // -> 55.585.709/0001-98
+cnpj.fake({ withMask: true, alphanumeric: true}) // -> A1.222.333/0001-50
+cnpj.fake({ withMask: false, alphanumeric: true}) // -> A1222333/0001-50
 
 // Aplica uma máscara
 cnpj.mask('99362238000180') // -> 99.362.238/0001-80
@@ -410,12 +415,16 @@ Todos os testes passando com 100% de cobertura
 
 # Github Actions
 
-Github actions executados nas versões 12, 14, 16, 18 e 20 do Node.
+Github actions executados nas versões 18, 20 e 22 do Node.
 
 ![Github actions executados nas versões 12, 14, 16, 18 e 20 do Node](https://github.com/klawdyo/validation-br/assets/100168/50f5b3c3-f1b0-46ac-a6b1-e31a366b27c7)
 
 # Changelog
 
+- **16/12/2023**:
+  - 1.5.0
+    - CNPJ alfanumérico 
+    - Removidos github actions dos node 12, 14 e 16 e acrescentado o 22
 - **16/12/2023**:
   - 1.4.5
     - Corrige o caminho da definição dos types. (Thanks @ishigami)
