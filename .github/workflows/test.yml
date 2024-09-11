@@ -28,12 +28,12 @@ jobs:
 
       # Install Node Modules
       - name: Install Node Modules
-        run: yarn install --frozen-lockfile
-
-      # Runs a set of commands using the runners shell
-      - name: Runs Unit Tests
-        run: yarn test
+        run: npm install
 
       # Runs a set of commands using the runners shell
       - name: Build typescript code
-        run: yarn build
+        run: npm run build
+
+      # Runs a set of commands using the runners shell
+      - name: Runs Unit Tests
+        run: npm run test
