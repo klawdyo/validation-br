@@ -38,11 +38,7 @@ export function checkRepeatedSequence(value: string) {
  * @param {String|Array} multiplier
  * @returns {Integer} Somatório
  */
-export function sumElementsByMultipliers(value: string, multiplier: string | number[]): number {
-  if (!Array.isArray(multiplier)) {
-    multiplier = [...multiplier].map((n) => Number(n));
-  }
-
+export function sumElementsByMultipliers(value: string, multiplier: number[]): number {
   return multiplier.reduce(
     (accu: number, curr: any, i: number) => accu + curr * Number(value[i]),
     0,
