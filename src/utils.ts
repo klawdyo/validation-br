@@ -29,6 +29,20 @@ export function invalidListGenerator(size: number): string[] {
 }
 
 /**
+ * Checa se o número repassado possui todos os digitos iguais
+ * 
+ * @example
+ * checkRepeatedSequence(12345678) 
+ * // -> false
+ * checkRepeatedSequence(11111111) 
+ * // -> true
+ * 
+ */
+export function checkRepeatedSequence(value: string) {
+  return [...value].every(digit => digit === value[0])
+}
+
+/**
  * Multiplica os elementos de uma string com os elementos de outra, ou de um array
  * e soma o resultado ao final
  *
@@ -103,14 +117,8 @@ export function clearValue(
       throw ValidationBRError.MAX_LEN_EXCEDEED
     }
 
-    if (options.rejectEqualSequence === true && length) {
-      const invalidList = invalidListGenerator(length)
-      if (invalidList.includes(clearedValue)) {
-        throw ValidationBRError.SEQUENCE_REPEATED
-      }
+      if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE
     }
-
-    // if (!length || clearedValue.length === length) return clearedValue
 
     if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
     if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length)
