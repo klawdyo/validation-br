@@ -2,12 +2,18 @@
  * isCNPJ()
  * Calcula se um CNPJ é válido
  *
+ * A partir da Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024, CNPJ passa 
+ * a poder ser criado com letras e números, ao invés de apenas números. Esta alteração entra
+ * em vigor em 2026.
+ * 
+ *
  * @doc
- * - CNPJ deve possuir 14 dígitos no formato 00.000.000/0000-00
+ * - CNPJ deve possuir 14 dígitos no formato AA.AAA.AAA/AAAA-NN, onde A representa letras 
+ * ou números e N representa números (Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024)
  *
- * - Os caracteres 1 a 8 são números sequenciais definidos pela Receita Federal
+ * - Os caracteres 1 a 8 são a identificação da empresa definida pela Receita Federal. Podem ser letras ou números
  *
- * - Os caracteres 9 a 12 são a identificação das filiais da empresa.
+ * - Os caracteres 9 a 12 são a identificação das filiais da empresa. Podendo ser letras ou números
  *
  * - Os caracteres 13 e 14 são os dígitos verificadores
  *
@@ -16,6 +22,27 @@
  * | Número                        |    Filiais    |  DV   |
  * | 1   1 . 2   2   2 . 3   3   3 / 0   0   0   1 - X   Y |
  * |_______________________________|_______________|_______|
+ *
+ * 
+ * 2.1) Conversão dos números para tabela ASCII
+ * Converte os caracteres do CNPJ em valores numéricos, mesmo que alguns deles 
+ * sejam numéricos. A conversão será baseada na tabela ASCII
+ * 
+ *  Tabela ASCII
+ *  0 = 48    1 = 49     2 = 50    3 = 51    4 = 52
+ *  5 = 53    6 = 54     7 = 55    8 = 56    9 = 57
+ *  A = 65    B = 66     C = 67    D = 68    E = 69
+ *  F = 70    G = 71     H = 72    I = 73    J = 74
+ *  K = 75    L = 76     M = 77    N = 78    O = 79
+ *  P = 80    Q = 81     R = 82    S = 83    T = 84
+ *  U = 85    V = 86     W = 87    X = 88    Y = 89
+ *  Z = 90
+ *
+ * Ao converter cada dígito do CNPJ para o seu equivalente na tabela ASCII, subtraia de 48
+ * para obter o número que será multiplicado.
+ * Como o "0" é 48 e deve-se subtrair de 48, não há mudanças nos números.
+ *
+ *
  *
  * 2) Cálculo do primeiro DV.
  *
