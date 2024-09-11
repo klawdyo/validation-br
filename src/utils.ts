@@ -57,12 +57,15 @@ export function sumElementsByMultipliers(value: string, multiplier: number[]): n
  * @param {Boolean} forceLength Adiciona zeros à esquerda para ter os números de caractes exatos
  * @returns {String}
  */
-export function fakeNumber(length: number, forceLength: boolean = false): number | string {
-  const value = Math.floor(Math.random() * 10 ** length)
+export function fakeNumber(length: number, forceLength = false, isAlpha = false): string {
+  let value: string;
+
+  if (isAlpha) value = Math.round(Math.random() * 36 ** length).toString(36).toLocaleUpperCase()
+  else value = Math.floor(Math.random() * 10 ** length).toString()
 
   if (forceLength) return String(value).padStart(length, '0')
 
-  return +value
+  return String(value)
 }
 
 /**
