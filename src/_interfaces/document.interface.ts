@@ -1,6 +1,6 @@
 export interface IBRDocument {
   fake?(withMask: boolean | any): string;
-  mask(): string;
+  mask(options?: any): string;
   checksum(): string | null;
   validate(): boolean;
 }
