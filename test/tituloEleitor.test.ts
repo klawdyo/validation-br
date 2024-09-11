@@ -1,5 +1,5 @@
-import isTituloEleitor, { dv, fake, mask, validate, validateOrFail } from './tituloEleitor'
-import * as _tituloEleitor from './tituloEleitor'
+import isTituloEleitor, { dv, fake, mask, validate, validateOrFail } from '../src/tituloEleitor'
+import * as _tituloEleitor from '../src/tituloEleitor'
 
 describe('TituloEleitor', () => {
   test('isTituloEleitor() - Números válidos', () => {

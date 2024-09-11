@@ -1,4 +1,4 @@
-import { checkRepeatedSequence } from "./utils"
+import { checkRepeatedSequence } from "../src/utils"
 
 test.each([
   '11111111',

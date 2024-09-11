@@ -34,7 +34,7 @@
  *
  */
 
-import ValidationBRError from './data/ValidationBRError'
+import ValidationBRError from './ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**

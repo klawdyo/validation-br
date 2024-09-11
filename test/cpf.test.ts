@@ -1,5 +1,5 @@
-import isCPF, { dv, fake, mask, validate, validateOrFail } from './cpf'
-import * as _cpf from './cpf'
+import isCPF, { dv, fake, mask, validate, validateOrFail } from '../src/cpf'
+import * as _cpf from '../src/cpf'
 
 describe('CPF', () => {
   test('isCPF() - Números válidos', () => {

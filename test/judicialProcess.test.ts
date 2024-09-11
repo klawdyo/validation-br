@@ -5,9 +5,9 @@ import isJudicialProcess, {
   validate,
   validateOrFail,
   _getSubCourt,
-} from './judicialProcess'
+} from '../src/judicialProcess'
 
-import * as _judicialProcess from './judicialProcess'
+import * as _judicialProcess from '../src/judicialProcess'
 
 describe('JudicialProcess', () => {
   test('isJudicialProcess() - Números válidos', () => {

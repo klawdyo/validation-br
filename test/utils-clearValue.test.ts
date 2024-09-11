@@ -1,4 +1,4 @@
-import { clearValue } from './utils'
+import { clearValue } from '../src/utils'
 
 describe('clearValue()', () => {
   test('Deve limpar o valor - Strings do Mesmo tamanho', () => {

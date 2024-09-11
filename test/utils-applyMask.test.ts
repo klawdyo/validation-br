@@ -1,4 +1,4 @@
-import { applyMask } from './utils'
+import { applyMask } from '../src/utils'
 
 describe('applyMask()', () => {
   const items = [

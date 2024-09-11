@@ -1,4 +1,4 @@
-const { randomLetter } = require('./utils')
+import { randomLetter } from '../src/utils'
 
 describe('randomLetter()', () => {
   test('forceLength = false', () => {

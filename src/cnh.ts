@@ -54,7 +54,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './data/ValidationBRError'
+import ValidationBRError from './ValidationBRError'
 import { sumElementsByMultipliers, sumToDV, clearValue, applyMask, fakeNumber } from './utils'
 
 /**

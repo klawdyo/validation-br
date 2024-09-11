@@ -1,5 +1,5 @@
-import isPIS, { dv, fake, mask, validate, validateOrFail } from './pisPasep'
-import * as _pisPasep from './pisPasep'
+import isPIS, { dv, fake, mask, validate, validateOrFail } from '../src/pisPasep'
+import * as _pisPasep from '../src/pisPasep'
 
 describe('PIS', () => {
   test('isPIS() - Números válidos', () => {

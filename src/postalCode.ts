@@ -42,7 +42,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './data/ValidationBRError'
+import ValidationBRError from './ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils'
 
 /**
