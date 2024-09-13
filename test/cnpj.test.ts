@@ -153,9 +153,17 @@ describe('CNPJ', () => {
 describe('CNPJ alfanumérico', () => {
 
   test.each([
-    { num: 'A12223330001', expected: '50' },
-    { num: 'B12223330001', expected: '03' },
-    { num: 'C12223330001', expected: '67' },
+    'A3.170.7X3/0001-36',
+    'A31707X3000136',
+  ])('isValid() - checa se o cnpj alfanumérico %s é válido', (cnpj) => {
+    expect(validate(cnpj)).toBeTruthy()
+  })
+
+
+  test.each([
+    { num: 'A1.222.333/0001', expected: '50' },
+    { num: 'B1.222.333/0001', expected: '03' },
+    { num: 'C1.222.333/0001', expected: '67' },
     { num: 'D12223330001', expected: '10' },
     { num: 'E12223330001', expected: '74' },
   ])('dv() - Verificando se o DV gerado de %s está correto', (item) => {
