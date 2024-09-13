@@ -5,7 +5,7 @@ module.exports = {
   },
   testRegex: '(/test/.*\\.(test|spec))\\.(jsx?|tsx?)$',
   testEnvironment: 'node',
-  coverageDirectory: './coverage/',
-  collectCoverage: true,
+  // coverageDirectory: './coverage/',
+  // collectCoverage: true,
   coverageProvider: 'v8',
 }
