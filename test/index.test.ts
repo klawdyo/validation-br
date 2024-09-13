@@ -1,4 +1,5 @@
 import ValidateBR, {
+  isCarPlate,
   isCNH,
   isCNPJ,
   isCPF,
@@ -81,5 +82,13 @@ describe('ValidateBR', () => {
 
     expect(ValidateBR.isTituloEleitor('153036161686')).toBeTruthy()
     expect(isTituloEleitor('153036161686')).toBeTruthy()
+  })
+
+  test('Deve importar isCarPlate', () => {
+    expect(ValidateBR.isCarPlate).toBeDefined()
+    expect(isCarPlate).toBeDefined()
+
+    expect(ValidateBR.isCarPlate('AAA-1A34')).toBeTruthy()
+    expect(isCarPlate('AAA-1A34')).toBeTruthy()
   })
 })
