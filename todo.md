@@ -1,6 +1,6 @@
 - [x] isCarPlate
 
-- [ ] isPhone
+- [x] isPhone
 
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isPhone.ts
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isDDD.ts
