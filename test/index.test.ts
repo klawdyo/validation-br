@@ -9,7 +9,7 @@ import ValidateBR, {
   isPostalCode,
   isRenavam,
   isTituloEleitor,
-} from '../src/index'
+} from './main'
 
 describe('ValidateBR', () => {
   test('Deve importar isCNH', () => {

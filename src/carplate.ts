@@ -6,102 +6,57 @@
  */
 
 
-import { IBRDocument } from "./_interfaces/document.interface";
+import { Base } from "./base";
 import ValidationBRError from "./_exceptions/ValidationBRError";
-import { applyMask, fakeNumber, randomLetter } from "./utils";
+import { fakeNumber, randomLetter } from "./utils";
 
-type FakeOptions = {
-  withMask: boolean
-}
+export class CarPlate extends Base {
 
-class CarPlate implements IBRDocument {
-  carPlate: string;
+  protected _mask: string = '000-0000'
 
-  constructor(carPlate: string) {
-    this.carPlate = carPlate.toLocaleUpperCase().replace(/[^0-9A-Z]+/g, '')
-    const isValid = this.validate()
-    if (!isValid) throw ValidationBRError.INVALID_FORMAT
+  constructor(protected _value: string) {
+    super(_value)
+    this.normalize()
+    if (!this.validate()) throw ValidationBRError.INVALID_FORMAT
   }
+
+  // 
+  // 
+  // 
+  // 
+  // 
 
   validate() {
-    return /^[A-Z]{3}[0-9][A-Z0-9][0-9]{2}$/.test(this.carPlate)
+    return /^[A-Z]{3}-?[0-9][A-Z0-9][0-9]{2}$/i.test(this._value)
   }
 
-  mask(): string {
-    return applyMask(this.carPlate, '000-0000')
+  // 
+  // 
+  // PROTECTED
+  // 
+  // 
+
+  /**
+   * Padroniza o valor, sem modificar a ponto de permitir que a validação aceite um valor inválido
+   * Ex.: AAA0-000 é inválido. Normalize() não pode modificar isso.
+   */
+  protected normalize(): void {
+    this._value = this._value.toLocaleUpperCase().trim()//.replace(/[-]+/g, '')
   }
 
-  static fake(withMask: boolean | FakeOptions = false): string {
-    const fake = `${randomLetter()}${randomLetter()}${randomLetter()}${fakeNumber(1)}${randomLetter()}${fakeNumber(2, true)}`
-    if (!withMask) return fake
-    const carPlate = new CarPlate(fake)
-    return carPlate.mask()
+
+  // 
+  // 
+  // STATIC
+  // 
+  // 
+
+  static checksum(): string | null {
+    throw ValidationBRError.NO_CHECKSUM;
   }
 
-  checksum(): string | null {
-    return null
-  }
-
-}
-
-/**
- * @deprecated
- */
-export function dv(value: string): string | null {
-  const carPlate = new CarPlate(value)
-  return carPlate.checksum()
-}
-
-/**
- * 
- * Dígito verificador
- * 
- */
-export function checksum(value: string): string | null {
-  const carPlate = new CarPlate(value)
-  return carPlate.checksum()
-}
-
-/**
- * 
- * Placa fake
- * 
- */
-export function fake(withMask = false): string {
-  return CarPlate.fake(withMask)
-}
-
-/**
- * 
- * Máscara
- * 
- */
-export function mask(value: string): string {
-  const carPlate = new CarPlate(value)
-  return carPlate.mask()
-}
-
-/**
- * 
- * Valida ou retorna um erro
- * 
- * 
- */
-export function validateOrFail(value: string): boolean {
-  new CarPlate(value)
-  return true
-}
-
-/**
- * 
- * Valida
- * 
- */
-export function validate(value: string): boolean {
-  try {
-    new CarPlate(value)
-    return true
-  } catch (error) {
-    return false
+  static fake(): CarPlate {
+    const fake = `${randomLetter()}${randomLetter()}${randomLetter()}${fakeNumber(1)}${randomLetter()}${fakeNumber(2, true)}`;
+    return new CarPlate(fake)
   }
 }
