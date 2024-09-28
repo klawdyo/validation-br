@@ -7,12 +7,12 @@
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
     "format": "prettier --write \"./**/*.{js,ts,json}\"",
-    "prepublish": "npm run build"
+    "build": "rm ./dist -r && npx jest && npx tsc",
+    "prepublishOnly": "npm run build"
   },
   "lint-staged": {
     "*.{js,ts}": [
