@@ -1,14 +1,14 @@
 /**
  * isCNPJ()
  * Calcula se um CNPJ é válido
- * 
- * A partir da Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024, CNPJ passa 
+ *
+ * A partir da Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024, CNPJ passa
  * a poder ser criado com letras e números, ao invés de apenas números. Esta alteração entra
  * em vigor em 2026.
- * 
+ *
  *
  * @doc
- * - CNPJ deve possuir 14 dígitos no formato AA.AAA.AAA/AAAA-NN, onde A representa letras 
+ * - CNPJ deve possuir 14 dígitos no formato AA.AAA.AAA/AAAA-NN, onde A representa letras
  * ou números e N representa números (Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024)
  *
  * - Os caracteres 1 a 8 são a identificação da empresa definida pela Receita Federal. Podem ser letras ou números
@@ -23,11 +23,11 @@
  * | 1   1 . 2   2   2 . 3   3   3 / 0   0   0   1 - X   Y |
  * |_______________________________|_______________|_______|
  *
- * 
+ *
  * 2.1) Conversão dos números para tabela ASCII
- * Converte os caracteres do CNPJ em valores numéricos, mesmo que alguns deles 
+ * Converte os caracteres do CNPJ em valores numéricos, mesmo que alguns deles
  * sejam numéricos. A conversão será baseada na tabela ASCII
- * 
+ *
  *  Tabela ASCII
  *  0 = 48    1 = 49     2 = 50    3 = 51    4 = 52
  *  5 = 53    6 = 54     7 = 55    8 = 56    9 = 57
@@ -77,105 +77,101 @@
  * @returns {Boolean}
  */
 
-import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
+import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import { Base } from './base';
+import {
+  sumElementsByMultipliers,
+  sumToDV,
+  clearValue,
+  fakeNumber,
+  applyMask,
+} from './utils';
+
+export class CNPJ extends Base {
+  protected _mask = '00.000.000/0000-00';
+
+  constructor(protected _value: string) {
+    super(_value);
+    this.normalize();
+
+    if (!this.validate()) {
+      throw new InvalidChecksumException();
+    }
+  }
+
+  //
+  //
+  //
+  //
+  //
+
+  protected normalize(): void {
+    this._value = this._value.replace(/([/.-])/g, '');
+  }
+
+  /**
+   * validateOrFail()
+   * Valida se um número é válido e
+   * retorna uma exceção se não estiver
+   *
+   * @param {String|Number} value Número a ser validado
+   * @returns {Boolean}
+   */
+  protected validate(): boolean {
+    const cnpj = clearValue(this._value, 14, {
+      fillZerosAtLeft: false,
+      rejectEmpty: true,
+      rejectHigherLength: true,
+      rejectEqualSequence: true,
+    });
+
+    if (CNPJ.checksum(cnpj) !== cnpj.substring(12, 14)) {
+      throw new InvalidChecksumException();
+    }
+
+    return true;
+  }
+
+  //
+  //
+  //
+  //
+
+  static checksum(value: string | number): string {
+    const cnpj = clearValue(value, 12, {
+      trimAtRight: true,
+      rejectEmpty: true,
+    });
+
+    const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors);
+
+    const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors);
+
+    return `${dv1}${dv2}`;
+  }
+
+  /**
+   *
+   *
+   */
+  static fake(options: Partial<FakeInput> = {}): CNPJ {
+    const defaultOptions = { alphanumeric: true, ...options };
+    const num = fakeNumber(12, true, defaultOptions.alphanumeric);
+    return new CNPJ(`${num}${CNPJ.checksum(num)}`);
+  }
+}
 
 type FakeInput = {
-  withMask?: boolean;
-  alphanumeric?: boolean
-}
-
-export function dv(value: string | number): string {
-  const cnpj = clearValue(value, 12, {
-    trimAtRight: true,
-    rejectEmpty: true,
-  })
-
-  const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors)
-
-  const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors)
-
-  return `${dv1}${dv2}`
-}
-
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export function mask(value: string | number): string {
-  return applyMask(value, '00.000.000/0000-00');
-}
+  alphanumeric?: boolean;
+};
 
 /**
  *
- *
- */
-export function fake(options?: FakeInput): string;
-export function fake(withMask?: boolean): string;
-export function fake(input: FakeInput | boolean = false): string {
-
-  const options = typeof input === 'boolean'
-    ? { withMask: input, alphanumeric: true }
-    : { withMask: false, alphanumeric: true, ...input }
-
-  const num = fakeNumber(12, true, options.alphanumeric);
-
-  const cnpj = `${num}${dv(num)}`;
-
-  if (options.withMask) return mask(cnpj)
-  return cnpj
-}
-
-/**
- * validateOrFail()
- * Valida se um número é válido e
- * retorna uma exceção se não estiver
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export function validateOrFail(value: string | number): boolean {
-  const cnpj = clearValue(value, 14, {
-    fillZerosAtLeft: false,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
-
-  if (dv(cnpj) !== cnpj.substring(12, 14)) {
-    throw new InvalidChecksumException()
-  }
-
-  return true
-}
-
-/**
- * validate()
- * Valida se um número é válido
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export function validate(value: string | number): boolean {
-  try {
-    return validateOrFail(value)
-  } catch (error) {
-    return false
-  }
-}
-
-export default validate
-
-
-/**
- * 
  * Converte o número para
- * 
- * 
+ *
+ *
  */
 function asciiTableConverter(character: string): number {
   if (/^\d$/.test(character)) return +character;
@@ -185,14 +181,18 @@ function asciiTableConverter(character: string): number {
 }
 
 /**
- * 
- * 
- * 
+ *
+ *
+ *
  */
 function sumToDvWithAlpha(value: string, multiplier: number[]) {
   const sum = [...value]
-    .map(character => asciiTableConverter(character))
-    .reduce((sum: number, asciiChar: any, index: number) => sum + asciiChar * multiplier[index], 0);
+    .map((character) => asciiTableConverter(character))
+    .reduce(
+      (sum: number, asciiChar: any, index: number) =>
+        sum + asciiChar * multiplier[index],
+      0
+    );
 
   return sumToDV(sum);
 }
