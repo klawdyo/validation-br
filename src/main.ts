@@ -8,6 +8,9 @@ import { validate as postalCode } from './postalCode';
 import { validate as renavam } from './renavam';
 import { validate as tituloEleitor } from './tituloEleitor';
 import { CarPlate } from './carplate';
+import { Phone } from './phone';
+import { PixKey } from './pix-key';
+import { PixCopyPaste } from './pix-copy-paste';
 
 
 function validate(fn: Function) {
@@ -32,9 +35,12 @@ export const isTituloEleitor = (value: string | number): boolean => tituloEleito
 export const isNUP17 = (value: string): boolean => nup17(value);
 
 
-// export const isCarPlate = (value: string) => carPlate(value);
 export function isCarPlate(value: string) { return validate(() => new CarPlate(value)) }
+export function isPhone(value: string) { return validate(() => new Phone(value)) }
+export function isPixKey(value: string) { return validate(() => new PixKey(value)) }
+export function isPixCopyPaste(value: string) { return validate(() => new PixCopyPaste(value)) }
 
+// TODO: Remover esse default. Remover os exports acima também
 export default {
   isCNH,
   isCNPJ,

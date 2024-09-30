@@ -1,35 +1,35 @@
 /**
  * Valida telefone brasileiro.
- * 
- * 
+ *
+ *
  * @example
- * 
+ *
  * // Com classes
- * 
+ *
  * new Phone('+55 (84) 9 9966-2587').validate()
  * // -> true
- * 
+ *
  * new Phone('84 9 9966 2587').validate()
  * // -> true
- * 
+ *
  * new Phone('8440043214').validate()
  * // -> true
- * 
+ *
  * new Phone('(23) 4004-3214').validate()
  * // -> throws error
- * 
+ *
  * new Phone('(13) 6 6321-875').validate()
  * // -> throws error
- * 
+ *
  * new Phone('(79) 3333698').validate()
  * // -> throws error
- * 
+ *
  * Phone.fake()
  * // -> 84987654321
- * 
+ *
  * new Phone('(84) 555 178').mask()
  * //
- * 
+ *
  * // Métodos estáticos
  * validate('84999963214')
  * validateOrFail('84999963214')
@@ -37,10 +37,10 @@
  * fake()
  */
 
-import { IBRDocument } from "./_interfaces/document.interface";
-import ValidationBRError from "./_exceptions/ValidationBRError";
-import { fakeNumber } from "./utils";
-import { arrayRandom } from "./_helpers/array_random";
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { fakeNumber } from './utils';
+import { arrayRandom } from './_helpers/array_random';
+import { Base } from './base';
 
 type FakeSettings = {
   withMask: boolean;
@@ -48,14 +48,16 @@ type FakeSettings = {
   isMobile: boolean;
   isLandline: boolean;
   ddd: string;
-}
+};
 
 type MaskSettings = {
   withCountry: boolean;
-}
+};
 
-export class Phone implements IBRDocument {
-  private _regex = /^(?<br>\+55)?\s?\(?(?<ddd>\d{2})?\)?-?\s?(?<num>9?\s?\d{4}[-|\s]?\d{4})$/;
+export class Phone extends Base {
+  protected _mask: string = ''; // não usa
+
+  private _regex = /^(?<br>\+55)?(?<ddd>\d{2})(?<num>9\d{8}|[34]\d{7})$/;
   private _parts = { ddd: '', phone: '', isMobile: false };
   private static _ddds: string[] = [
     "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32",
@@ -65,66 +67,74 @@ export class Phone implements IBRDocument {
     "97", "98", "99"
   ];
 
-  constructor(public phone: string) {
-    this.normalize()
+  constructor(protected _value: string) {
+    super(_value);
+    this.normalize();
+    
+    if (!this.validate()) {
+      throw ValidationBRError.INVALID_FORMAT;
+    }
   }
 
   /**
-   * 
-   * 
-   * 
+   *
+   *
+   *
    */
   normalize(): string {
-    const match = this._regex.exec(this.phone)
+    const match = this._regex.exec(this._value);
     if (!match) throw ValidationBRError.INVALID_FORMAT;
 
-    const [, , ddd, phone] = match
+    const [, , ddd, phone] = match;
 
-    const clearedNum = phone.replace(/[^\d]/g, '');
-    this.phone = `+55${ddd}${clearedNum}`
+    const clearedNum = phone.replace(/[()\s-]/g, '');
+    this._value = `+55${ddd}${clearedNum}`;
 
-    const dddExists = Phone._ddds.includes(ddd)
+    const dddExists = Phone._ddds.includes(ddd);
     if (!dddExists) throw new ValidationBRDDDNotFound();
 
-    this._parts = { ddd, phone, isMobile: clearedNum.length === 9 }
+    this._parts = { ddd, phone, isMobile: clearedNum.length === 9 };
 
-    return this.phone
+    return this._value;
   }
 
   /**
-   * 
-   * 
-   * 
+   *
+   *
+   *
    */
-  validate() {
-    this.normalize()
-    return true
+  validate(): boolean {
+    const match = this._regex.exec(this._value);
+    
+    if (!match) return false;
+
+    return Phone._ddds.includes(match.groups!.ddd);
   }
 
   /**
    * Devolve com máscara
-   * 
+   *
    */
   mask(config?: Partial<MaskSettings>): string {
-    return `${config?.withCountry ? '+55 ' : ''}${this._parts.ddd} ${this._parts.phone}`
+    return `${config?.withCountry ? '+55 ' : ''}${this._parts.ddd} ${this._parts.phone}`;
   }
 
   /**
    * Devolve o checksum
-   * 
+   *
    */
   checksum(): string | null {
-    return null
+    return null;
   }
 
   /**
-   * 
+   *
    * Gera um número fake
-   * 
+   *
    */
   static fake(config?: Partial<FakeSettings>): string {
     const country = config?.withCountry ? '+55' : '';
-    
+
     const inputInvalidDDD = config?.ddd && !Phone._ddds.includes(config?.ddd);
     if (inputInvalidDDD) throw new ValidationBRDDDNotFound();
 
@@ -141,11 +151,10 @@ export class Phone implements IBRDocument {
     const number = fakeNumber(7, true);
     const phone = `${country}${ddd}${firstPart}${number}`;
 
-    if (config?.withMask) return (new Phone(phone)).mask({ withCountry: config?.withCountry });
+    if (config?.withMask) return new Phone(phone).mask({ withCountry: config?.withCountry });
     return phone;
   }
 }
-
 
 export const fake = (config?: Partial<FakeSettings>) => Phone.fake(config);
 
@@ -154,22 +163,21 @@ export const checksum = (phone: string) => null;
 export const validateOrFail = (phone: string) => {
   new Phone(phone);
   return true;
-}
+};
 
 export const validate = (phone: string) => {
   try {
-    new Phone(phone)
+    new Phone(phone);
     return true;
   } catch (error) {
     return false;
   }
-}
+};
 
 export const mask = (phone: string, config?: Partial<MaskSettings>) => {
   const object = new Phone(phone);
   return object.mask(config);
-}
-
+};
 
 export class ValidationBRDDDNotFound extends ValidationBRError {
   constructor() {
