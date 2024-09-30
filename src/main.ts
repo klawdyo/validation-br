@@ -8,6 +8,7 @@ import { validate as postalCode } from './postalCode';
 import { validate as renavam } from './renavam';
 import { validate as tituloEleitor } from './tituloEleitor';
 import { CarPlate } from './carplate';
+import { Phone } from './phone';
 
 
 function validate(fn: Function) {
@@ -34,6 +35,7 @@ export const isNUP17 = (value: string): boolean => nup17(value);
 
 // export const isCarPlate = (value: string) => carPlate(value);
 export function isCarPlate(value: string) { return validate(() => new CarPlate(value)) }
+export function isPhone(value: string) { return validate(() => new Phone(value)) }
 
 export default {
   isCNH,

@@ -37,10 +37,10 @@
  * fake()
  */
 
-import { IBRDocument } from "./_interfaces/document.interface";
 import ValidationBRError from "./_exceptions/ValidationBRError";
 import { fakeNumber } from "./utils";
 import { arrayRandom } from "./_helpers/array_random";
+import { Base } from "./base";
 
 type FakeSettings = {
   withMask: boolean;
@@ -54,7 +54,9 @@ type MaskSettings = {
   withCountry: boolean;
 }
 
-export class Phone implements IBRDocument {
+export class Phone extends Base {
+  protected _mask: string=''; // não usa
+
   private _regex = /^(?<br>\+55)?\s?\(?(?<ddd>\d{2})?\)?-?\s?(?<num>9?\s?\d{4}[-|\s]?\d{4})$/;
   private _parts = { ddd: '', phone: '', isMobile: false };
   private static _ddds: string[] = [
@@ -65,7 +67,8 @@ export class Phone implements IBRDocument {
     "97", "98", "99"
   ];
 
-  constructor(public phone: string) {
+  constructor(protected _value: string) {
+    super(_value)
     this.normalize()
   }
 
@@ -75,20 +78,20 @@ export class Phone implements IBRDocument {
    * 
    */
   normalize(): string {
-    const match = this._regex.exec(this.phone)
+    const match = this._regex.exec(this._value)
     if (!match) throw ValidationBRError.INVALID_FORMAT;
 
     const [, , ddd, phone] = match
 
     const clearedNum = phone.replace(/[^\d]/g, '');
-    this.phone = `+55${ddd}${clearedNum}`
+    this._value = `+55${ddd}${clearedNum}`
 
     const dddExists = Phone._ddds.includes(ddd)
     if (!dddExists) throw new ValidationBRDDDNotFound();
 
     this._parts = { ddd, phone, isMobile: clearedNum.length === 9 }
 
-    return this.phone
+    return this._value
   }
 
   /**
