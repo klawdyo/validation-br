@@ -1,3 +1,0 @@
-export class PixCopyPaste {
-  constructor(private _value: string) { }
-}
