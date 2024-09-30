@@ -37,14 +37,12 @@
  * fake()
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError';
+import  ValidationBRError, { InvalidFormatException } from './_exceptions/ValidationBRError';
 import { fakeNumber } from './utils';
 import { arrayRandom } from './_helpers/array_random';
 import { Base } from './base';
 
 type FakeSettings = {
-  withMask: boolean;
-  withCountry: boolean;
   isMobile: boolean;
   isLandline: boolean;
   ddd: string;
@@ -55,60 +53,152 @@ type MaskSettings = {
 };
 
 export class Phone extends Base {
-  protected _mask: string = ''; // não usa
+  protected _mask  = null;
 
-  private _regex = /^(?<br>\+55)?(?<ddd>\d{2})(?<num>9\d{8}|[34]\d{7})$/;
-  private _parts = { ddd: '', phone: '', isMobile: false };
+  private _regex = /^(?<ddi>\+55)?(?<ddd>\d{2})(?<phone>9\d{8}|[34]\d{7})$/;
+  // private _parts = { ddd: '', phone: '', isMobile: false };
   private static _ddds: string[] = [
-    "11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32",
-    "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53",
-    "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77",
-    "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96",
-    "97", "98", "99"
+    '11',
+    '12',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '21',
+    '22',
+    '24',
+    '27',
+    '28',
+    '31',
+    '32',
+    '33',
+    '34',
+    '35',
+    '37',
+    '38',
+    '41',
+    '42',
+    '43',
+    '44',
+    '45',
+    '46',
+    '47',
+    '48',
+    '49',
+    '51',
+    '53',
+    '54',
+    '55',
+    '61',
+    '62',
+    '63',
+    '64',
+    '65',
+    '66',
+    '67',
+    '68',
+    '69',
+    '71',
+    '73',
+    '74',
+    '75',
+    '77',
+    '79',
+    '81',
+    '82',
+    '83',
+    '84',
+    '85',
+    '86',
+    '87',
+    '88',
+    '89',
+    '91',
+    '92',
+    '93',
+    '94',
+    '95',
+    '96',
+    '97',
+    '98',
+    '99',
   ];
+
+  private _ddd: string = '';
+  private _phone: string = '';
+  private _ddi: string = '';
+  private _isMobile: boolean = false;
 
   constructor(protected _value: string) {
     super(_value);
+    // console.log('1', _value);
+
     this.normalize();
-    
+    this.parse();
+    // console.log('2', this);
+
     if (!this.validate()) {
-      throw ValidationBRError.INVALID_FORMAT;
+      throw new InvalidFormatException();
+    }
+  }
+
+  get ddi(): string {
+    return this._ddi;
+  }
+
+  get ddd(): string {
+    return this._ddd;
+  }
+
+  get phone(): string {
+    return this._phone;
+  }
+
+  get isMobile(): boolean {
+    return this._isMobile;
+  }
+
+  /**
+   *
+   * Remove os caracteres especiais e somente eles.
+   * Não remove letras e outros caracteres estranhos para evitar que
+   * o validador acabe aceitando um número com letras, por exemplo.
+   *
+   */
+  protected normalize(): string {
+    const clearedNum = this._value.replace(/([()\s-])/g, '');
+    return (this._value = clearedNum);
+  }
+
+  /**
+   *
+   * Separa o número em ddi, ddd e número
+   *
+   */
+  protected parse() {
+    const match = this._regex.exec(this._value);
+
+    if (match?.groups) {
+      this._ddi = match.groups.ddi || '+55';
+      this._ddd = match.groups.ddd;
+      this._phone = match.groups.phone;
+      this._isMobile = match.groups.phone.length === 9;
+      this._value = `${this._ddi}${this._ddd}${this._phone}`;
+    } else {
+      throw new InvalidFormatException();
     }
   }
 
   /**
    *
-   *
-   *
-   */
-  normalize(): string {
-    const match = this._regex.exec(this._value);
-    if (!match) throw ValidationBRError.INVALID_FORMAT;
-
-    const [, , ddd, phone] = match;
-
-    const clearedNum = phone.replace(/[()\s-]/g, '');
-    this._value = `+55${ddd}${clearedNum}`;
-
-    const dddExists = Phone._ddds.includes(ddd);
-    if (!dddExists) throw new ValidationBRDDDNotFound();
-
-    this._parts = { ddd, phone, isMobile: clearedNum.length === 9 };
-
-    return this._value;
-  }
-
-  /**
-   *
-   *
+   * Verifica se o DDD localizado existe na lista de DDDs
    *
    */
-  validate(): boolean {
-    const match = this._regex.exec(this._value);
-    
-    if (!match) return false;
-
-    return Phone._ddds.includes(match.groups!.ddd);
+  protected validate(): boolean {
+    return Phone._ddds.includes(this._ddd);
   }
 
   /**
@@ -116,7 +206,7 @@ export class Phone extends Base {
    *
    */
   mask(config?: Partial<MaskSettings>): string {
-    return `${config?.withCountry ? '+55 ' : ''}${this._parts.ddd} ${this._parts.phone}`;
+    return `${config?.withCountry ? '+55 ' : ''}${this._ddd} ${this._phone}`;
   }
 
   /**
@@ -132,54 +222,33 @@ export class Phone extends Base {
    * Gera um número fake
    *
    */
-  static fake(config?: Partial<FakeSettings>): string {
-    const country = config?.withCountry ? '+55' : '';
-
+  static fake(config?: Partial<FakeSettings>): Phone {
+    // Se definir um DDD pro fake, ele precisa existir
     const inputInvalidDDD = config?.ddd && !Phone._ddds.includes(config?.ddd);
-    if (inputInvalidDDD) throw new ValidationBRDDDNotFound();
+    if (inputInvalidDDD) throw new DDDNotFoundException();
 
+    // Se o DDD não estiver preenchido, escolha um da lista
     const ddd = config?.ddd ?? arrayRandom(Phone._ddds);
 
+    // Prefixos
     const mobilePrefixes = ['99', '98', '97'];
     const landLinePrefixes = ['3', '4'];
 
+    // Se não informar se quer mobile ou fixo, gere o tipo
     let firstPart;
     if (config?.isMobile) firstPart = arrayRandom(mobilePrefixes);
     else if (config?.isLandline) firstPart = arrayRandom(landLinePrefixes);
     else firstPart = arrayRandom([...mobilePrefixes, ...landLinePrefixes]);
-
+    
+    // Pega o restante do número aleatoriamente
     const number = fakeNumber(7, true);
-    const phone = `${country}${ddd}${firstPart}${number}`;
+    const phone = `+55${ddd}${firstPart}${number}`;
 
-    if (config?.withMask) return new Phone(phone).mask({ withCountry: config?.withCountry });
-    return phone;
+    return new Phone(phone);
   }
 }
 
-export const fake = (config?: Partial<FakeSettings>) => Phone.fake(config);
-
-export const checksum = (phone: string) => null;
-
-export const validateOrFail = (phone: string) => {
-  new Phone(phone);
-  return true;
-};
-
-export const validate = (phone: string) => {
-  try {
-    new Phone(phone);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
-
-export const mask = (phone: string, config?: Partial<MaskSettings>) => {
-  const object = new Phone(phone);
-  return object.mask(config);
-};
-
-export class ValidationBRDDDNotFound extends ValidationBRError {
+export class DDDNotFoundException extends ValidationBRError {
   constructor() {
     super('DDD não encontrado');
   }

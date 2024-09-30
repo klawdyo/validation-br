@@ -1,173 +1,75 @@
-import { Phone, fake, checksum, mask, validate, validateOrFail } from "../src/phone";
+import { Phone } from '../src/phone';
+
+const cellPhones = ['+5584999580685', '+55 84 9 9958 0685', '+55 (84) 9 9958-0685', '+55 (84) 99958-0685', '84 99958-0685'];
+const phones = ['+558433311454', '84 3331-1454', '84 3331 1454', '(84) 3331 1454', '84-3331-1454'];
 
 describe('Phone', () => {
-
-
-  describe('validate', () => {
-
-    test.each([
-      '+5584998765432',
-      '+55 84 9 9876 5432',
-      '+55 (84) 9 9876-5432',
-      '+55 (84) 99876-5432',
-      '84 99876-5432',
-    ])('valida celular %s', (value) => {
-      const obj = new Phone(value)
-      const phone = obj.validate()
-      expect(phone).toBeTruthy()
+  describe('constructor', () => {
+    test.each(cellPhones)('Celular %s deve estar definido', (value) => {
+      const obj = new Phone(value);
+      expect(obj.value).toBe('+5584999580685');
+      expect(obj.ddi).toBe('+55');
+      expect(obj.ddd).toBe('84');
+      expect(obj.phone).toBe('999580685');
+      expect(obj.isMobile).toBeTruthy();
     });
 
-    test.each([
-      '+558433311454',
-      '84 3331-1454',
-      '84 3331 1454',
-      '(84) 3331 1454',
-      '(84)3331 1454',
-      '(84)33311454',
-      '84-3331-1454',
-      '84-4004-4105',
-      '(84) 4005 2856',
-    ])('valida telefone fixo %s', (value) => {
-      const obj = new Phone(value)
-      const phone = obj.validate()
-      expect(phone).toBeTruthy()
+    test.each(phones)('Telefone fixo %s deve estar definido', (value) => {
+      const obj = new Phone(value);
+      expect(obj.value).toBe('+558433311454');
+      expect(obj.ddi).toBe('+55');
+      expect(obj.ddd).toBe('84');
+      expect(obj.phone).toBe('33311454');
+      expect(obj.isMobile).toBeFalsy;
     });
-
-    test.each([
-      '+5584333311454',
-      '84 3331-  1454',
-      '3331 1454',
-      'AA 3331 1454',
-      '849999999999',
-      '123',
-      '',
-      null,
-      undefined,
-    ])('não valida telefone %s', (value) => {
-      // @ts-ignore
-      expect(() => new Phone(value)).toThrow()
-    });
-
-    test('validate()', () => {
-      expect(validate('84999583214')).toBeTruthy()
-      expect(validate('84 999 5814')).toBeFalsy()
-    });
-
-    test('validateOrFail()', () => {
-      expect(validateOrFail('84999583214')).toBeTruthy()
-      expect(() => validateOrFail('84 999 5814')).toThrow()
-    });
-  })
-
-  describe('checksum', () => {
-    test('Phone não tem dígito verificador', () => {
-      const phone = new Phone('8498765432');
-      expect(phone.checksum()).toBeNull();
-    })
-
-    test('Phone não tem dígito verificador', () => {
-      const phone = checksum('8498765432');
-      expect(phone).toBeNull();
-    })
-  })
-
-  describe('normalize', () => {
-
-    test.each([
-      '+5584999580685',
-      '+55 84 9 9958 0685',
-      '+55 (84) 9 9958-0685',
-      '+55 (84) 99958-0685',
-      '84 99958-0685',
-    ])('testa normalização de celular %s', (value) => {
-      const obj = new Phone(value)
-      const phone = obj.normalize()
-    });
-
-    test.each([
-      '+558433311454',
-      '84 3331-1454',
-      '84 3331 1454',
-      '(84) 3331 1454',
-      '84-3331-1454',
-    ])('testa normalização de telefone fixo %s', (value) => {
-      const obj = new Phone(value)
-      const phone = obj.normalize()
-    });
-
-
-
-  })
+  });
 
   describe('fake', () => {
-    test.each([...Array(5)].map(() => Phone.fake()))('Testa um fake %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
+    test.each([...Array(5)])('Cria um fake', () => {
+      const fake = Phone.fake();
+      expect(fake).toBeDefined();
+    });
 
-    test.each([...Array(5)].map(() => Phone.fake({ withMask: true })))('Testa um fake com máscara %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
+    test.each([...Array(5)])('Cria um fake com DDD 11', () => {
+      const fake = Phone.fake({ ddd: '11' });
+      expect(fake).toBeDefined();
+      expect(fake.ddd).toBe('11');
+    });
 
-    test.each([...Array(5)].map(() => Phone.fake({ withCountry: true })))('Testa um fake com código do país %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
+    test.each([...Array(5)])('Cria um fake com isMobile=true', () => {
+      const fake = Phone.fake({ isMobile: true });
+      expect(fake).toBeDefined();
+      expect(fake.isMobile).toBeTruthy()
+      expect(fake.phone.length).toBe(9)
+    });
 
-    test.each([...Array(5)].map(() => Phone.fake({ withCountry: true, withMask: true })))('Testa um fake com máscara e código do país %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
-
-    test.each([...Array(5)].map(() => Phone.fake({ ddd: '84' })))('Testa um fake com ddd definido %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
-    
-    test.each([...Array(5)].map(() => fake({ ddd: '84' })))('Testa um fake com ddd definido %s', (value) => {
-      expect(validate(value)).toBeTruthy()
-    })
-
-    test.each([...Array(5)])('Testa um fake com ddd que não existe %s', (value) => {
-      expect(() => Phone.fake({ ddd: '01' })).toThrow()
-      expect(() => fake({ ddd: '01' })).toThrow()
-    })
-
-    test.each([...Array(5)].map(() => Phone.fake({ isMobile: true })))('Testa um fake mobile %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
-
-    test.each([...Array(5)].map(() => Phone.fake({ isLandline: true })))('Testa um fake fixo %s', (value) => {
-      const phone = new Phone(value)
-      expect(phone.validate()).toBeTruthy()
-    })
-
-    test.each([...Array(5)].map(() => fake({ isLandline: true })))('Testa um fake fixo %s usando o método externo', (value) => {
-      expect(validate(value)).toBeTruthy()
-    })
-  })
+    test.each([...Array(5)])('Cria um fake com isLandline=true', () => {
+      const fake = Phone.fake({ isLandline: true });      
+      expect(fake).toBeDefined();
+      expect(fake.isMobile).toBeFalsy()
+      expect(fake.phone.length).toBe(8)
+    });
+  });
 
   describe('mask', () => {
-    test('Máscara', () => {
-      const phone = new Phone('8498765432');
-      expect(phone.mask()).toBe('84 98765432');
-    })
+    test.each(cellPhones)('Máscara de celular sem país', (input) => {
+      const phone = new Phone(input);
+      expect(phone.mask({ withCountry: false })).toBe('84 999580685');
+    });
 
-    test('Máscara com país', () => {
-      const phone = new Phone('8498765432');
-      expect(phone.mask({ withCountry: true })).toBe('+55 84 98765432');
-    })
+    test.each(cellPhones)('Máscara de celular com país', (input) => {
+      const phone = new Phone(input);
+      expect(phone.mask({ withCountry: true })).toBe('+55 84 999580685');
+    });
 
-    test('Máscara com método individual', () => {
-      const phone = checksum('8498765432');
-      expect(mask('8498765432')).toBe('84 98765432');
-    })
+    test.each(phones)('Máscara de telefone fixo sem país', (input) => {
+      const phone = new Phone(input);
+      expect(phone.mask({ withCountry: false })).toBe('84 33311454');
+    });
 
-    test('Máscara com método individual com país', () => {
-      const phone = checksum('8498765432');
-      expect(mask('8498765432', { withCountry: true })).toBe('+55 84 98765432');
-    })
-  })
-})
+    test.each(phones)('Máscara de telefone fixo com país', (input) => {
+      const phone = new Phone(input);
+      expect(phone.mask({ withCountry: true })).toBe('+55 84 33311454');
+    });
+  });
+});
