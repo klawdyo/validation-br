@@ -1,4 +1,4 @@
-import { CRC } from './crc';
+import { CRC } from '../../src/_helpers/crc';
 
 describe('CRC', () => {
   test('Converte string para o formato CRC16', () => {
