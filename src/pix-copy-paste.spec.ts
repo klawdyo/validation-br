@@ -1,0 +1,3 @@
+// pix usado pelo 10 pila.
+// esse pix é um pix automatico
+const pixStone = `00020101021226820014br.gov.bcb.pix2560pix.stone.com.br/pix/v2/b411f5c8-e97f-4a18-af0e-fc66491748d7520400005303986540510.005802BR5925DIOGO DA SILVA SANTOS LTD6014RIO DE JANEIRO622905251e3afd7926983f8ffe086cdc16304FF60`
