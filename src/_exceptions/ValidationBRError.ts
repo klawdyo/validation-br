@@ -1,8 +1,41 @@
 export default class ValidationBRError extends Error {
-  static INVALID_DV = new ValidationBRError('Dígito verificador inválido')
-  static INVALID_FORMAT = new ValidationBRError('Formato inválido')
-  static EMPTY_VALUE = new ValidationBRError('Valor não preenchido')
-  static MAX_LEN_EXCEDEED = new ValidationBRError('Número de caracteres excedido')
-  static REPEATED_SEQUENCE = new ValidationBRError('Sequência de números repetidos não permitida')
-  static NO_CHECKSUM = new ValidationBRError('Este objeto não possui dígito verificador')
+  constructor(message: string){
+    super(message)
+  }
+}
+
+export class InvalidChecksumException extends ValidationBRError {
+  constructor(){
+    super('Dígito verificador inválido');
+  }
+}
+
+export class InvalidFormatException extends ValidationBRError {
+  constructor(){
+    super('Formato inválido');
+  }
+}
+
+export class EmptyValueException extends ValidationBRError {
+  constructor(){
+    super('Valor não preenchido');
+  }
+}
+
+export class MaxLengthExcedeedException extends ValidationBRError {
+  constructor(){
+    super('Número de caracteres excedido');
+  }
+}
+
+export class RepeatedSequenceException extends ValidationBRError {
+  constructor(){
+    super('Sequência de números repetidos não permitida');
+  }
+}
+
+export class NoChecksumException extends ValidationBRError {
+  constructor(){
+    super('Este objeto não possui dígito verificador');
+  }
 }

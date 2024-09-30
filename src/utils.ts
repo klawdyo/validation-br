@@ -1,4 +1,4 @@
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { EmptyValueException, MaxLengthExcedeedException, RepeatedSequenceException } from './_exceptions/ValidationBRError'
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
@@ -96,17 +96,17 @@ export function clearValue(
   if (options) {
     const shouldRejectEmpty = options.rejectEmpty === true && clearedValue.length === 0;
     if (shouldRejectEmpty) {
-      throw ValidationBRError.EMPTY_VALUE
+      throw new EmptyValueException()
     }
 
     const shouldRejectHigherLength = options.rejectHigherLength === true && length && clearedValue.length > length;
     if (shouldRejectHigherLength) {
-      throw ValidationBRError.MAX_LEN_EXCEDEED
+      throw new MaxLengthExcedeedException()
     }
 
     const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
     if (shouldRejectEqualSequence) {
-      if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE
+      if (checkRepeatedSequence(clearedValue)) throw new RepeatedSequenceException()
     }
 
     if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')

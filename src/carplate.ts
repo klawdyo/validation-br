@@ -7,7 +7,7 @@
 
 
 import { Base } from "./base";
-import ValidationBRError from "./_exceptions/ValidationBRError";
+import { InvalidFormatException, NoChecksumException } from "./_exceptions/ValidationBRError";
 import { fakeNumber, randomLetter } from "./utils";
 
 export class CarPlate extends Base {
@@ -17,7 +17,7 @@ export class CarPlate extends Base {
   constructor(protected _value: string) {
     super(_value)
     this.normalize()
-    if (!this.validate()) throw ValidationBRError.INVALID_FORMAT
+    if (!this.validate()) throw new InvalidFormatException()
   }
 
   // 
@@ -52,7 +52,7 @@ export class CarPlate extends Base {
   // 
 
   static checksum(): string | null {
-    throw ValidationBRError.NO_CHECKSUM;
+    throw new NoChecksumException();
   }
 
   static fake(): CarPlate {

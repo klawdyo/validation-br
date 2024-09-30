@@ -60,7 +60,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -130,7 +130,7 @@ export const validateOrFail = (value: string): boolean => {
   })
 
   if (dv(nup) !== nup.substring(15, 17)) {
-    throw ValidationBRError.INVALID_DV
+    throw new InvalidChecksumException()
   }
 
   return true

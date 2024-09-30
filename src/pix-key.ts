@@ -1,4 +1,4 @@
-import ValidationBRError from './_exceptions/ValidationBRError';
+import  { InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
 import { isCNPJ, isCPF, isPhone } from './main';
 
@@ -24,7 +24,7 @@ export class PixKey extends Base {
     this.normalize();
 
     if (!this.validate()) {
-      throw ValidationBRError.INVALID_FORMAT;
+      throw new InvalidFormatException();
     }
   }
 

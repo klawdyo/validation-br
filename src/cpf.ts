@@ -58,7 +58,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -123,7 +123,7 @@ export const validateOrFail = (value: string | number): boolean => {
   })
 
   if (dv(cpf) !== cpf.substring(9, 11)) {
-    throw ValidationBRError.INVALID_DV
+    throw new InvalidChecksumException()
   }
 
   return true

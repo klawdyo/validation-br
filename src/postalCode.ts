@@ -42,7 +42,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { EmptyValueException, InvalidChecksumException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils'
 
 /**
@@ -53,7 +53,7 @@ import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from '
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw ValidationBRError.EMPTY_VALUE
+  if (!value) throw new EmptyValueException()
 
   const postalCode = String(value)
     .replace(/[^0-9]+/gi, '')
@@ -116,7 +116,7 @@ export const validateOrFail = (value: string): boolean => {
   const postalCode = clearValue(value.substring(2, 11), 9)
 
   if (dv(value.substring(2, 11)) !== postalCode.substring(8, 9)) {
-    throw ValidationBRError.INVALID_DV
+    throw new InvalidChecksumException()
   }
 
   return true

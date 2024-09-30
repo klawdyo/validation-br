@@ -1,4 +1,4 @@
-import ValidationBRError from './_exceptions/ValidationBRError';
+import  { InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { CRC } from './_helpers/crc';
 import { Base } from './base';
 
@@ -11,7 +11,7 @@ export class PixCopyPaste extends Base {
     this.normalize(_value);
 
     if (!this.validate()) {
-      throw ValidationBRError.INVALID_FORMAT
+      throw new InvalidFormatException()
     }
   }
 
@@ -29,11 +29,11 @@ export class PixCopyPaste extends Base {
 
   protected validate(): boolean {
     const crc = new CRC(this._value.substring(0, this._value.length - 4)).calculate();
-    if (crc !== this._value.substring(this._value.length - 4)) throw ValidationBRError.INVALID_DV
+    if (crc !== this._value.substring(this._value.length - 4)) throw new InvalidChecksumException()
 
     const parse = PixCopyPaste.parse(this._value);
-    if (!parse || !Array.isArray(parse)) throw ValidationBRError.INVALID_FORMAT;
-    if (parse.at(-1)!.code !== '63' || parse.at(-1)!.size !== 4) throw ValidationBRError.INVALID_FORMAT;
+    if (!parse || !Array.isArray(parse)) throw new InvalidFormatException();
+    if (parse.at(-1)!.code !== '63' || parse.at(-1)!.size !== 4) throw new InvalidFormatException();
 
     return true;
   }
@@ -65,7 +65,7 @@ function parse(value: string): Part[] {
     const { rest: newRest, ...result } = getPart(rest);
     
     // Entrou em loop infinito
-    if(rest === newRest) throw ValidationBRError.INVALID_FORMAT
+    if(rest === newRest) throw new InvalidFormatException()
     
     parts.push(result);
     
@@ -86,7 +86,7 @@ function getPart(part: string): Part {
   const rest = part.substring(4 + size);
 
   if (value.length !== size) {
-    throw ValidationBRError.INVALID_FORMAT
+    throw new InvalidFormatException()
   }
 
   let children: Part[] = [];

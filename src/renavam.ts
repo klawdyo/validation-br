@@ -34,7 +34,7 @@
  *
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
 
 /**
@@ -98,7 +98,7 @@ export const validateOrFail = (value: string | number): boolean => {
   })
 
   if (dv(renavam) !== renavam.substring(10, 11)) {
-    throw ValidationBRError.INVALID_DV
+    throw new InvalidChecksumException()
   }
 
   return true

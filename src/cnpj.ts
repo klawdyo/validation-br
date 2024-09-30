@@ -77,7 +77,7 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
+import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 type FakeInput = {
@@ -147,7 +147,7 @@ export function validateOrFail(value: string | number): boolean {
   })
 
   if (dv(cnpj) !== cnpj.substring(12, 14)) {
-    throw ValidationBRError.INVALID_DV
+    throw new InvalidChecksumException()
   }
 
   return true
