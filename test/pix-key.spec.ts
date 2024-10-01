@@ -1,4 +1,4 @@
-import { PixKey, PixKeys } from './pix-key';
+import { PixKey, PixKeys } from '../src/pix-key';
 
 describe('Pix', () => {
   describe('constructor', () => {

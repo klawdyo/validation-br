@@ -58,7 +58,7 @@
  * @returns {Boolean}
  */
 
-import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
@@ -101,13 +101,13 @@ export class CPF extends Base {
    */
   protected validate(): boolean {
     const cpf = clearValue(this._value, 11, {
-      fillZerosAtLeft: true,
       rejectEmpty: true,
       rejectIfLonger: true,
       rejectEqualSequence: true,
+      rejectIfShorter: true,
     });
 
-    if (CPF.checksum(cpf) !== cpf.substring(9, 11)) {
+    if (CPF.checksum(cpf.substring(0,9)) !== cpf.substring(9, 11)) {
       throw new InvalidChecksumException();
     }
 
@@ -133,23 +133,20 @@ export class CPF extends Base {
   }
 
   /**
-   * dv()
-   * Calcula o dígito verificador
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
-   * @param {Number|String} value
-   * @returns {String}
    */
   static checksum(value: string): string {
-    const cpf = clearValue(value, 9, {
-      trimAtRight: true,
-      rejectEmpty: true,
-    });
+    if (!value) throw new EmptyValueException();
+    if(!/^\d{9}$/.test(value)) throw new InvalidFormatException()
 
-    const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
+
+    const sum1 = sumElementsByMultipliers(value, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
     const dv1 = sumToDV(sum1);
 
     const sum2 = sumElementsByMultipliers(
-      cpf + dv1,
+      value + dv1,
       [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
     );
     const dv2 = sumToDV(sum2);

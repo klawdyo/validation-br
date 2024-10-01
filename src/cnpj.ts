@@ -77,7 +77,11 @@
  * @returns {Boolean}
  */
 
-import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import {
+  EmptyValueException,
+  InvalidChecksumException,
+  InvalidFormatException,
+} from './_exceptions/ValidationBRError';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
@@ -106,7 +110,7 @@ export class CNPJ extends Base {
   //
 
   protected normalize(): void {
-    this._value = this._value.replace(/([/.-])/g, '');
+    this._value = this._value.replace(/[/.-]/g, '');
   }
 
   /**
@@ -114,18 +118,15 @@ export class CNPJ extends Base {
    * Valida se um número é válido e
    * retorna uma exceção se não estiver
    *
-   * @param {String|Number} value Número a ser validado
-   * @returns {Boolean}
    */
   protected validate(): boolean {
     const cnpj = clearValue(this._value, 14, {
-      fillZerosAtLeft: false,
       rejectEmpty: true,
       rejectIfLonger: true,
       rejectEqualSequence: true,
     });
 
-    if (CNPJ.checksum(cnpj) !== cnpj.substring(12, 14)) {
+    if (CNPJ.checksum(cnpj.substring(0, 12)) !== cnpj.substring(12, 14)) {
       throw new InvalidChecksumException();
     }
 
@@ -137,17 +138,20 @@ export class CNPJ extends Base {
   //
   //
 
-  static checksum(value: string | number): string {
-    const cnpj = clearValue(value, 12, {
-      trimAtRight: true,
-      rejectEmpty: true,
-    });
+  /**
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
+   *
+   */
+  static checksum(value: string): string {
+    if (!value) throw new EmptyValueException();
+    if (!/^[a-z0-9]{12}$/i.test(value)) throw new InvalidFormatException();
 
     const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors);
+    const dv1 = sumToDvWithAlpha(value.substring(0, 12), dv1Factors);
 
     const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors);
+    const dv2 = sumToDvWithAlpha(value.substring(0, 12) + dv1, dv2Factors);
 
     return `${dv1}${dv2}`;
   }

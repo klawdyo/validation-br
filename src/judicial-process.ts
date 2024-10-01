@@ -79,6 +79,7 @@
  */
 
 import ValidationBRError, {
+  EmptyValueException,
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
@@ -230,20 +231,16 @@ export class JudicialProcess extends Base {
 
   /**
    * checksum()
-   * Calcula o dígito verificador
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
-   * @param {Number|String} value
-   * @returns {String}
    */
   static checksum(value: string): string {
-    const judicialProcess = clearValue(value, 18, {
-      trimAtRight: true,
-      rejectEmpty: true,
-    });
+    if (!value) throw new EmptyValueException();
+    if(!/^\d{18}$/.test(value)) throw new InvalidFormatException()
 
-    const num = judicialProcess.substring(0, 7);
-    const yearAndCourt = judicialProcess.substring(7, 14);
-    const origin = judicialProcess.substring(14, 18);
+    const num = value.substring(0, 7);
+    const yearAndCourt = value.substring(7, 14);
+    const origin = value.substring(14, 18);
 
     return String(
       98 -

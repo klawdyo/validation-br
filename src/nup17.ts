@@ -60,7 +60,7 @@
  * @returns {Boolean}
  */
 
-import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
@@ -109,7 +109,7 @@ export class NUP17 extends Base {
       rejectIfShorter: true
     });
 
-    if (NUP17.checksum(nup) !== nup.substring(15, 17)) {
+    if (NUP17.checksum(nup.substring(0,15)) !== nup.substring(15, 17)) {
       throw new InvalidChecksumException();
     }
 
@@ -135,14 +135,15 @@ export class NUP17 extends Base {
   }
 
   /**
-   * 
    * checksum()
-   * Calcula o dígito verificador
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
    */
-  static checksum(value: string): string {
-    const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true });
-    const nupReverse = nup.split('').reverse().join('');
+  static checksum(value: string): string { 
+    if (!value) throw new EmptyValueException();
+    if(!/^\d{15}$/.test(value)) throw new InvalidFormatException()
+
+    const nupReverse = value.split('').reverse().join('');
 
     const sum1 = sumElementsByMultipliers(
       nupReverse,

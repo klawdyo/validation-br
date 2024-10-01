@@ -45,6 +45,15 @@ describe('CNH', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+
+    test.each(['50195471', '5831641745', ''])(
+      'deve lançar erro de dv',
+      (item) => {
+        expect(() => CNH.checksum(item)).toThrow();
+      }
+    );
+
   });
 
   describe('mask', () => {

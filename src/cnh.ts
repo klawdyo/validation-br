@@ -54,9 +54,15 @@
  * @returns {Boolean}
  */
 
-import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
-import { sumElementsByMultipliers, sumToDV, clearValue, applyMask, fakeNumber } from './utils';
+import {
+  sumElementsByMultipliers,
+  sumToDV,
+  clearValue,
+  applyMask,
+  fakeNumber,
+} from './utils';
 
 export class CNH extends Base {
   protected _mask = '000000000-00';
@@ -71,20 +77,25 @@ export class CNH extends Base {
   }
 
   /**
-   * Calcula o Dígito Verificador de um RENAVAM informado
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
-   * @returns String Número fake de um cnh válido
    */
-  static checksum(value: string | number): string {
-    const cnh = clearValue(value, 9, {
-      trimAtRight: true,
-      rejectEmpty: true,
-    });
+  static checksum(value: string): string {
+    if (!value) throw new EmptyValueException();
+    if(!/^\d{9}$/.test(value)) throw new InvalidFormatException()
 
-    const sum1 = sumElementsByMultipliers(cnh.substring(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10]);
+
+    const sum1 = sumElementsByMultipliers(
+      value.substring(0, 9),
+      [2, 3, 4, 5, 6, 7, 8, 9, 10]
+    );
     const dv1 = sumToDV(sum1);
 
-    const sum2 = sumElementsByMultipliers(cnh.substring(0, 9) + dv1, [3, 4, 5, 6, 7, 8, 9, 10, 11, 2]);
+    const sum2 = sumElementsByMultipliers(
+      value.substring(0, 9) + dv1,
+      [3, 4, 5, 6, 7, 8, 9, 10, 11, 2]
+    );
     const dv2 = sumToDV(sum2);
 
     return `${dv1}${dv2}`;
@@ -100,13 +111,12 @@ export class CNH extends Base {
    */
   validate(value: string | number): boolean {
     const cnh = clearValue(value, 11, {
-      fillZerosAtLeft: true,
       rejectEmpty: true,
       rejectIfLonger: true,
       rejectEqualSequence: true,
     });
 
-    return CNH.checksum(cnh) !== cnh.substring(9, 11);
+    return CNH.checksum(cnh.substring(0,9)) !== cnh.substring(9, 11);
   }
 
   /**

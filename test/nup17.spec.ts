@@ -11,7 +11,7 @@ describe('NUP17', () => {
       '23037001462202165',
       '23037001537202116',
       '23037001086202117',
-    ])('deve estar definido', (input) => {
+    ])('%s deve ser definido', (input) => {
       expect(new NUP17(input)).toBeDefined();
     });
 
@@ -25,7 +25,7 @@ describe('NUP17', () => {
       '3037001537202112', // caracteres a menos
       null,
       undefined,
-    ])('deve lançar erro', (input) => {
+    ])('%s deve lançar erro', (input) => {
       expect(() => new NUP17(input as any)).toThrow();
     });
   });
@@ -55,9 +55,9 @@ describe('NUP17', () => {
 
   describe('checksum', () => {
     test.each([
-      { num: '23037.001380/2021', expected: '11' },
-      { num: '23037.001434/2021', expected: '48' },
-      { num: '23037.001321/2021', expected: '42' },
+      { num: '230370013802021', expected: '11' },
+      { num: '230370014342021', expected: '48' },
+      { num: '230370013212021', expected: '42' },
       { num: '230370014622021', expected: '65' },
       { num: '230370015372021', expected: '16' },
       { num: '230370010862021', expected: '17' },
@@ -67,5 +67,13 @@ describe('NUP17', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+        
+    test.each(['23037001462202', '2303700146220211', ''])(
+      'deve lançar erro de dv',
+      (item) => {
+        expect(() => NUP17.checksum(item)).toThrow();
+      }
+    );
   });
 });

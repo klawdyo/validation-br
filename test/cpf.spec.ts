@@ -63,5 +63,14 @@ describe('CPF', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+    
+    test.each(['74172316', '1588648900', ''])(
+      '%s deve lançar erro de dv',
+      (item) => {
+        expect(() => CPF.checksum(item)).toThrow();
+      }
+    );
+
   });
 });

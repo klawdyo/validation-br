@@ -56,6 +56,13 @@ describe('CNPJ', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+    
+    test.each(['11222333000', '1122233300011', ''])(
+      'deve lançar erro de dv',
+      (item) => {
+        expect(() => CNPJ.checksum(item)).toThrow();
+      }
+    );
   });
 
   describe('mask', () => {
@@ -97,15 +104,24 @@ describe('CNPJ', () => {
     );
 
     test.each([
-      { num: 'A1.222.333/0001', expected: '50' },
-      { num: 'B1.222.333/0001', expected: '03' },
-      { num: 'C1.222.333/0001', expected: '67' },
+      { num: 'A12223330001', expected: '50' },
+      { num: 'B12223330001', expected: '03' },
+      { num: 'C12223330001', expected: '67' },
       { num: 'D12223330001', expected: '10' },
       { num: 'E12223330001', expected: '74' },
-    ])('dv() - Verificando se o DV gerado de %s está correto', (item) => {
+    ])('Deve gerar um DV correto a partir de %s ', (item) => {
       const calcDv = CNPJ.checksum(item.num);
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+
+    test.each(['A1222333000', 'B122233300011', ''])(
+      '%s deve lançar erro de dv',
+      (item) => {
+        expect(() => CNPJ.checksum(item)).toThrow();
+      }
+    );
+
   });
 });

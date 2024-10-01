@@ -119,5 +119,13 @@ describe('JudicialProcess', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+        
+    test.each(['0002080201251500499', '00020802012515004', ''])(
+      'deve lançar erro de dv',
+      (item) => {
+        expect(() => JudicialProcess.checksum(item)).toThrow();
+      }
+    );
   });
 });

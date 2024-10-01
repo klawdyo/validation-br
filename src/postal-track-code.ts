@@ -128,8 +128,10 @@ export class PostalTrackCode extends Base {
   }
 
   /**
+   * 
    * checksum()
    * Calcula o dígito verificador dos 8 números sem as letras, sem o DV e sem o código do país
+   * 
    */
   static checksum(value: string): string {
     if (!value) throw new EmptyValueException();

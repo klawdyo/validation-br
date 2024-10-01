@@ -136,8 +136,8 @@ export class TituloEleitor extends Base {
   }
 
   /**
-   *
-   * Calcula o dígito verificador
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
    */
   static checksum(value: string): string {

@@ -1,4 +1,4 @@
-import { PIS } from "../src/pis-pasep";
+import { PIS } from '../src/pis-pasep';
 
 describe('PIS', () => {
   describe('constructor', () => {
@@ -36,16 +36,16 @@ describe('PIS', () => {
       { num: '71282677380', expected: '712.82677.38-0' },
       { num: '23795126955', expected: '237.95126.95-5' },
       { num: '50012973803', expected: '500.12973.80-3' },
-    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {    
+    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {
       const masked = new PIS(item.num).mask();
 
       expect(masked).toBe(item.expected);
-      expect(masked).toMatch(/^\d{3}.\d{5}.\d{2}-\d{1}$/)
+      expect(masked).toMatch(/^\d{3}.\d{5}.\d{2}-\d{1}$/);
     });
   });
 
   describe('fake', () => {
-    test.each([...Array(5)])('fake() - Gera fakes sem máscara', () => {
+    test.each([...Array(5)])('deve gerar um fake válido', () => {
       const result = PIS.fake();
       expect(result).toBeDefined();
     });
@@ -56,13 +56,18 @@ describe('PIS', () => {
       { num: '7128267738', expected: '0' },
       { num: '2379512695', expected: '5' },
       { num: '5001297380', expected: '3' },
-    ])('dv() - Verificando se o DV gerado está correto', (item) => {
+    ])('%s deve gerar dv correto', (item) => {
       const calcDv = PIS.checksum(item.num);
 
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
+
+    test.each(['712826778', '71282677381', ''])(
+      '%s deve lançar erro de dv',
+      (item) => {
+        expect(() => PIS.checksum(item)).toThrow();
+      }
+    );
   });
 });
-
-

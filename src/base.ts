@@ -54,7 +54,9 @@ export abstract class Base {
   //
 
   /**
-   * Deve calcular o dígito verificador do número passado sem o dígito
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
+   *
    */
   static checksum(value: string): string | null {
     throw new Error('Should implement on child');

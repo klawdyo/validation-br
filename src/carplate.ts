@@ -50,7 +50,12 @@ export class CarPlate extends Base {
   // STATIC
   // 
   // 
-
+  
+  /**
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
+   *
+   */
   static checksum(): string | null {
     throw new NoChecksumException();
   }

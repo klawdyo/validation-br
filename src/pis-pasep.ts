@@ -40,7 +40,7 @@
  * @returns {Boolean}
  */
 
-import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
+import  { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError'
 import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
 
 import { Base } from "./base";
@@ -84,7 +84,7 @@ export class PIS extends Base {
       rejectIfShorter: true
     })
   
-    if (PIS.checksum(pis) !== pis.substring(10, 11)) {
+    if (PIS.checksum(pis.substring(0,10)) !== pis.substring(10, 11)) {
       throw new InvalidChecksumException()
     }
 
@@ -111,19 +111,16 @@ export class PIS extends Base {
   }
 
   /**
-   * dv()
-   * Calcula o dígito verificador
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
    *
-   * @param {Number|String} value
-   * @returns {String}
    */
   static checksum(value: string): string {
-    const pis = clearValue(value, 10, {
-      trimAtRight: true,
-      rejectEmpty: true,
-    })
+    if (!value) throw new EmptyValueException();
+    if(!/^\d{10}$/.test(value)) throw new InvalidFormatException()
+
   
-    const sum = sumElementsByMultipliers(pis, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
+    const sum = sumElementsByMultipliers(value, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
   
     return String(sumToDV(sum))
     
