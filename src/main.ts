@@ -1,7 +1,6 @@
-import { validate as cnh } from './cnh';
-import { validate as cnpj } from './cnpj';
-import { validate as cpf } from './cpf';
-import { validate as judicialProcess } from './judicialProcess';
+import { CNH, } from './cnh';
+import { CNPJ } from './cnpj';
+import { CPF, } from './cpf';
 import { validate as nup17 } from './nup17';
 import { validate as pisPasep } from './pisPasep';
 import { validate as postalCode } from './postalCode';
@@ -11,6 +10,7 @@ import { CarPlate } from './carplate';
 import { Phone } from './phone';
 import { PixKey } from './pix-key';
 import { PixCopyPaste } from './pix-copy-paste';
+import { JudicialProcess } from './judicial-process';
 
 
 function validate(fn: Function) {
@@ -22,12 +22,6 @@ function validate(fn: Function) {
   }
 }
 
-
-
-export const isCNH = (value: string | number): boolean => cnh(value);
-export const isCNPJ = (value: string | number): boolean => cnpj(value);
-export const isCPF = (value: string | number): boolean => cpf(value);
-export const isJudicialProcess = (value: string): boolean => judicialProcess(value);
 export const isPIS = (value: string): boolean => pisPasep(value);
 export const isPostalCode = (value: string): boolean => postalCode(value);
 export const isRenavam = (value: string): boolean => renavam(value);
@@ -35,7 +29,11 @@ export const isTituloEleitor = (value: string | number): boolean => tituloEleito
 export const isNUP17 = (value: string): boolean => nup17(value);
 
 
+export function isCNH(value: string) { return validate(() => new CNH(value)) }
+export function isCNPJ(value: string) { return validate(() => new CNPJ(value)) }
+export function isCPF(value: string) { return validate(() => new CPF(value)) }
 export function isCarPlate(value: string) { return validate(() => new CarPlate(value)) }
+export function isJudicialProcess(value: string) { return validate(() => new JudicialProcess(value)) }
 export function isPhone(value: string) { return validate(() => new Phone(value)) }
 export function isPixKey(value: string) { return validate(() => new PixKey(value)) }
 export function isPixCopyPaste(value: string) { return validate(() => new PixCopyPaste(value)) }
