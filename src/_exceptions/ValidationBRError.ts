@@ -22,7 +22,7 @@ export class EmptyValueException extends ValidationBRError {
   }
 }
 
-export class MaxLengthExcedeedException extends ValidationBRError {
+export class TooLongException extends ValidationBRError {
   constructor(){
     super('Número de caracteres excedido');
   }

@@ -1,4 +1,4 @@
-import  { EmptyValueException, MaxLengthExcedeedException, RepeatedSequenceException } from './_exceptions/ValidationBRError'
+import  { EmptyValueException, TooLongException, RepeatedSequenceException, TooShortException } from './_exceptions/ValidationBRError'
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
@@ -101,6 +101,8 @@ export function clearValue(
 
     const shouldrejectIfLonger = options.rejectIfLonger === true && length && clearedValue.length > length;
     if (shouldrejectIfLonger) {
+      throw new TooLongException()
+    }
     }
 
     const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
