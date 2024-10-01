@@ -60,107 +60,121 @@
  * @returns {Boolean}
  */
 
-import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
+import { InvalidChecksumException } from './_exceptions/ValidationBRError';
+import { Base } from './base';
+import {
+  sumElementsByMultipliers,
+  clearValue,
+  fakeNumber,
+  applyMask,
+} from './utils';
 
-/**
- * dv()
- * Calcula o dígito verificador
- *
- * @param {String} value
- * @returns {String}
- */
-export const dv = (value: string): string => {
-  const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true })
-  const nupReverse = nup.split('').reverse().join('')
+export class NUP17 extends Base {
+  protected _mask = '00000.000000/0000-00';
 
-  const sum1 = sumElementsByMultipliers(
-    nupReverse,
-    [...Array(15)].map((_, i) => i + 2),
-  )
+  constructor(protected _value: string) {
+    super(_value);
+    this.normalize();
 
-  const dv1 = _specificSumToDV(sum1)
-
-  const sum2 = sumElementsByMultipliers(
-    dv1 + nupReverse,
-    [...Array(16)].map((_, i) => i + 2),
-  )
-
-  const dv2 = _specificSumToDV(sum2)
-
-  return `${dv1}${dv2}`
-}
-
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export const mask = (value: string): string => applyMask(value, '00000.000000/0000-00')
-
-/**
- * fake()
- * Gera um número válido
- *
- * @param {Boolean} withMask Define se o número deve ser gerado com ou sem máscara
- * @returns {String}
- */
-export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(15, true)
-
-  const nup = `${num}${dv(String(num))}`
-
-  if (withMask) return mask(nup)
-  return nup
-}
-
-/**
- * validateOrFail()
- * Valida se um número é válido e
- * retorna uma exceção se não estiver
- *
- * @param {String} value Número a ser validado
- * @returns {Boolean}
- */
-export const validateOrFail = (value: string): boolean => {
-  const nup = clearValue(value, 17, {
-    rejectEmpty: true,
-    rejectIfLonger: true,
-  })
-
-  if (dv(nup) !== nup.substring(15, 17)) {
-    throw new InvalidChecksumException()
+    if (!this.validate()) {
+      throw new InvalidChecksumException();
+    }
   }
 
-  return true
-}
+  //
+  //
+  //
+  //
+  //
+  //
 
-/**
- * validate()
- * Valida se um número é válido
- *
- * @param {String} value Número a ser validado
- * @returns {Boolean}
- */
-export const validate = (value: string): boolean => {
-  try {
-    return validateOrFail(value)
-  } catch (error) {
-    return false
+  /**
+   * 
+   * 
+   */
+  protected normalize(): void {
+    this._value = this._value.replace(/([./-])/g, '');
   }
-}
 
-export default validate
+  /**
+   * 
+   * Valida se um número é válido e
+   * retorna uma exceção se não estiver
+   * 
+   */
+  protected validate(): boolean {
+    const nup = clearValue(this._value, 17, {
+      rejectEmpty: true,
+      rejectIfLonger: true,
+      rejectIfShorter: true
+    });
 
-function _specificSumToDV(sum: number): number {
-  const rest = 11 - (sum % 11)
-  const exceptions = [
-    { rest: 11, dv: 1 },
-    { rest: 10, dv: 0 },
-  ]
+    if (NUP17.checksum(nup) !== nup.substring(15, 17)) {
+      throw new InvalidChecksumException();
+    }
 
-  const inExceptions = exceptions.find((item) => item.rest === rest)
+    return true;
+  }
 
-  return !inExceptions ? rest : inExceptions.dv
+  //
+  //
+  //
+  //
+  //
+  //
+
+  /**
+   * 
+   * fake()
+   * Gera um número válido
+   *
+   */
+  static fake(): NUP17 {
+    const fake = fakeNumber(15, true);
+    return new NUP17(`${fake}${NUP17.checksum(String(fake))}`);
+  }
+
+  /**
+   * 
+   * checksum()
+   * Calcula o dígito verificador
+   *
+   */
+  static checksum(value: string): string {
+    const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true });
+    const nupReverse = nup.split('').reverse().join('');
+
+    const sum1 = sumElementsByMultipliers(
+      nupReverse,
+      [...Array(15)].map((_, i) => i + 2)
+    );
+
+    const dv1 = NUP17.specificSumToDV(sum1);
+
+    const sum2 = sumElementsByMultipliers(
+      dv1 + nupReverse,
+      [...Array(16)].map((_, i) => i + 2)
+    );
+
+    const dv2 = NUP17.specificSumToDV(sum2);
+
+    return `${dv1}${dv2}`;
+  }
+
+  /**
+   * 
+   * Calculo específico da soma para DV
+   * 
+   */
+  private static specificSumToDV(sum: number): number {
+    const rest = 11 - (sum % 11);
+    const exceptions = [
+      { rest: 11, dv: 1 },
+      { rest: 10, dv: 0 },
+    ];
+
+    const inExceptions = exceptions.find((item) => item.rest === rest);
+
+    return !inExceptions ? rest : inExceptions.dv;
+  }
 }
