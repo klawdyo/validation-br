@@ -3,7 +3,6 @@ import { CNPJ } from './cnpj';
 import { CPF, } from './cpf';
 import { NUP17 } from './nup17';
 import { PIS } from './pis-pasep';
-import { validate as postalCode } from './postalCode';
 import { validate as renavam } from './renavam';
 import { validate as tituloEleitor } from './tituloEleitor';
 import { CarPlate } from './carplate';
@@ -11,6 +10,7 @@ import { Phone } from './phone';
 import { PixKey } from './pix-key';
 import { PixCopyPaste } from './pix-copy-paste';
 import { JudicialProcess } from './judicial-process';
+import { PostalTrackCode } from './postal-track-code';
 
 
 function validate(fn: Function) {
@@ -22,7 +22,6 @@ function validate(fn: Function) {
   }
 }
 
-export const isPostalCode = (value: string): boolean => postalCode(value);
 export const isRenavam = (value: string): boolean => renavam(value);
 export const isTituloEleitor = (value: string | number): boolean => tituloEleitor(value);
 
@@ -37,4 +36,5 @@ export function isPhone(value: string) { return validate(() => new Phone(value))
 export function isPIS(value: string) { return validate(() => new PIS(value)) }
 export function isPixKey(value: string) { return validate(() => new PixKey(value)) }
 export function isPixCopyPaste(value: string) { return validate(() => new PixCopyPaste(value)) }
+export function isPostalTrackCode(value: string) { return validate(() => new PostalTrackCode(value)) }
 
