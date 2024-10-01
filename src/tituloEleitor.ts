@@ -52,93 +52,111 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
+import {
+  InvalidChecksumException,
+  InvalidFormatException,
+} from './_exceptions/ValidationBRError';
+import {
+  sumElementsByMultipliers,
+  clearValue,
+  fakeNumber,
+  applyMask,
+} from './utils';
 
-/**
- * dv()
- * Calcula o dígito verificador
- *
- * @param {Number|String} value
- * @returns {String}
- */
-export const dv = (value: string | number): string => {
-  const titulo = clearValue(value, 10, {
-    fillZerosAtLeft: true,
-    trimAtRight: true,
-    rejectEmpty: true,
-  })
+import { Base } from './base';
 
-  const sum1 = sumElementsByMultipliers(titulo.substring(0, 8), [2, 3, 4, 5, 6, 7, 8, 9])
-  const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11
+export class TituloEleitor extends Base {
+  protected _mask = '0000.0000.0000';
 
-  const sum2 = sumElementsByMultipliers(titulo.substring(8, 10) + dv1, [7, 8, 9])
-  const dv2 = sum2 % 11 >= 10 ? 0 : sum2 % 11
+  constructor(protected _value: string) {
+    super(_value);
+    this.normalize();
 
-  return `${dv1}${dv2}`
-}
-
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export const mask = (value: string | number): string => applyMask(value, '0000.0000.0000')
-
-/**
- * fake()
- * Gera um número válido
- *
- * @returns {String}
- */
-export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(8, true)
-
-  const uf = (Math.random() * 27 + 1).toFixed(0).padStart(2, '0')
-
-  const titulo = `${num}${uf}${dv(num + uf)}`
-
-  if (withMask) return mask(titulo)
-  return titulo
-}
-
-/**
- * validateOrFail()
- * Valida se um número é válido e
- * retorna uma exceção se não estiver
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export const validateOrFail = (value: string | number): boolean => {
-  const titulo = clearValue(value, 12, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
-
-  if (dv(titulo) !== titulo.substring(10, 12)) {
-    throw ValidationBRError.INVALID_DV
+    if (!this.validate()) {
+      throw new InvalidChecksumException();
+    }
   }
 
-  return true
-}
+  //
+  //
+  //
+  //
+  //
+  //
 
-/**
- * validate()
- * Valida se um número é válido
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export const validate = (value: string | number): boolean => {
-  try {
-    return validateOrFail(value)
-  } catch (error) {
-    return false
+  protected normalize(): void {
+    this._value = this._value.replace(/([\s.])/g, '');
+  }
+
+  /**
+   * validateOrFail()
+   * Valida se um número é válido e
+   * retorna uma exceção se não estiver
+   *
+   * @param {String|Number} value Número a ser validado
+   * @returns {Boolean}
+   */
+  protected validate(): boolean {
+    const titulo = clearValue(this._value, 12, {
+      rejectEmpty: true,
+      rejectIfLonger: true,
+      rejectIfShorter: true,
+      rejectEqualSequence: true,
+    });
+
+    if (
+      TituloEleitor.checksum(titulo.substring(0, 10)) !==
+      titulo.substring(10, 12)
+    ) {
+      throw new InvalidChecksumException();
+    }
+
+    return true;
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+
+  /**
+   * fake()
+   * Gera um número válido
+   *
+   * @returns {String}
+   */
+  static fake(): TituloEleitor {
+    const num = fakeNumber(8, true);
+
+    const uf = (Math.random() * 27 + 1).toFixed(0).padStart(2, '0');
+
+    return new TituloEleitor(`${num}${uf}${TituloEleitor.checksum(num + uf)}`);
+  }
+
+  /**
+   * checksum()
+   * Calcula o dígito verificador de um número SEM o dígito incluído
+   *
+   */
+  static checksum(value: string): string {
+    if (!/^\d{10}$/.test(value)) {
+      throw new InvalidFormatException();
+    }
+
+    const sum1 = sumElementsByMultipliers(
+      value.substring(0, 8),
+      [2, 3, 4, 5, 6, 7, 8, 9]
+    );
+    const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11;
+
+    const sum2 = sumElementsByMultipliers(
+      value.substring(8, 10) + dv1,
+      [7, 8, 9]
+    );
+    const dv2 = sum2 % 11 >= 10 ? 0 : sum2 % 11;
+
+    return `${dv1}${dv2}`;
   }
 }
-
-export default validate

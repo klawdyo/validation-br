@@ -72,8 +72,8 @@ describe('clearValue()', () => {
   })
 
   test('Deve retornar erro se receber um valor com mais caracteres que o máximo', () => {
-    expect(clearValue('1234', 4, { rejectHigherLength: true })).toBe('1234')
-    expect(() => clearValue('12345', 4, { rejectHigherLength: true })).toThrow()
+    expect(clearValue('1234', 4, { rejectIfLonger: true })).toBe('1234')
+    expect(() => clearValue('12345', 4, { rejectIfLonger: true })).toThrow()
   })
 
   test('Deve retornar o mesmo valor inicial', () => {

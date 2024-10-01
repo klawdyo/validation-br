@@ -19,3 +19,6 @@ coverage
 .env
 
 docs/*
+
+# Documento de modelo
+____modelo*.ts
