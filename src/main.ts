@@ -38,16 +38,3 @@ export function isPIS(value: string) { return validate(() => new PIS(value)) }
 export function isPixKey(value: string) { return validate(() => new PixKey(value)) }
 export function isPixCopyPaste(value: string) { return validate(() => new PixCopyPaste(value)) }
 
-// TODO: Remover esse default. Remover os exports acima também
-export default {
-  isCNH,
-  isCNPJ,
-  isCPF,
-  isJudicialProcess,
-  isPIS,
-  isPostalCode,
-  isRenavam,
-  isTituloEleitor,
-  isNUP17,
-  isCarPlate
-}
