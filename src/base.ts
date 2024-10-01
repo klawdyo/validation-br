@@ -42,8 +42,8 @@ export abstract class Base {
   /**
    * Deve devolver o número com a máscara
    */
-  mask(): string | null {
-    if (!this._mask) return null;
+  mask(): string {
+    if (!this._mask) return this._value;
     return new Mask(this._value).apply(this._mask);
   }
 
