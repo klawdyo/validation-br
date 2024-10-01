@@ -28,6 +28,12 @@ export class TooLongException extends ValidationBRError {
   }
 }
 
+export class TooShortException extends ValidationBRError {
+  constructor(){
+    super('Número de caracteres muito curto');
+  }
+}
+
 export class RepeatedSequenceException extends ValidationBRError {
   constructor(){
     super('Sequência de números repetidos não permitida');

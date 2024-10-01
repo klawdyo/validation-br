@@ -103,6 +103,10 @@ export function clearValue(
     if (shouldrejectIfLonger) {
       throw new TooLongException()
     }
+
+    const shouldrejectIfShorter = options.rejectIfShorter === true && length && clearedValue.length < length;
+    if (shouldrejectIfShorter) {
+      throw new TooShortException()
     }
 
     const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
@@ -213,6 +217,9 @@ interface ClearValueOptions {
 
   // Rejeita se o número for maior que o tamanho definido
   rejectIfLonger?: boolean;
+
+  // Rejeita uma sequência de números iguais
+  rejectIfShorter?: boolean;
 
   // Rejeita uma sequência de números iguais
   rejectEqualSequence?: boolean;
