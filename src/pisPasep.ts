@@ -96,7 +96,7 @@ export const validateOrFail = (value: string | number): boolean => {
   const pis = clearValue(value, 11, {
     fillZerosAtLeft: true,
     rejectEmpty: true,
-    rejectHigherLength: true,
+    rejectIfLonger: true,
     rejectEqualSequence: true,
   })
 

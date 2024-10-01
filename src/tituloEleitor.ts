@@ -115,7 +115,7 @@ export const validateOrFail = (value: string | number): boolean => {
   const titulo = clearValue(value, 12, {
     fillZerosAtLeft: true,
     rejectEmpty: true,
-    rejectHigherLength: true,
+    rejectIfLonger: true,
     rejectEqualSequence: true,
   })
 

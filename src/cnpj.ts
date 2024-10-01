@@ -121,7 +121,7 @@ export class CNPJ extends Base {
     const cnpj = clearValue(this._value, 14, {
       fillZerosAtLeft: false,
       rejectEmpty: true,
-      rejectHigherLength: true,
+      rejectIfLonger: true,
       rejectEqualSequence: true,
     });
 

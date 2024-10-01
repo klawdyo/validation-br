@@ -103,7 +103,7 @@ export class CPF extends Base {
     const cpf = clearValue(this._value, 11, {
       fillZerosAtLeft: true,
       rejectEmpty: true,
-      rejectHigherLength: true,
+      rejectIfLonger: true,
       rejectEqualSequence: true,
     });
 

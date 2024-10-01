@@ -99,9 +99,8 @@ export function clearValue(
       throw new EmptyValueException()
     }
 
-    const shouldRejectHigherLength = options.rejectHigherLength === true && length && clearedValue.length > length;
-    if (shouldRejectHigherLength) {
-      throw new MaxLengthExcedeedException()
+    const shouldrejectIfLonger = options.rejectIfLonger === true && length && clearedValue.length > length;
+    if (shouldrejectIfLonger) {
     }
 
     const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
@@ -211,7 +210,7 @@ interface ClearValueOptions {
   rejectEmpty?: boolean;
 
   // Rejeita se o número for maior que o tamanho definido
-  rejectHigherLength?: boolean;
+  rejectIfLonger?: boolean;
 
   // Rejeita uma sequência de números iguais
   rejectEqualSequence?: boolean;
