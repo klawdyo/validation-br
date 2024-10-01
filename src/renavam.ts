@@ -33,90 +33,95 @@
  *
  *
  */
+import {
+  InvalidChecksumException,
+  InvalidFormatException,
+} from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, clearValue, fakeNumber } from './utils';
 
-import  { InvalidChecksumException } from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
+import { Base } from './base';
 
-/**
- * dv()
- * Calcula o dígito verificador
- *
- * @param {Number|String} value
- * @returns {String}
- */
-export const dv = (value: string | number): string => {
-  const renavam = clearValue(value, 10, {
-    fillZerosAtLeft: true,
-    trimAtRight: true,
-    rejectEmpty: true,
-  })
+export class Renavam extends Base {
+  protected _mask = '0000000000-0';
 
-  const sum1 = sumElementsByMultipliers(renavam, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) * 10
-  const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11
+  constructor(protected _value: string) {
+    super(_value);
+    this.normalize();
 
-  return `${dv1}`
-}
-
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export const mask = (value: string | number): string => applyMask(value, '0000000000-0')
-
-/**
- * fake()
- * Gera um número válido
- *
- * @returns {String}
- */
-export const fake = (withMask: boolean = false): string => {
-  const value = fakeNumber(10, true)
-
-  const renavam = `${value}${dv(value)}`
-
-  if (withMask) return mask(renavam)
-
-  return renavam
-}
-
-/**
- * validateOrFail()
- * Valida se um número é válido e
- * retorna uma exceção se não estiver
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export const validateOrFail = (value: string | number): boolean => {
-  const renavam = clearValue(value, 11, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectIfLonger: true,
-    rejectEqualSequence: true,
-  })
-
-  if (dv(renavam) !== renavam.substring(10, 11)) {
-    throw new InvalidChecksumException()
+    if (!this.validate()) {
+      throw new InvalidChecksumException();
+    }
   }
 
-  return true
-}
+  //
+  //
+  //
+  //
+  //
+  //
 
-/**
- * validate()
- * Valida se um número é válido
- *
- * @param {String|Number} value Número a ser validado
- * @returns {Boolean}
- */
-export const validate = (value: string | number): boolean => {
-  try {
-    return validateOrFail(value)
-  } catch (error) {
-    return false
+  /**
+   *
+   *
+   *
+   */
+  protected normalize(): void {    
+    this._value = this._value.replace(/([-])/g, '');
+  }
+
+  /**
+   *
+   * Valida se um número é válido e
+   * retorna uma exceção se não estiver
+   *
+   */
+  protected validate(): boolean {
+    const renavam = clearValue(this._value, 11, {
+      rejectEmpty: true,
+      rejectIfLonger: true,
+      rejectIfShorter: true,
+      rejectEqualSequence: true,
+    });    
+
+    if (Renavam.checksum(renavam.substring(0,10)) !== renavam.substring(10, 11)) {
+      throw new InvalidChecksumException();
+    }
+
+    return true;
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+
+  /**
+   *
+   * Gera um número válido
+   *
+   */
+  static fake(): Renavam {
+    const value = fakeNumber(10, true);
+
+    return new Renavam(`${value}${Renavam.checksum(value)}`);
+  }
+
+  /**
+   *
+   * Calcula o dígito verificador
+   *
+   */
+  static checksum(value: string): string {
+    if (!/^\d{10}$/.test(value)) {
+      throw new InvalidFormatException();
+    }
+
+    const sum1 =
+      sumElementsByMultipliers(value, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2]) * 10;
+    const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11;
+
+    return `${dv1}`;
   }
 }
-
-export default validate
