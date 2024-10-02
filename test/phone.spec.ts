@@ -1,7 +1,19 @@
 import { Phone } from '../src/phone';
 
-const cellPhones = ['+5584999580685', '+55 84 9 9958 0685', '+55 (84) 9 9958-0685', '+55 (84) 99958-0685', '84 99958-0685'];
-const phones = ['+558433311454', '84 3331-1454', '84 3331 1454', '(84) 3331 1454', '84-3331-1454'];
+const cellPhones = [
+  '+5584999580685',
+  '+55 84 9 9958 0685',
+  '+55 (84) 9 9958-0685',
+  '+55 (84) 99958-0685',
+  '84 99958-0685',
+];
+const phones = [
+  '+558433311454',
+  '84 3331-1454',
+  '84 3331 1454',
+  '(84) 3331 1454',
+  '84-3331-1454',
+];
 
 describe('Phone', () => {
   describe('constructor', () => {
@@ -30,7 +42,7 @@ describe('Phone', () => {
       expect(fake).toBeDefined();
     });
 
-    test.each([...Array(5)])('Cria um fake com DDD 11', () => {
+    test.each([...Array(50)])('Cria um fake com DDD 11', () => {
       const fake = Phone.fake({ ddd: '11' });
       expect(fake).toBeDefined();
       expect(fake.ddd).toBe('11');
@@ -39,15 +51,15 @@ describe('Phone', () => {
     test.each([...Array(5)])('Cria um fake com isMobile=true', () => {
       const fake = Phone.fake({ isMobile: true });
       expect(fake).toBeDefined();
-      expect(fake.isMobile).toBeTruthy()
-      expect(fake.phone.length).toBe(9)
+      expect(fake.isMobile).toBeTruthy();
+      expect(fake.phone.length).toBe(9);
     });
 
     test.each([...Array(5)])('Cria um fake com isLandline=true', () => {
-      const fake = Phone.fake({ isLandline: true });      
+      const fake = Phone.fake({ isLandline: true });
       expect(fake).toBeDefined();
-      expect(fake.isMobile).toBeFalsy()
-      expect(fake.phone.length).toBe(8)
+      expect(fake.isMobile).toBeFalsy();
+      expect(fake.phone.length).toBe(8);
     });
   });
 
