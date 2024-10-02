@@ -42,19 +42,15 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError, {
+import {
   EmptyValueException,
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
-import {
-  sumElementsByMultipliers,
-  clearValue,
-  fakeNumber,
-  randomLetter,
-} from './utils';
+import { sumElementsByMultipliers, clearValue } from './utils';
 
 import { Base } from './base';
+import { Random } from './_helpers/random';
 
 export class PostalTrackCode extends Base {
   protected _mask = null;
@@ -76,12 +72,12 @@ export class PostalTrackCode extends Base {
   //
 
   /**
-   * 
-   * 
-   * 
+   *
+   *
+   *
    */
   protected normalize(): void {
-    this._value = this._value.toLocaleUpperCase().trim()
+    this._value = this._value.toLocaleUpperCase().trim();
   }
 
   /**
@@ -94,12 +90,15 @@ export class PostalTrackCode extends Base {
    */
   protected validate(): boolean {
     if (!/^[a-z]{2}([\d]{9})[a-z]{2}$/gi.test(String(this._value))) {
-      throw new InvalidFormatException()
+      throw new InvalidFormatException();
     }
 
     const postalCode = clearValue(this._value.substring(2, 11), 9);
 
-    if (PostalTrackCode.checksum(postalCode.substring(0, 8)) !== postalCode.substring(8, 9)) {
+    if (
+      PostalTrackCode.checksum(postalCode.substring(0, 8)) !==
+      postalCode.substring(8, 9)
+    ) {
       throw new InvalidChecksumException();
     }
 
@@ -128,14 +127,14 @@ export class PostalTrackCode extends Base {
   }
 
   /**
-   * 
+   *
    * checksum()
    * Calcula o dígito verificador dos 8 números sem as letras, sem o DV e sem o código do país
-   * 
+   *
    */
   static checksum(value: string): string {
     if (!value) throw new EmptyValueException();
-    if(!/^\d{8}$/.test(value)) throw new InvalidFormatException()
+    if (!/^\d{8}$/.test(value)) throw new InvalidFormatException();
 
     const sum = sumElementsByMultipliers(value, [8, 6, 4, 2, 3, 5, 9, 7]);
     const rest = sum % 11;
@@ -146,7 +145,7 @@ export class PostalTrackCode extends Base {
     ];
 
     const specifity = specificities.find((item) => item.rest === rest);
-    const DV = specifity ? specifity.dv : 11 - rest;    
+    const DV = specifity ? specifity.dv : 11 - rest;
 
     return String(DV);
   }

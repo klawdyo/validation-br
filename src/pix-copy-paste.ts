@@ -8,7 +8,7 @@ export class PixCopyPaste extends Base {
   constructor(protected _value: string) {
     super(_value);
 
-    this.normalize(_value);
+    this.normalize();
 
     if (!this.validate()) {
       throw new InvalidFormatException()
@@ -38,8 +38,8 @@ export class PixCopyPaste extends Base {
     return true;
   }
 
-  protected normalize(value: string): void {
-    this._value = value.trim();
+  protected normalize(): void {
+    this._value = this._value.trim();
   }
 
   //
