@@ -26,12 +26,12 @@ export abstract class Base {
   /**
    * Deve remover apenas pontos e traços.
    */
-  protected abstract normalize(value: string): void;
+  protected abstract normalize(options?: any): void;
 
   /**
    * Deve aplicar as regras de validação do dígito verificador do documento
    */
-  protected abstract validate(value: string): boolean;
+  protected abstract validate(options?: any): boolean;
 
   //
   //
