@@ -5,13 +5,27 @@
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isPhone.ts
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isDDD.ts
 
-- [ ] Conta bancária
+- ~~[ ] Conta bancária~~
 
-- [ ] isPixKey - verifica se é um dos tipos de chaves
+- [x] isPixKey - verifica se é um dos tipos de chaves
+
+- [x] isPixCopyPaste - verifica se é um dos tipos de chaves
 
 
-- [ ] isCEP
+- [x] isCEP
   - https://github.com/ogilvieira/validator-brasil/blob/main/src/isCEP.ts
+  - @klawdyo/qrdapio
+
+- [x] isUF
+  - @klawdyo/qrdapio
+
+- isBoleto
+  - Construtor pode receber linha digitável
+  - Pra receber o código de barras, use o static fromBarcode()
+  - mask() pode devolver a linha digitável ou o código de barras. Por padrão, a linha digitável
+  - toString() devolve a linha digitável
+  - toBarcode() devolve a linha digitável
+  - parse() é chamado no início e já separa as partes
 
 - [ ] isCAEPF
   - https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/caepf/legislacao
