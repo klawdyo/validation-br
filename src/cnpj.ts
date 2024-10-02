@@ -82,13 +82,11 @@ import {
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 import {
-  sumElementsByMultipliers,
   sumToDV,
   clearValue,
-  fakeNumber,
-  applyMask,
 } from './utils';
 
 export class CNPJ extends Base {
@@ -162,7 +160,7 @@ export class CNPJ extends Base {
    */
   static fake(options: Partial<FakeInput> = {}): CNPJ {
     const defaultOptions = { alphanumeric: true, ...options };
-    const num = fakeNumber(12, true, defaultOptions.alphanumeric);
+    const num = Random.number(12, true, defaultOptions.alphanumeric);
     return new CNPJ(`${num}${CNPJ.checksum(num)}`);
   }
 }

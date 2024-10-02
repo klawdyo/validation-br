@@ -37,9 +37,10 @@
  * fake()
  */
 
-import  ValidationBRError, { InvalidFormatException } from './_exceptions/ValidationBRError';
-import { fakeNumber } from './utils';
-import { arrayRandom } from './_helpers/array_random';
+import ValidationBRError, {
+  InvalidFormatException,
+} from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 
 type FakeSettings = {
@@ -53,7 +54,7 @@ type MaskSettings = {
 };
 
 export class Phone extends Base {
-  protected _mask  = null;
+  protected _mask = null;
 
   private _regex = /^(?<ddi>\+55)?(?<ddd>\d{2})(?<phone>9\d{8}|[34]\d{7})$/;
   // private _parts = { ddd: '', phone: '', isMobile: false };
@@ -228,7 +229,7 @@ export class Phone extends Base {
     if (inputInvalidDDD) throw new DDDNotFoundException();
 
     // Se o DDD não estiver preenchido, escolha um da lista
-    const ddd = config?.ddd ?? arrayRandom(Phone._ddds);
+    const ddd = config?.ddd ?? Random.fromArray(Phone._ddds);
 
     // Prefixos
     const mobilePrefixes = ['99', '98', '97'];
@@ -236,12 +237,12 @@ export class Phone extends Base {
 
     // Se não informar se quer mobile ou fixo, gere o tipo
     let firstPart;
-    if (config?.isMobile) firstPart = arrayRandom(mobilePrefixes);
-    else if (config?.isLandline) firstPart = arrayRandom(landLinePrefixes);
-    else firstPart = arrayRandom([...mobilePrefixes, ...landLinePrefixes]);
-    
+    if (config?.isMobile) firstPart = Random.fromArray(mobilePrefixes);
+    else if (config?.isLandline) firstPart = Random.fromArray(landLinePrefixes);
+    else firstPart = Random.fromArray([...mobilePrefixes, ...landLinePrefixes]);
+
     // Pega o restante do número aleatoriamente
-    const number = fakeNumber(7, true);
+    const number = Random.number(7, true);
     const phone = `+55${ddd}${firstPart}${number}`;
 
     return new Phone(phone);

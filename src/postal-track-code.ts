@@ -119,8 +119,8 @@ export class PostalTrackCode extends Base {
    *
    */
   static fake(): PostalTrackCode {
-    const num = fakeNumber(8, true);
-    const letter = `${randomLetter()}${randomLetter()}`
+    const num = Random.number(8, true);
+    const letter = `${Random.alpha(2)}`;
 
     return new PostalTrackCode(
       `${letter}${num}${PostalTrackCode.checksum(num)}BR`

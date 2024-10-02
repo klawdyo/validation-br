@@ -83,11 +83,10 @@ import ValidationBRError, {
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 import {
   clearValue,
-  fakeNumber,
-  applyMask,
   insertAtPosition,
   removeFromPosition,
 } from './utils';
@@ -204,7 +203,7 @@ export class JudicialProcess extends Base {
    * @returns {String}
    */
   static fake(options: Partial<FakeOptions> = {}): JudicialProcess {
-    const num = fakeNumber(7, true);
+    const num = Random.number(7, true);
 
     //
     if (options.court) JudicialProcess.validateCourt(options.court);
@@ -212,12 +211,12 @@ export class JudicialProcess extends Base {
     if (options.year) JudicialProcess.validateYear(options.year);
     if (options.origin) JudicialProcess.validateOrigin(options.origin);
 
-    let court1 = options.court || fakeNumber(1, true); // Não pode ser '0'
+    let court1 = options.court || Random.number(1, true); // Não pode ser '0'
     court1 = court1 === '0' ? '1' : court1;
 
     const court2 = options.subCourt || JudicialProcess.getFakeSubCourt();
-    const origin = options.origin || fakeNumber(4, true);
-    const year = options.year || new Date().getFullYear() - +fakeNumber(1);
+    const origin = options.origin || Random.number(4, true);
+    const year = options.year || new Date().getFullYear() - +Random.number(1);
 
     const court = `${court1}${court2}`;
 
@@ -271,7 +270,7 @@ export class JudicialProcess extends Base {
   private static getFakeSubCourt(
     court: string | undefined = undefined
   ): string {
-    court = court ?? fakeNumber(2, true).toString();
+    court = court ?? Random.number(2, true).toString();
     return !court || +court === 0 ? '01' : court;
   }
 

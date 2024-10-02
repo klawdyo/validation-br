@@ -37,9 +37,10 @@ import {
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
-import { sumElementsByMultipliers, clearValue, fakeNumber } from './utils';
+import { sumElementsByMultipliers, clearValue } from './utils';
 
 import { Base } from './base';
+import { Random } from './_helpers/random';
 
 export class Renavam extends Base {
   protected _mask = '0000000000-0';
@@ -103,7 +104,7 @@ export class Renavam extends Base {
    *
    */
   static fake(): Renavam {
-    const value = fakeNumber(10, true);
+    const value = Random.number(10, true);
 
     return new Renavam(`${value}${Renavam.checksum(value)}`);
   }

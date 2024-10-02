@@ -8,7 +8,7 @@
 
 import { Base } from "./base";
 import { InvalidFormatException, NoChecksumException } from "./_exceptions/ValidationBRError";
-import { fakeNumber, randomLetter } from "./utils";
+import { Random } from "./_helpers/random";
 
 export class CarPlate extends Base {
 
@@ -56,12 +56,12 @@ export class CarPlate extends Base {
    * Calcula o dígito verificador de um número SEM o dígito incluído
    *
    */
-  static checksum(): string | null {
+  static checksum(value?: string): string {
     throw new NoChecksumException();
   }
 
   static fake(): CarPlate {
-    const fake = `${randomLetter()}${randomLetter()}${randomLetter()}${fakeNumber(1)}${randomLetter()}${fakeNumber(2, true)}`;
+    const fake = `${Random.alpha(3)}${Random.number(1)}${Random.alpha()}${Random.number(2, true)}`;
     return new CarPlate(fake)
   }
 }

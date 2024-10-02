@@ -61,12 +61,11 @@
  */
 
 import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
   clearValue,
-  fakeNumber,
-  applyMask,
 } from './utils';
 
 export class NUP17 extends Base {
@@ -130,7 +129,7 @@ export class NUP17 extends Base {
    *
    */
   static fake(): NUP17 {
-    const fake = fakeNumber(15, true);
+    const fake = Random.number(15, true);
     return new NUP17(`${fake}${NUP17.checksum(String(fake))}`);
   }
 

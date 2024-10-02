@@ -59,13 +59,12 @@
  */
 
 import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
   sumToDV,
   clearValue,
-  fakeNumber,
-  applyMask,
 } from './utils';
 
 export class CPF extends Base {
@@ -128,7 +127,7 @@ export class CPF extends Base {
    * @returns {String}
    */
   static fake(): CPF {
-    const num = fakeNumber(9, true);
+    const num = Random.number(9, true);
     return new CPF(`${num}${CPF.checksum(num)}`);
   }
 

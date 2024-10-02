@@ -54,14 +54,17 @@
  * @returns {Boolean}
  */
 
-import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import {
+  EmptyValueException,
+  InvalidChecksumException,
+  InvalidFormatException,
+} from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
 import {
   sumElementsByMultipliers,
   sumToDV,
   clearValue,
-  applyMask,
-  fakeNumber,
 } from './utils';
 
 export class CNH extends Base {
@@ -70,21 +73,55 @@ export class CNH extends Base {
   constructor(protected _value: string) {
     super(_value);
     this.normalize();
+
+    if (!this.validate()) {
+      throw new InvalidChecksumException();
+    }
   }
+
+  //
+  //
+  //
+  //
+  //
+  //
 
   protected normalize(): void {
     this._value = this._value.replace(/^[.-]$/, '');
   }
 
   /**
+   * validateOrFail()
+   * Valida se um número é válido e
+   * retorna uma exceção se não estiver
+   */
+  protected validate(): boolean {
+    const cnh = clearValue(this._value, 11, {
+      rejectEmpty: true,
+      rejectIfLonger: true,
+      rejectIfShorter: true,
+      rejectEqualSequence: true,
+    });
+
+    return CNH.checksum(cnh.substring(0, 9)) === cnh.substring(9, 11);
+  }
+
+  //
+  //
+  //
+  //
+  //
+  //
+
+  /**
+   *
    * checksum()
    * Calcula o dígito verificador de um número SEM o dígito incluído
    *
    */
   static checksum(value: string): string {
     if (!value) throw new EmptyValueException();
-    if(!/^\d{9}$/.test(value)) throw new InvalidFormatException()
-
+    if (!/^\d{9}$/.test(value)) throw new InvalidFormatException();
 
     const sum1 = sumElementsByMultipliers(
       value.substring(0, 9),
@@ -102,30 +139,12 @@ export class CNH extends Base {
   }
 
   /**
-   * validateOrFail()
-   * Valida se um número é válido e
-   * retorna uma exceção se não estiver
    *
-   * @param {String|Number} value Número a ser validado
-   * @returns {Boolean}
-   */
-  validate(value: string | number): boolean {
-    const cnh = clearValue(value, 11, {
-      rejectEmpty: true,
-      rejectIfLonger: true,
-      rejectEqualSequence: true,
-    });
-
-    return CNH.checksum(cnh.substring(0,9)) !== cnh.substring(9, 11);
-  }
-
-  /**
    * Cria um número fake
    *
-   * @returns String Número fake porém válido
    */
   static fake(): CNH {
-    const value = fakeNumber(9, true);
+    const value = Random.number(9, true);
     return new CNH(`${value}${CNH.checksum(value)}`);
   }
 }

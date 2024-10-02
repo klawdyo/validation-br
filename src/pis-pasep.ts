@@ -41,9 +41,10 @@
  */
 
 import  { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
+import { sumElementsByMultipliers, sumToDV, clearValue } from './utils'
 
 import { Base } from "./base";
+import { Random } from './_helpers/random';
 
 export class PIS extends Base {
   protected _mask = '000.00000.00-0';
@@ -105,7 +106,7 @@ export class PIS extends Base {
    * @returns {String}
    */
   static fake(): PIS {
-    const num = fakeNumber(10, true)
+    const num = Random.number(10, true)
 
     return new PIS(`${num}${PIS.checksum(num)}`)
   }

@@ -59,11 +59,10 @@ import {
 import {
   sumElementsByMultipliers,
   clearValue,
-  fakeNumber,
-  applyMask,
 } from './utils';
 
 import { Base } from './base';
+import { Random } from './_helpers/random';
 
 export class TituloEleitor extends Base {
   protected _mask = '0000.0000.0000';
@@ -128,7 +127,7 @@ export class TituloEleitor extends Base {
    * @returns {String}
    */
   static fake(): TituloEleitor {
-    const num = fakeNumber(8, true);
+    const num = Random.number(8, true);
 
     const uf = (Math.random() * 27 + 1).toFixed(0).padStart(2, '0');
 

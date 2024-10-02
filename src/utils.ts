@@ -46,29 +46,6 @@ export function sumElementsByMultipliers(value: string, multiplier: number[]): n
 }
 
 /**
- * fakeNumber()
- * Cria um número aleatório com o número de caracteres
- *
- * @example
- * fakeNumber(8, true) // -> 00083159
- * fakeNumber(4) // -> 831
- *
- * @param {Integer} length
- * @param {Boolean} forceLength Adiciona zeros à esquerda para ter os números de caractes exatos
- * @returns {String}
- */
-export function fakeNumber(length: number, forceLength = false, isAlpha = false): string {
-  let value: string;
-
-  if (isAlpha) value = Math.round(Math.random() * 36 ** length).toString(36).toLocaleUpperCase()
-  else value = Math.floor(Math.random() * 10 ** length).toString()
-
-  if (forceLength) return String(value).padStart(length, '0')
-
-  return String(value)
-}
-
-/**
  * Limpa um número informado, retirando caracteres diferentes de números,
  * preenchendo com zeros à esquerda se for menor que o tamanho exato e
  * removendo uma parte do número se for maior que tamanho definido.
@@ -161,46 +138,6 @@ export function removeFromPosition(
   return [value.slice(0, startPosition), value.slice(endPosition)].join('')
 }
 
-/**
- * applyMask()
- * Aplica uma máscara a uma string
- *
- * @example
- * applyMask('59650000', '00.000-000') // -> 59.650-000
- * applyMask('99877665544', '(00) 0 0000-0000') // -> (99) 8 7766-5544
- *
- * @param {String|Number} value Valor original
- * @param {String} mask
- * @returns {String}
- *
- */
-export function applyMask(value: string | number, mask: string): string {
-  const maskLen = clearValue(mask).length
-  let masked = clearValue(value, maskLen, { fillZerosAtLeft: true, trimAtRight: true })
-  const specialChars = ['/', '-', '.', '(', ')', ' ']
-
-  for (let position = 0; position < mask.length; position += 1) {
-    const current = mask[position]
-    if (specialChars.includes(current)) masked = insertAtPosition(masked, current, position)
-  }
-
-  return masked
-}
-
-/**
- * randomLetter()
- * Pega uma letra maiúscula aleatoriamente
- *
- * @example
- * randomLetter() // -> A
- * randomLetter() // -> S
- *
- * @returns {String}
- */
-export function randomLetter(): string {
-  const idx = Math.floor(1 + Math.random() * 26)
-  return String.fromCharCode(idx + 64)
-}
 
 /**
  * Opções do clearValue
