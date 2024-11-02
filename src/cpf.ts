@@ -91,7 +91,7 @@ export class CPF extends Base {
   }
 
   /**
-   * validateOrFail()
+   * validate()
    * Valida se um número é válido e
    * retorna uma exceção se não estiver
    *

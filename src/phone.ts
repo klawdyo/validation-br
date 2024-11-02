@@ -32,7 +32,7 @@
  *
  * // Métodos estáticos
  * validate('84999963214')
- * validateOrFail('84999963214')
+ * validate('84999963214')
  * mask('84999963214')
  * fake()
  */

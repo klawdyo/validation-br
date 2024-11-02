@@ -88,7 +88,7 @@ export class TituloEleitor extends Base {
   }
 
   /**
-   * validateOrFail()
+   * validate()
    * Valida se um número é válido e
    * retorna uma exceção se não estiver
    *

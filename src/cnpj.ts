@@ -112,7 +112,7 @@ export class CNPJ extends Base {
   }
 
   /**
-   * validateOrFail()
+   * validate()
    * Valida se um número é válido e
    * retorna uma exceção se não estiver
    *
