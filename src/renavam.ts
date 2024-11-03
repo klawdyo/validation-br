@@ -105,7 +105,6 @@ export class Renavam extends Base {
    */
   static fake(): Renavam {
     const value = Random.number(10, true);
-
     return new Renavam(`${value}${Renavam.checksum(value)}`);
   }
 

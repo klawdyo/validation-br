@@ -121,14 +121,11 @@ export class CNPJ extends Base {
     const cnpj = clearValue(this._value, 14, {
       rejectEmpty: true,
       rejectIfLonger: true,
+      rejectIfShorter: true,
       rejectEqualSequence: true,
     });
 
-    if (CNPJ.checksum(cnpj.substring(0, 12)) !== cnpj.substring(12, 14)) {
-      throw new InvalidChecksumException();
-    }
-
-    return true;
+    return CNPJ.checksum(cnpj.substring(0, 12)) === cnpj.substring(12, 14);
   }
 
   //
@@ -146,10 +143,10 @@ export class CNPJ extends Base {
     if (!/^[a-z0-9]{12}$/i.test(value)) throw new InvalidFormatException();
 
     const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    const dv1 = sumToDvWithAlpha(value.substring(0, 12), dv1Factors);
+    const dv1 = sumToDvWithAlpha(value, dv1Factors);
 
     const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    const dv2 = sumToDvWithAlpha(value.substring(0, 12) + dv1, dv2Factors);
+    const dv2 = sumToDvWithAlpha(value + dv1, dv2Factors);
 
     return `${dv1}${dv2}`;
   }
@@ -171,8 +168,9 @@ type FakeInput = {
 
 /**
  *
- * Converte o número para
- *
+ * Converte o caractere para o seu equivalente na tabela ASCII e em seguida
+ * subtrai de 48 para devolver o número que será usado nos cálculos.
+ * - Caso já seja um número, retorne-o como inteiro.
  *
  */
 function asciiTableConverter(character: string): number {
@@ -184,7 +182,7 @@ function asciiTableConverter(character: string): number {
 
 /**
  *
- *
+ * Soma os valores multiplicados pelos seus respectivos valores
  *
  */
 function sumToDvWithAlpha(value: string, multiplier: number[]) {

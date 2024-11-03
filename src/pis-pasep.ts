@@ -85,11 +85,7 @@ export class PIS extends Base {
       rejectIfShorter: true
     })
   
-    if (PIS.checksum(pis.substring(0,10)) !== pis.substring(10, 11)) {
-      throw new InvalidChecksumException()
-    }
-
-    return true;
+    return PIS.checksum(pis.substring(0,10)) === pis.substring(10, 11);
   }
 
   //
@@ -120,7 +116,6 @@ export class PIS extends Base {
     if (!value) throw new EmptyValueException();
     if(!/^\d{10}$/.test(value)) throw new InvalidFormatException()
 
-  
     const sum = sumElementsByMultipliers(value, [3, 2, 9, 8, 7, 6, 5, 4, 3, 2])
   
     return String(sumToDV(sum))

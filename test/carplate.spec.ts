@@ -82,4 +82,10 @@ describe('CarPlate', () => {
       expect(masked).toMatch(/^[A-Z]{3}-[0-9][A-Z0-9][0-9]{2}$/);
     });
   });
+
+  describe('checksum', () => {
+    test('checksum deve retornar erro', () => {
+      expect(CarPlate.checksum).toThrow()
+    })
+  })
 });

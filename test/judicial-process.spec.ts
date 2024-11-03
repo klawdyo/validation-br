@@ -1,4 +1,5 @@
 import { JudicialProcess } from '../src/judicial-process';
+import { insertAtPosition } from '../src/utils';
 
 describe('JudicialProcess', () => {
   describe('constructor', () => {
@@ -9,12 +10,13 @@ describe('JudicialProcess', () => {
       '08002732820164058400',
     ])('deve estar definido', (input) => {
       // console.log(new JudicialProcess(input));
-
-      expect(new JudicialProcess(input)).toBeDefined();
+      const proc = new JudicialProcess(input)
+      expect(proc).toBeDefined();
+      expect(proc.processNumber).toBe(input.replace(/\D/g, '').substring(0, 7))
     });
 
     test.each([
-      '0110060720168200100',
+      '0110060720168200100', // caractere a menos
       '61052838320098130023',
       '00110060720168200102',
       '08002785520134058401',
@@ -108,19 +110,24 @@ describe('JudicialProcess', () => {
 
   describe('checksum', () => {
     test.each([
-      { num: '000208020125150049', expected: '25' },
-      { num: '610528320098130024', expected: '83' },
-      { num: '001100620168200100', expected: '07' },
-      { num: '080027820134058400', expected: '55' },
-      { num: '080027320164058400', expected: '28' },
+      { num: '000208020125150049', dv: '25' },
+      { num: '610528320098130024', dv: '83' },
+      { num: '001100620168200100', dv: '07' },
+      { num: '080027820134058400', dv: '55' },
+      { num: '080027320164058400', dv: '28' },
     ])('dv() - Verificando se o DV gerado está correto', (item) => {
       const calcDv = JudicialProcess.checksum(item.num);
 
-      expect(calcDv).toBe(item.expected);
+      expect(calcDv).toBe(item.dv);
       expect(typeof calcDv).toBe('string');
+
+      // Preenche número do processo com o seu DV
+      const full = insertAtPosition(item.num, item.dv, 7)
+      expect(new JudicialProcess(full).checksum).toBe(item.dv)
+
     });
 
-        
+
     test.each(['0002080201251500499', '00020802012515004', ''])(
       'deve lançar erro de dv',
       (item) => {
@@ -128,4 +135,35 @@ describe('JudicialProcess', () => {
       }
     );
   });
+
+  describe('getWithoutChecksum', () => {
+    test('Deve pegar o número completo do processo sem o DV', () => {
+      // expect(new JudicialProcess('00020802520125150049').)
+      expect(JudicialProcess.getWithoutChecksum('00020802520125150049')).toBe('000208020125150049')
+      expect(JudicialProcess.getWithoutChecksum('000208020125150049')).toBe('000208020125150049')
+      expect(() => JudicialProcess.getWithoutChecksum('00020802012515004')).toThrow()
+    });
+  })
+
+  describe('getFakeSubCourt', () => {
+    test('Deve pegar aleatoriamente uma subcorte', () => {
+      // se informar zero, use 01
+      expect(JudicialProcess.getFakeSubCourt('0')).toBe('01')
+      expect(JudicialProcess.getFakeSubCourt('00')).toBe('01')
+      // vazio calcula um aleatorio
+      expect(JudicialProcess.getFakeSubCourt('').length).toBe(2)
+      expect(JudicialProcess.getFakeSubCourt(null as any).length).toBe(2)
+      expect(JudicialProcess.getFakeSubCourt(undefined as any).length).toBe(2)
+      // se informar um válido, use ele mesmo
+      expect(JudicialProcess.getFakeSubCourt('02')).toBe('02')
+      // se informar um inválido, use 01
+      expect(JudicialProcess.getFakeSubCourt('345')).toBe('01')
+      
+      const fake = JudicialProcess.getFakeSubCourt();
+      
+      expect(fake.length).toBe(2);
+      expect(fake >= '01').toBeTruthy();
+      expect(fake <= '99').toBeTruthy();
+    });
+  })
 });

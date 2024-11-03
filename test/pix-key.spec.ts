@@ -35,7 +35,13 @@ describe('Pix', () => {
     test('deve falhar ao receber um telefone inválido', () => {
       expect(() => new PixKey('+55849876')).toThrow()
     });
+  });
 
-
+  describe('Máscara', () => {
+    test('Deve retornar o mesmo valor', () => {
+      const input = 'klawdyo@gmail.com';
+      // const masked = 
+      expect(new PixKey(input).mask()).toBe(input);
+    });
   });
 });

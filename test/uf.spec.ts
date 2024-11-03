@@ -1,4 +1,4 @@
-import { UF } from './uf';
+import { UF } from '../src/uf';
 
 describe('UF', () => {
   describe('constructor', () => {
@@ -15,12 +15,19 @@ describe('UF', () => {
     test('deve lançar um erro de uf inválida', () => {
       expect(() => new UF('JJ')).toThrow();
     });
+
+    test('deve lançar um erro de uf vazia', () => {
+      expect(() => new UF('')).toThrow();
+      expect(() => new UF(undefined as any)).toThrow();
+      expect(() => new UF(null as any)).toThrow();
+    });
   });
 
   describe('getName', () => {
     test('deve localizar um nome a partir da sigla', () => {
       const uf = new UF('RN');
       expect(uf.getName()).toBe('Rio Grande do Norte');
+      expect(uf.name).toBe('Rio Grande do Norte');
     });
   });
 

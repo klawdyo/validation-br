@@ -108,11 +108,7 @@ export class NUP17 extends Base {
       rejectIfShorter: true
     });
 
-    if (NUP17.checksum(nup.substring(0,15)) !== nup.substring(15, 17)) {
-      throw new InvalidChecksumException();
-    }
-
-    return true;
+    return NUP17.checksum(nup.substring(0, 15)) === nup.substring(15, 17);
   }
 
   //
@@ -138,9 +134,9 @@ export class NUP17 extends Base {
    * Calcula o dígito verificador de um número SEM o dígito incluído
    *
    */
-  static checksum(value: string): string { 
+  static checksum(value: string): string {
     if (!value) throw new EmptyValueException();
-    if(!/^\d{15}$/.test(value)) throw new InvalidFormatException()
+    if (!/^\d{15}$/.test(value)) throw new InvalidFormatException()
 
     const nupReverse = value.split('').reverse().join('');
 

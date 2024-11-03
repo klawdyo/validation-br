@@ -1,5 +1,5 @@
 /**
- * isTitulo()
+ * TituloEleitor()
  * Calcula se um título eleitoral é válido
  *
  * @doc
@@ -103,10 +103,7 @@ export class TituloEleitor extends Base {
       rejectEqualSequence: true,
     });
 
-    if (
-      TituloEleitor.checksum(titulo.substring(0, 10)) !==
-      titulo.substring(10, 12)
-    ) {
+    if (TituloEleitor.checksum(titulo.substring(0, 10)) !== titulo.substring(10, 12)) {
       throw new InvalidChecksumException();
     }
 
@@ -128,9 +125,7 @@ export class TituloEleitor extends Base {
    */
   static fake(): TituloEleitor {
     const num = Random.number(8, true);
-
-    const uf = (Math.random() * 27 + 1).toFixed(0).padStart(2, '0');
-
+    const uf = Random.between(1, 28).toString().padStart(2, '0')
     return new TituloEleitor(`${num}${uf}${TituloEleitor.checksum(num + uf)}`);
   }
 

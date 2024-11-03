@@ -18,7 +18,7 @@ describe('Random', () => {
     });
   });
 
-  describe.only('alpha', () => {
+  describe('alpha', () => {
     test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres aleatórios', (length) => {
       const num = Random.alpha(length as any);      
       expect(num).toBeDefined();

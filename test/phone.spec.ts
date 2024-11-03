@@ -1,11 +1,11 @@
 import { Phone } from '../src/phone';
 
 const cellPhones = [
-  '+5584999580685',
-  '+55 84 9 9958 0685',
-  '+55 (84) 9 9958-0685',
-  '+55 (84) 99958-0685',
-  '84 99958-0685',
+  '+5584999873456',
+  '+55 84 9 9987 3456',
+  '+55 (84) 9 9987-3456',
+  '+55 (84) 99987-3456',
+  '84 99987-3456',
 ];
 const phones = [
   '+558433311454',
@@ -19,10 +19,10 @@ describe('Phone', () => {
   describe('constructor', () => {
     test.each(cellPhones)('Celular %s deve estar definido', (value) => {
       const obj = new Phone(value);
-      expect(obj.value).toBe('+5584999580685');
+      expect(obj.value).toBe('+5584999873456');
       expect(obj.ddi).toBe('+55');
       expect(obj.ddd).toBe('84');
-      expect(obj.phone).toBe('999580685');
+      expect(obj.phone).toBe('999873456');
       expect(obj.isMobile).toBeTruthy();
     });
 
@@ -33,6 +33,10 @@ describe('Phone', () => {
       expect(obj.ddd).toBe('84');
       expect(obj.phone).toBe('33311454');
       expect(obj.isMobile).toBeFalsy;
+    });
+
+    test.each(['12', '1234567890000', '00999870222'])('Deve lançar exceção', (value) => {
+      expect(() => new Phone(value)).toThrow();
     });
   });
 
@@ -46,6 +50,10 @@ describe('Phone', () => {
       const fake = Phone.fake({ ddd: '11' });
       expect(fake).toBeDefined();
       expect(fake.ddd).toBe('11');
+    });
+
+    test('Cria um fake com DDD inválido', () => {
+      expect(() => Phone.fake({ ddd: '10' })).toThrow();
     });
 
     test.each([...Array(5)])('Cria um fake com isMobile=true', () => {
@@ -66,12 +74,12 @@ describe('Phone', () => {
   describe('mask', () => {
     test.each(cellPhones)('Máscara de celular sem país', (input) => {
       const phone = new Phone(input);
-      expect(phone.mask({ withCountry: false })).toBe('84 999580685');
+      expect(phone.mask({ withCountry: false })).toBe('84 999873456');
     });
 
     test.each(cellPhones)('Máscara de celular com país', (input) => {
       const phone = new Phone(input);
-      expect(phone.mask({ withCountry: true })).toBe('+55 84 999580685');
+      expect(phone.mask({ withCountry: true })).toBe('+55 84 999873456');
     });
 
     test.each(phones)('Máscara de telefone fixo sem país', (input) => {
@@ -84,4 +92,8 @@ describe('Phone', () => {
       expect(phone.mask({ withCountry: true })).toBe('+55 84 33311454');
     });
   });
+
+  describe('checksum', () => {
+    expect(() => Phone.checksum()).toThrow()
+  })
 });

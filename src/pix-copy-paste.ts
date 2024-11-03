@@ -1,4 +1,4 @@
-import  { InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import { InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { CRC } from './_helpers/crc';
 import { Base } from './base';
 
@@ -7,12 +7,8 @@ export class PixCopyPaste extends Base {
 
   constructor(protected _value: string) {
     super(_value);
-
     this.normalize();
-
-    if (!this.validate()) {
-      throw new InvalidFormatException()
-    }
+    this.validate();
   }
 
   //
@@ -31,7 +27,7 @@ export class PixCopyPaste extends Base {
     const crc = new CRC(this._value.substring(0, this._value.length - 4)).calculate();
     if (crc !== this._value.substring(this._value.length - 4)) throw new InvalidChecksumException()
 
-    const parse = PixCopyPaste.parse(this._value);
+    const parse = PixPart.parse(this._value);
     if (!parse || !Array.isArray(parse)) throw new InvalidFormatException();
     if (parse.at(-1)!.code !== '63' || parse.at(-1)!.size !== 4) throw new InvalidFormatException();
 
@@ -41,67 +37,62 @@ export class PixCopyPaste extends Base {
   protected normalize(): void {
     this._value = this._value.trim();
   }
+}
 
-  //
-  //
-  // private
-  //
-  //
 
+
+export class PixPart {
   /**
-   *
-   * Faz o parse
-   *
+   * 
+   * 
+   * 
    */
-  static parse(value: string) {
-    return parse(value);
-  }
-}
-function parse(value: string): Part[] {
-  const parts: any[] = [];
-  
-  let rest = value;
-  while (rest) {
-    const { rest: newRest, ...result } = getPart(rest);
-    
-    // Entrou em loop infinito
-    if(rest === newRest) throw new InvalidFormatException()
-    
-    parts.push(result);
-    
-    rest = newRest;
-  }
+  static parse(value: string): Part[] {
+    const parts: any[] = [];
 
-  return parts;
-}
+    let rest = value;
+    while (rest) {
+      const { rest: newRest, ...result } = PixPart.getPart(rest);
 
-function getPart(part: string): Part {
-  if (!part || part.length < 4 || !/^\d{4}/.test(part)) {
-    return { part, code: '', size: 0, value: '', rest: part, children: [] };
-  }
+      // Entrou em loop infinito
+      if (rest === newRest) throw new InvalidFormatException()
 
-  const code = part.substring(0, 2);
-  const size = +part.substring(2, 4);
-  const value = part.substring(4, 4 + size);
-  const rest = part.substring(4 + size);
+      parts.push(result);
 
-  if (value.length !== size) {
-    throw new InvalidFormatException()
-  }
-
-  let children: Part[] = [];
-
-  const possiblyHasChildren = /^(\d{2})(\d{2})(.*)/.exec(value);
-  
-  if (possiblyHasChildren) {
-    const hasChildren = possiblyHasChildren && possiblyHasChildren[3].length === +possiblyHasChildren[2];
-
-    if (hasChildren) {
-      children = parse(value);
+      rest = newRest;
     }
+
+    return parts;
   }
 
-  return { code, size, value, rest, children, part };
+  static getPart(part: string): Part {
+    if (!part || part.length < 4 || !/^\d{4}/.test(part)) {
+      return { part, code: '', size: 0, value: '', rest: part, children: [] };
+    }
+
+    const code = part.substring(0, 2);
+    const size = +part.substring(2, 4);
+    const value = part.substring(4, 4 + size);
+    const rest = part.substring(4 + size);
+
+    if (value.length !== size) {
+      throw new InvalidFormatException()
+    }
+
+    let children: Part[] = [];
+
+    const possiblyHasChildren = /^(\d{2})(\d{2})(.*)/.exec(value);
+
+    if (possiblyHasChildren) {
+      const hasChildren = possiblyHasChildren && possiblyHasChildren[3].length === +possiblyHasChildren[2];
+
+      if (hasChildren) {
+        children = PixPart.parse(value);
+      }
+    }
+
+    return { code, size, value, rest, children, part };
+  }
 }
 
 interface Part {

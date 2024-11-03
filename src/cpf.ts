@@ -102,15 +102,11 @@ export class CPF extends Base {
     const cpf = clearValue(this._value, 11, {
       rejectEmpty: true,
       rejectIfLonger: true,
-      rejectEqualSequence: true,
       rejectIfShorter: true,
+      rejectEqualSequence: true,
     });
 
-    if (CPF.checksum(cpf.substring(0,9)) !== cpf.substring(9, 11)) {
-      throw new InvalidChecksumException();
-    }
-
-    return true;
+    return CPF.checksum(cpf.substring(0, 9)) === cpf.substring(9, 11);
   }
 
   //
@@ -138,8 +134,7 @@ export class CPF extends Base {
    */
   static checksum(value: string): string {
     if (!value) throw new EmptyValueException();
-    if(!/^\d{9}$/.test(value)) throw new InvalidFormatException()
-
+    if (!/^\d{9}$/.test(value)) throw new InvalidFormatException()
 
     const sum1 = sumElementsByMultipliers(value, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
     const dv1 = sumToDV(sum1);

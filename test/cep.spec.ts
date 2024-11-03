@@ -53,6 +53,14 @@ describe('CEP', () => {
       expect(cep).toBeDefined();
       expect(cep.value).toHaveLength(8);
     });
+
+    test.each([...Array(5)])('Gera fake válido por estado', () => {
+      const cep = CEP.fake({ uf: UF.RN });
+      expect(cep).toBeDefined();
+      expect(cep.value).toHaveLength(8);
+      expect(cep.value >= '59000000').toBeTruthy();
+      expect(cep.value <= '59999999').toBeTruthy();
+    });
   });
 
   describe('checksum', () => {
@@ -102,6 +110,11 @@ describe('CEP', () => {
         expect(uf).toBeInstanceOf(UF);
         expect(uf.value).toBe('SP');
       }
+    );
+
+    test('Deve retornar erro para um CEP não encontrado', () => {
+      expect(() => CEP.getUFByCEP('00123456')).toThrow()
+    }
     );
   });
 

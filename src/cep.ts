@@ -41,9 +41,9 @@ export class CEP extends Base {
     // Piauí(PI) 64000-000 a 64999-999
     [UF.PI.value]: [['64000000', '64999999']],
     // Maranhão(MA) 65000-000 a 65999-999
-    [UF.MA.value]: [['01000000', '19999999']],
-    // Pará(PA) 01000-000 a 19999-999
-    [UF.PA.value]: [['01000000', '19999999']],
+    [UF.MA.value]: [['65000000', '65999999']],
+    // Pará(PA) 66000-000 a 68899-999
+    [UF.PA.value]: [['66000000', '68899999']],
     // Amapá(AP) 68900-000 a 68999-999
     [UF.AP.value]: [['68900000', '68999999']],
 
@@ -133,8 +133,7 @@ export class CEP extends Base {
 
   /**
    * checksum()
-   * Calcula o dígito verificador de um número SEM o dígito incluído
-   *
+   * Not implemented
    */
   static checksum(value: string): string {
     throw new NoChecksumException();

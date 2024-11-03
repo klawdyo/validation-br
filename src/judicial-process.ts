@@ -103,10 +103,7 @@ export class JudicialProcess extends Base {
 
   constructor(protected _value: string) {
     super(_value);
-    // console.log('entrou', this._value);
     this.normalize();
-    // console.log('normalized', this._value);
-    
 
     if (!this.validate()) {
       throw new InvalidChecksumException();
@@ -174,19 +171,9 @@ export class JudicialProcess extends Base {
       rejectIfShorter: true,
     });
 
-    // console.log('validate 1', judicialProcess);
-    
-    
     const processWithoutDV = JudicialProcess.getWithoutChecksum(judicialProcess);
-    // console.log('validate 2', judicialProcess);
-    
     JudicialProcess.validateCourt(processWithoutDV.substring(11, 12));
-    // console.log('validate 3', judicialProcess);
-
-    // console.log('Input', this._value, 'sem dv', processWithoutDV,'dv informado:',judicialProcess.substring(7, 9), 'dv calculado', JudicialProcess.checksum(processWithoutDV));
-    
-
-    return ( JudicialProcess.checksum(processWithoutDV) === judicialProcess.substring(7, 9) );
+    return (JudicialProcess.checksum(processWithoutDV) === judicialProcess.substring(7, 9));
   }
 
   //
@@ -235,7 +222,7 @@ export class JudicialProcess extends Base {
    */
   static checksum(value: string): string {
     if (!value) throw new EmptyValueException();
-    if(!/^\d{18}$/.test(value)) throw new InvalidFormatException()
+    if (!/^\d{18}$/.test(value)) throw new InvalidFormatException()
 
     const num = value.substring(0, 7);
     const yearAndCourt = value.substring(7, 14);
@@ -243,10 +230,10 @@ export class JudicialProcess extends Base {
 
     return String(
       98 -
-        (Number(
-          `${Number(`${Number(num) % 97}${yearAndCourt}`) % 97}${origin}00`
-        ) %
-          97)
+      (Number(
+        `${Number(`${Number(num) % 97}${yearAndCourt}`) % 97}${origin}00`
+      ) %
+        97)
     ).padStart(2, '0');
   }
 
@@ -267,11 +254,10 @@ export class JudicialProcess extends Base {
    * @param
    *
    */
-  private static getFakeSubCourt(
-    court: string | undefined = undefined
-  ): string {
-    court = court ?? Random.number(2, true).toString();
-    return !court || +court === 0 ? '01' : court;
+  static getFakeSubCourt(court: string | undefined = undefined): string {
+    court = court || Random.number(2, true).toString();
+
+    return !court || +court === 0 || court.length !== 2 ? '01' : court;
   }
 
   /**
@@ -279,9 +265,9 @@ export class JudicialProcess extends Base {
    * Devolve o número completo sem o dígito verificador
    * 
    */
-  private static getWithoutChecksum(value: string){
-    if(value.length === 20) return removeFromPosition(value, 7, 9);
-    if(value.length === 18) return value;
+  static getWithoutChecksum(value: string) {
+    if (value.length === 20) return removeFromPosition(value, 7, 9);
+    if (value.length === 18) return value;
 
     throw new InvalidFormatException()
   }

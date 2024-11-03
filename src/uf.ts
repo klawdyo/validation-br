@@ -1,4 +1,4 @@
-import ValidationBRError from './_exceptions/ValidationBRError';
+import ValidationBRError, { EmptyValueException } from './_exceptions/ValidationBRError';
 import { Random } from './_helpers/random';
 import { Base } from './base';
 
@@ -44,6 +44,8 @@ export class UF extends Base {
   constructor(uf: string);
   constructor(ufItem: UFItem);
   constructor(data: string | UFItem) {
+    if(!data) throw new EmptyValueException();
+    
     const isString = typeof data === 'string';
     
     super(isString ? data : data.short);
