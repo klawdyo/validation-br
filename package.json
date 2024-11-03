@@ -103,8 +103,5 @@
     "adonisjs",
     "adonis4",
     "adonisjs4"
-  ],
-  "dependencies": {
-    "boleto_parser": "^0.0.1-b"
-  }
+  ]
 }
