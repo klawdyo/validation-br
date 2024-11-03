@@ -44,17 +44,20 @@ export class UF extends Base {
   constructor(uf: string);
   constructor(ufItem: UFItem);
   constructor(data: string | UFItem) {
-    if(!data) throw new EmptyValueException();
-    
+    if (!data) throw new EmptyValueException();
+
     const isString = typeof data === 'string';
-    
     super(isString ? data : data.short);
 
     if (isString) {
       this._value = data;
-      this._ufItem = UF.find(data);
+      this.normalize();
+      this.validate();
+      this._ufItem = UF.find(this._value);
     } else {
       this._value = data.short;
+      this.normalize();
+      this.validate();
       this._ufItem = data;
     }
   }
@@ -103,10 +106,18 @@ export class UF extends Base {
   //
   //
 
+  /**
+   * 
+   * 
+   */
   protected normalize(): void {
     this._value = this._value.toLocaleUpperCase();
   }
 
+  /**
+   * 
+   * 
+   */
   protected validate(): boolean {
     return /^[a-z]{2}$/i.test(this._value);
   }

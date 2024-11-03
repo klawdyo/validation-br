@@ -73,10 +73,17 @@ describe('PostalTrackCode', () => {
       expect(typeof calcDv).toBe('string');
     });
 
-    test.each(['PN718252423BR', '925539762BR', 'JT194690698'])(
+    test.each([
+      '',
+      undefined,
+      null,
+      'PN718252423BR', 
+      '925539762BR', 
+      'JT194690698'
+    ])(
       'Deve lançar erro',
       (item) => {
-        expect(() => PostalTrackCode.checksum(item)).toThrow();
+        expect(() => PostalTrackCode.checksum(item as any)).toThrow();
       }
     );
   });

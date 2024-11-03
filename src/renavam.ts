@@ -48,10 +48,7 @@ export class Renavam extends Base {
   constructor(protected _value: string) {
     super(_value);
     this.normalize();
-
-    if (!this.validate()) {
-      throw new InvalidChecksumException();
-    }
+    this.validate();
   }
 
   //

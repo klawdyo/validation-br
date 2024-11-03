@@ -3,15 +3,15 @@ import { TituloEleitor } from "../src/tituloEleitor";
 describe('TituloEleitor', () => {
   describe('constructor', () => {
     test.each([
-     // masked
-     '1023.8501.0671',
-     '8365.7137.1619',
-     // string
-     '153036161686',
-     '525028881694',
-     // integer
-     '011122223360',
-     '001122223336',
+      // masked
+      '1023.8501.0671',
+      '8365.7137.1619',
+      // string
+      '153036161686',
+      '525028881694',
+      // integer
+      '011122223360',
+      '001122223336',
     ])('deve estar definido', (input) => {
       expect(new TituloEleitor(input)).toBeDefined();
     });
@@ -41,7 +41,7 @@ describe('TituloEleitor', () => {
       { num: '743650641660', expected: '7436.5064.1660' },
       { num: '011122223360', expected: '0111.2222.3360' },
       { num: '001122223336', expected: '0011.2222.3336' },
-    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {    
+    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {
       const masked = new TituloEleitor(item.num).mask();
 
       expect(masked).toBe(item.expected);
@@ -67,6 +67,12 @@ describe('TituloEleitor', () => {
 
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
+    });
+    test.each([
+      '01023850106',// caractere a mais
+      '023850106', // caractere a menos
+    ])('dv() - Verificando se o DV gerado está correto', (item) => {
+      expect(()=>TituloEleitor.checksum(item)).toThrow();
     });
   });
 });

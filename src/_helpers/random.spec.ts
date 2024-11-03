@@ -2,10 +2,24 @@ import { Random } from './random';
 
 describe('Random', () => {
   describe('number', () => {
+
     test.each([1, 5, 10, 36])('deve gerar um número aleatório', (length) => {
+      const num = Random.number(length);
+      expect(num).toBeDefined();
+      expect(+num < Math.pow(10, length))
+    });
+
+    test.each([1, 5, 10, 36])('deve gerar um número aleatório com tamanho fixo', (length) => {
       const num = Random.number(length, true);
       expect(num).toBeDefined();
       expect(num.length).toBe(length);
+    });
+
+    test.each([1, 5, 10, 36])('deve gerar caracteres alfanuméricos aleatórios', (length) => {
+      const num = Random.number(length, true, true);
+      expect(num).toBeDefined();
+      expect(num.length).toBe(length);
+      expect(num).toMatch(/[a-z0-9]/i)
     });
   });
 
@@ -20,7 +34,7 @@ describe('Random', () => {
 
   describe('alpha', () => {
     test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres aleatórios', (length) => {
-      const num = Random.alpha(length as any);      
+      const num = Random.alpha(length as any);
       expect(num).toBeDefined();
       expect(num).toMatch(/^[a-z]+$/)
       expect(num.length).toBe(length || 1);

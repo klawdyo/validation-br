@@ -3,7 +3,11 @@ import * as _cnh from '../src/cnh';
 
 describe('CNH', () => {
   describe('constructor', () => {
-    test.each(['14490435923', '97286888262', '621049358-60', '491872350-50'])(
+    test.each([
+      '14490435923', 
+      '97286888262', 
+      '621049358-60', 
+      '491872350-50'])(
       'deve estar definido',
       (input) => {
         expect(new CNH(input)).toBeDefined();
