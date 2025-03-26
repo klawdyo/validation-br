@@ -1,13 +1,19 @@
-import  { InvalidFormatException } from './_exceptions/ValidationBRError';
+import { InvalidFormatException } from './_exceptions/ValidationBRError';
+import { Random } from './_helpers/random';
 import { Base } from './base';
-import { isCNPJ, isCPF, isPhone } from './main';
+import { CNPJ } from './cnpj';
+import { CPF } from './cpf';
+import { Email } from './email';
+import { isCNPJ, isCPF, isEmail, isPhone, isUUID } from './main';
+import { Phone } from './phone';
+import { UUID } from './uuid';
 
 export enum PixKeys {
-  email,
-  cpf,
-  cnpj,
-  evp,
-  phone,
+  email = 'email',
+  cpf = 'cpf',
+  cnpj = 'cnpj',
+  evp = 'evp',
+  phone = 'phone',
 }
 
 /**
@@ -38,7 +44,22 @@ export class PixKey extends Base {
   //
   //
 
-  static fake() {}
+  /**
+   * Gera uma chave fake 
+   */
+  static fake(options: PixKeyOptions = {}): PixKey {
+    if (!options.type) {
+      options.type = Random.fromArray([
+        PixKeys.cnpj, PixKeys.cpf, PixKeys.email, PixKeys.evp, PixKeys.phone,
+      ])
+    }
+
+    if (options?.type == PixKeys.cnpj) return new PixKey(CNPJ.fake().toString());
+    if (options?.type == PixKeys.cpf) return new PixKey(CPF.fake().toString());
+    if (options?.type == PixKeys.phone) return new PixKey(Phone.fake().toString());
+    if (options?.type == PixKeys.email) return new PixKey(Email.fake().toString());
+    return new PixKey(UUID.fake().toString());
+  }
 
   //
   //
@@ -50,8 +71,8 @@ export class PixKey extends Base {
     return [
       { type: PixKeys.cpf, fn: isCPF },
       { type: PixKeys.cnpj, fn: isCNPJ },
-      { type: PixKeys.evp, fn: this.isUUID },
-      { type: PixKeys.email, fn: this.isEmail },
+      { type: PixKeys.evp, fn: isUUID },
+      { type: PixKeys.email, fn: isEmail },
       { type: PixKeys.phone, fn: isPhone },
     ].some(({ type, fn }) => {
       if (fn(this._value)) {
@@ -67,17 +88,8 @@ export class PixKey extends Base {
     this._value = this._value.trim().toLocaleLowerCase();
   }
 
-  //
-  //
-  // PRIVATE
-  //
-  //
+}
 
-  private isUUID(value: string) {
-    return /^[0-9a-z]{8}-[0-9a-z]{4}-4[0-9a-z]{3}-[0-9a-z]{4}-[0-9a-z]{12}$/i.test(value);
-  }
-
-  private isEmail(value: string) {
-    return /^[0-9a-z._+-]+@[0-9a-z._+-]+(\.[0-9a-z._+-]+)+$/i.test(value);
-  }
+export interface PixKeyOptions {
+  type?: PixKeys;
 }

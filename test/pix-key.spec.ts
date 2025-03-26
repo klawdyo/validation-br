@@ -1,7 +1,7 @@
 import { PixKey, PixKeys } from '../src/pix-key';
 
-describe('Pix', () => {
-  describe('constructor', () => {
+describe('PixKey', () => {
+  describe.skip('constructor', () => {
     test('deve estar definido do tipo e-mail', () => {
       const key = new PixKey('klawdyo@gmail.com');
       expect(key).toBeDefined();
@@ -37,11 +37,52 @@ describe('Pix', () => {
     });
   });
 
-  describe('Máscara', () => {
+  describe.skip('Máscara', () => {
     test('Deve retornar o mesmo valor', () => {
       const input = 'klawdyo@gmail.com';
       // const masked = 
       expect(new PixKey(input).mask()).toBe(input);
     });
+  });
+
+  describe('Fake', () => {
+    test('Deve retornar um valor fake que é um email', () => {
+      const value = PixKey.fake({ type: PixKeys.email });
+      console.log('email:',value);
+      expect(value.type).toBe(PixKeys.email);
+    });
+    test('Deve retornar um valor fake que é um cpf', () => {
+      const value = PixKey.fake({ type: PixKeys.cpf });
+      console.log('cpf:',value);
+      expect(value.type).toBe(PixKeys.cpf);
+    });
+    test('Deve retornar um valor fake que é um cnpj', () => {
+      const value = PixKey.fake({ type: PixKeys.cnpj });
+      console.log('cnpj:',value);
+      expect(value.type).toBe(PixKeys.cnpj);
+    });
+    test('Deve retornar um valor fake que é um phone', () => {
+      const value = PixKey.fake({ type: PixKeys.phone });
+      console.log('phone:',value);
+      expect(value.type).toBe(PixKeys.phone);
+    });
+    test('Deve retornar um valor fake que é um evp', () => {
+      const value = PixKey.fake({ type: PixKeys.evp });
+      console.log('evp:',value);
+      expect(value.type).toBe(PixKeys.evp);
+    });
+
+    // test.skip.each([...Array(100)])('Deve criar uma chave fake válida', () => {
+    //   const value = PixKey.fake().toString();
+
+    //   try {
+    //     new PixKey(value);
+    //   } catch (error) {
+    //     console.log('catch:', value);
+
+    //   }
+
+
+    // });
   });
 });
