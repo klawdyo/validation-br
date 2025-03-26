@@ -1,4 +1,4 @@
-import { Mask } from './mask';
+import { Mask } from '../../src/_helpers/mask';
 
 describe('applyMask()', () => {
   const items = [
