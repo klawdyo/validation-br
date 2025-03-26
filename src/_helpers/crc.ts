@@ -1,5 +1,5 @@
 export class CRC {
-  constructor(private _value: string) {}
+  constructor(private _value: string) { }
 
   get value(): string {
     return this._value;
@@ -8,12 +8,7 @@ export class CRC {
   // https://github.com/NascentSecureTech/pix-qrcode-utils/blob/01a072f458d63dea2376e631284085405fd8b027/packages/data-schemas/src/data-utils.ts#L9
   static numToHex(n: number, digits = 4) {
     const hex = n.toString(16).toUpperCase();
-
-    if (digits) {
-      return ('0'.repeat(digits) + hex).slice(-digits);
-    }
-
-    return hex.length % 2 == 0 ? hex : `0${hex}`;
+    return ('0'.repeat(digits) + hex).slice(-digits);
   }
 
   calculate(invert = false) {
