@@ -1,19 +1,16 @@
 export class Random {
   /**
-   *
    * Devolve um inteiro aleatório entre um mínimo e um máximo.
-   *
    */
   static between(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
   /**
-   *
-   * Devolve uma letra aleatória
+   * Devolve um texto aleatório
    */
-  static alpha(length = 1, isUppercase = false): string {
-    const letters = 'abcdefghijklmnopqrstuvwxyz';
+  static alpha(length = 1, isUppercase = false, isHex = false): string {
+    const letters = isHex  ? '0123456789abcdef' : 'abcdefghijklmnopqrstuvwxyz';
     let result = '';
 
     for (let i = 0; i < length; i++) {
@@ -25,11 +22,16 @@ export class Random {
     return result;
   }
 
+  /**
+   * Seleciona um item de um array aleatoramente
+   */
   static fromArray<T>(array: T[]): T {
-    // return array.at(Math.floor(Math.random() * array.length)) as T
     return array.at(Random.between(0, array.length-1)) as T;
   }
 
+  /**
+   * Cria um número aleatório com a quantidade definida de caracteres
+   */
   static number(length: number, forceLength = false, isAlpha = false): string {
     let value: string;
 

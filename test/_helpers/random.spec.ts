@@ -1,4 +1,4 @@
-import { Random } from './random';
+import { Random } from '../../src/_helpers/random';
 
 describe('Random', () => {
   describe('number', () => {
@@ -44,6 +44,15 @@ describe('Random', () => {
       const num = Random.alpha(length as any, true);
       expect(num).toBeDefined();
       expect(num).toMatch(/^[A-Z]+$/)
+      expect(num.length).toBe(length || 1);
+    });
+
+    test.only.each([undefined, 1, 2, 5, 10])('deve gerar caracteres hexadecimais aleatórios', (length) => {
+      const num = Random.alpha(length as any, false, true);
+      console.log('hexa:', num);
+      
+      expect(num).toBeDefined();
+      expect(num).toMatch(/^[0-9a-f]+$/)
       expect(num.length).toBe(length || 1);
     });
   });
