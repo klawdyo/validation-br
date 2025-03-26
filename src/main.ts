@@ -11,6 +11,8 @@ import { PixCopyPaste } from './pix-copy-paste';
 import { JudicialProcess } from './judicial-process';
 import { PostalTrackCode } from './postal-track-code';
 import { TituloEleitor } from './tituloEleitor';
+import { UUID } from './uuid';
+import { Email } from './email';
 
 
 function validate(fn: Function) {
@@ -35,4 +37,6 @@ export function isPixCopyPaste(value: string) { return validate(() => new PixCop
 export function isPostalTrackCode(value: string) { return validate(() => new PostalTrackCode(value)) }
 export function isRenavam(value: string) { return validate(() => new Renavam(value)) }
 export function isTituloEleitor(value: string) { return validate(() => new TituloEleitor(value)) }
+export function isEmail(value: string) { return validate(() => new Email(value)) }
+export function isUUID(value: string) { return validate(() => new UUID(value)) }
 
