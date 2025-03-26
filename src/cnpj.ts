@@ -156,9 +156,10 @@ export class CNPJ extends Base {
    *
    */
   static fake(options: Partial<FakeInput> = {}): CNPJ {
-    const defaultOptions = { alphanumeric: true, ...options };
-    const num = Random.number(12, true, defaultOptions.alphanumeric);
-    return new CNPJ(`${num}${CNPJ.checksum(num)}`);
+    const num = Random.number(8, true, options?.alphanumeric ?? false);
+    
+    const fullNumber = `${num}0001`;
+    return new CNPJ(`${fullNumber}${CNPJ.checksum(fullNumber)}`);
   }
 }
 
