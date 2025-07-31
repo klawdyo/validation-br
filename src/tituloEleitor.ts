@@ -112,12 +112,7 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const titulo = clearValue(value, 12, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
+  const titulo = unmask(value)
 
   if (dv(titulo) !== titulo.substring(10, 12)) {
     throw ValidationBRError.INVALID_DV
@@ -139,6 +134,15 @@ export const validate = (value: string | number): boolean => {
   } catch (error) {
     return false
   }
+}
+
+export const unmask = (value: string | number): string => {
+  return clearValue(value, 12, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 }
 
 export default validate
