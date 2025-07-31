@@ -117,6 +117,12 @@ export const validate = (value: string | number): boolean => {
   }
 }
 
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
 export const unmask = (value: string | number): string => {
   return clearValue(value, 11, {
     fillZerosAtLeft: true,

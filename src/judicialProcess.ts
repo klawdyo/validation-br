@@ -192,6 +192,12 @@ export function _getSubCourt(courte: string | undefined = undefined): string {
   return +courte === 0 ? '01' : courte
 }
 
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
 export const unmask = (value: string | number): string => {
   return clearValue(value, 20, {
     fillZerosAtLeft: true,
