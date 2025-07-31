@@ -140,18 +140,18 @@ describe('CPF', () => {
 
   test('unmask() - Testando se remove a máscara corretamente', () => {
     const list = [
-      { input: '741.723.160-85', expected: '74172316085' },
-      { input: '158.864.890-70', expected: '15886489070' },
-      { input: '908.894.770-86', expected: '90889477086' },
-      { input: '008.894.770-86', expected: '00889477086' },
-      { input: '74172316085', expected: '74172316085' },
-      { input: '15886489070', expected: '15886489070' },
-      { input: '90889477086', expected: '90889477086' },
-      { input: '889477086', expected: '00889477086' },
+      { value: '741.723.160-85', expected: '74172316085' },
+      { value: '158.864.890-70', expected: '15886489070' },
+      { value: '908.894.770-86', expected: '90889477086' },
+      { value: '008.894.770-86', expected: '00889477086' },
+      { value: '74172316085', expected: '74172316085' },
+      { value: '15886489070', expected: '15886489070' },
+      { value: '90889477086', expected: '90889477086' },
+      { value: '889477086', expected: '00889477086' },
     ]
 
     list.forEach((item) => {
-      const masked = unmask(item.input)
+      const masked = unmask(item.value)
 
       expect(masked).toBe(item.expected)
       expect(masked).toHaveLength(11)
