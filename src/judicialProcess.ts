@@ -141,11 +141,7 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const judicialProcess = clearValue(value, 20, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-  })
+  const judicialProcess = unmask(value)
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
   if (processWithoutDV.substring(11, 12) === '0') {
@@ -194,6 +190,14 @@ export const validate = (value: string): boolean => {
 export function _getSubCourt(courte: string | undefined = undefined): string {
   courte = courte ?? fakeNumber(2, true).toString()
   return +courte === 0 ? '01' : courte
+}
+
+export const unmask = (value: string | number): string => {
+  return clearValue(value, 20, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  })
 }
 
 export default validate
