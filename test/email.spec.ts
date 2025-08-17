@@ -11,7 +11,6 @@ describe('Email', () => {
   describe('fake', () => {
     test('Deve definir um email fake', () => {
       const email = Email.fake();
-      console.log(email);
       
       expect(new Email(email.toString())).toBeDefined()
       expect(new Email(email.value)).toBeDefined()
