@@ -18,6 +18,7 @@ export class CarPlate extends Base {
     super(_value)
     this.normalize()
     if (!this.validate()) throw new InvalidFormatException()
+    this._unmask()
   }
 
   // 
@@ -42,6 +43,15 @@ export class CarPlate extends Base {
    */
   protected normalize(): void {
     this._value = this._value.toLocaleUpperCase().trim()//.replace(/[-]+/g, '')
+  }
+
+  /**
+   * Remove a máscara após a normalização e a validação, para evitar que o valor
+   * AAAA-000 seja validado. Ele seria validado quando o traço fosse removido, então
+   * o _unmask é chamado apenas após a validação.
+   */
+  private _unmask(): void {
+    this._value = this._value.replace(/[-]+/g, '');
   }
 
 
