@@ -76,4 +76,24 @@ describe('NUP17', () => {
       }
     );
   });
+
+ describe('toString', () => {
+    test.each([
+      { input: '23037001380202111',    expected: '23037001380202111' },
+      { input: '23037001434202148',    expected: '23037001434202148' },
+      { input: '23037001321202142',    expected: '23037001321202142' },
+      { input: '23037.001462/2021-65', expected: '23037001462202165' },
+      { input: '23037.001537/2021-16', expected: '23037001537202116' },
+      { input: '23037.001086/2021-17', expected: '23037001086202117' },
+    ])('Deve exibir o valor sem o caracteres especiais', (item) => {
+      const nup = new NUP17(item.input);
+
+      expect(nup.toString()).toBe(item.expected);
+      expect(nup.toString()).toHaveLength(17);
+
+      expect(nup.value).toBe(item.expected);
+      expect(nup.value).toHaveLength(17);
+    });
+  });
+
 });
