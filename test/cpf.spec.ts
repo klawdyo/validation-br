@@ -37,7 +37,7 @@ describe('CPF', () => {
       { num: '15886489070', expected: '158.864.890-70' },
       { num: '90889477086', expected: '908.894.770-86' },
       { num: '00889477000', expected: '008.894.770-00' },
-    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {    
+    ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {
       const masked = new CPF(item.num).mask();
 
       expect(masked).toBe(item.expected);
@@ -64,7 +64,7 @@ describe('CPF', () => {
       expect(typeof calcDv).toBe('string');
     });
 
-    
+
     test.each(['74172316', '1588648900', ''])(
       '%s deve lançar erro de dv',
       (item) => {
@@ -72,5 +72,17 @@ describe('CPF', () => {
       }
     );
 
+  });
+
+  describe('toString', () => {
+    test('Deve exibir o valor sem os caracteres especiais', () => {
+      const cpf = new CPF('133.782.710-00');
+      
+      expect(cpf.toString()).toBe('13378271000')
+      expect(cpf.toString()).toHaveLength(11)
+      
+      expect(cpf.value).toBe('13378271000')
+      expect(cpf.value).toHaveLength(11)
+    });
   });
 });
