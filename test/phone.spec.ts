@@ -96,4 +96,18 @@ describe('Phone', () => {
   describe('checksum', () => {
     expect(() => Phone.checksum()).toThrow()
   })
+
+  describe('toString', () => {
+    test.each([...phones, ...cellPhones])('Deve exibir o valor sem o caracteres especiais', (input) => {
+      const phone = new Phone(input);
+      const cleared = phone.value.replace(/[()\s-]+/g, '');
+
+      expect(phone.toString()).toBe(cleared)
+      expect(phone.toString()).toHaveLength(cleared.length)
+
+
+      expect(phone.value).toBe(cleared)
+      expect(phone.value).toHaveLength(cleared.length)
+    });
+  });
 });
