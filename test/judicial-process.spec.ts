@@ -136,6 +136,26 @@ describe('JudicialProcess', () => {
     );
   });
 
+  describe('toString', () => {
+    test.each([
+      { input: '6105283-83.2009.8.13.0024', expected: '61052838320098130024', },
+      { input: '00110060720168200100', expected: '00110060720168200100', },
+      { input: '08002785520134058400', expected: '08002785520134058400', },
+      { input: '08002732820164058400', expected: '08002732820164058400', },
+    ])('deve exibir o valor sem caracteres especiais', (input) => {
+      
+      const proc = new JudicialProcess(input.input)
+      
+      expect(proc.toString()).toBe(input.expected)
+      expect(proc.toString()).toHaveLength(20)
+      
+      expect(proc.value).toBe(input.expected)
+      expect(proc.value).toHaveLength(20)
+    });
+
+
+  });
+
   describe('getWithoutChecksum', () => {
     test('Deve pegar o número completo do processo sem o DV', () => {
       // expect(new JudicialProcess('00020802520125150049').)
@@ -158,9 +178,9 @@ describe('JudicialProcess', () => {
       expect(JudicialProcess.getFakeSubCourt('02')).toBe('02')
       // se informar um inválido, use 01
       expect(JudicialProcess.getFakeSubCourt('345')).toBe('01')
-      
+
       const fake = JudicialProcess.getFakeSubCourt();
-      
+
       expect(fake.length).toBe(2);
       expect(fake >= '01').toBeTruthy();
       expect(fake <= '99').toBeTruthy();
