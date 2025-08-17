@@ -24,7 +24,7 @@
   - Pra receber o código de barras, use o static fromBarcode()
   - mask() pode devolver a linha digitável ou o código de barras. Por padrão, a linha digitável
   - toString() devolve a linha digitável
-  - toBarcode() devolve a linha digitável
+  - toBarcode() devolve o código de barras
   - parse() é chamado no início e já separa as partes
 
 - [ ] isCAEPF
