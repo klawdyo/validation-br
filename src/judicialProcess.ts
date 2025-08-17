@@ -78,7 +78,7 @@
  * Fonte: https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2
  */
 
-import ValidationBRError from './ValidationBRError'
+import ValidationBRError from './_exceptions/ValidationBRError'
 import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition } from './utils'
 
 /**
