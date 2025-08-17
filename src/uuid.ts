@@ -16,16 +16,8 @@ export class UUID extends Base {
 
   }
 
-  get value(): string {
-    return this._value;
-  }
-
-  toString(): string {
-    return this.value;
-  }
-
   protected normalize(): void {
-    this._value = this._value.replace(/[^0-9a-z]+/i, '').toLocaleLowerCase();
+    this._value = this._value.replace(/[^0-9a-z]+/gi, '').toLocaleLowerCase();
   }
 
   protected validate(): boolean {
