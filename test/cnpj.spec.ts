@@ -56,7 +56,7 @@ describe('CNPJ', () => {
       expect(calcDv).toBe(item.expected);
       expect(typeof calcDv).toBe('string');
     });
-    
+
     test.each(['11222333000', '1122233300011', ''])(
       'deve lançar erro de dv',
       (item) => {
@@ -124,4 +124,30 @@ describe('CNPJ', () => {
     );
 
   });
+
+  describe('toString', () => {
+    test.each([
+      { input: '11.222.333/0001-81', expected: '11222333000181' },
+      { input: '73.797.980/0001-79', expected: '73797980000179' },
+      { input: '06.946.762/0001-61', expected: '06946762000161' },
+      { input: '96.051.576/0001-57', expected: '96051576000157' },
+      { input: '55.585.709/0001-98', expected: '55585709000198' },
+      { input: '99360938000180', expected: '99360938000180' },
+      { input: '23693443000100', expected: '23693443000100' },
+      { input: '32432147000147', expected: '32432147000147' },
+      { input: '91951438000100', expected: '91951438000100' },
+    ])('deve estar definido', (input) => {
+      const cnpj = new CNPJ(input.input);
+      expect(cnpj.toString()).toBe(input.expected);
+      expect(cnpj.toString()).toHaveLength(14);
+      
+      expect(cnpj.value).toBe(input.expected);
+      expect(cnpj.value).toHaveLength(14);
+    });
+  });
+
+
 });
+
+
+
