@@ -75,4 +75,22 @@ describe('TituloEleitor', () => {
       expect(()=>TituloEleitor.checksum(item)).toThrow();
     });
   });
+
+  describe('toString', () => {
+    test.each([
+      { input: '102385010671',   expected: '102385010671' },
+      { input: '836571371619',   expected: '836571371619' },
+      { input: '7436.5064.1660', expected: '743650641660' },
+      { input: '0111.2222.3360', expected: '011122223360' },
+      { input: '0011.2222.3336', expected: '001122223336' },
+    ])('Deve exibir o valor sem o caracteres especiais', (item) => {
+      const titulo = new TituloEleitor(item.input);
+
+      expect(titulo.toString()).toBe(item.expected);
+      expect(titulo.toString()).toHaveLength(12);
+
+      expect(titulo.value).toBe(item.expected);
+      expect(titulo.value).toHaveLength(12);
+    });
+  });
 });
