@@ -39,6 +39,11 @@ describe('TituloEleitor', () => {
     })
   })
 
+  test.only('Deve lançar exceção se a UF for maior que 28', () => {
+    expect(validate('1122 3344 2992')).toBeFalsy()
+    expect(() => validateOrFail('1122 3344 2992')).toThrow()
+  });
+
   test('validate() - Números inválidos', () => {
     const list = [
       '836531371619',

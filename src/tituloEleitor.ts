@@ -69,6 +69,8 @@ export const dv = (value: string | number): string => {
     rejectEmpty: true,
   })
 
+  if (titulo.substring(8, 10) > '28') throw new ValidationBRError('UF inválida');
+
   const sum1 = sumElementsByMultipliers(titulo.substring(0, 8), [2, 3, 4, 5, 6, 7, 8, 9])
   const dv1 = sum1 % 11 >= 10 ? 0 : sum1 % 11
 
