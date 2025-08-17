@@ -32,6 +32,10 @@ describe('TituloEleitor', () => {
     ])('deve lançar erro', (input) => {
       expect(() => new TituloEleitor(input as any)).toThrow();
     });
+
+    test.only('Deve lançar exceção se a UF for maior que 28', () => {
+      expect(() => new TituloEleitor('1122 3344 2992')).toThrow()
+    });
   });
 
   describe('mask', () => {
@@ -72,14 +76,14 @@ describe('TituloEleitor', () => {
       '01023850106',// caractere a mais
       '023850106', // caractere a menos
     ])('dv() - Verificando se o DV gerado está correto', (item) => {
-      expect(()=>TituloEleitor.checksum(item)).toThrow();
+      expect(() => TituloEleitor.checksum(item)).toThrow();
     });
   });
 
   describe('toString', () => {
     test.each([
-      { input: '102385010671',   expected: '102385010671' },
-      { input: '836571371619',   expected: '836571371619' },
+      { input: '102385010671', expected: '102385010671' },
+      { input: '836571371619', expected: '836571371619' },
       { input: '7436.5064.1660', expected: '743650641660' },
       { input: '0111.2222.3360', expected: '011122223360' },
       { input: '0011.2222.3336', expected: '001122223336' },

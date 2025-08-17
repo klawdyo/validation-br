@@ -52,7 +52,7 @@
  * @returns {Boolean}
  */
 
-import {
+import ValidationBRError, {
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
@@ -135,6 +135,8 @@ export class TituloEleitor extends Base {
     if (!/^\d{10}$/.test(value)) {
       throw new InvalidFormatException();
     }
+
+    if (value.substring(8, 10) > '28') throw new ValidationBRError('UF inválida');
 
     const sum1 = sumElementsByMultipliers(
       value.substring(0, 8),
