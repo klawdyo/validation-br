@@ -68,4 +68,24 @@ describe('CNH', () => {
       expect(cnh.mask()).toMatch(/^\d{9}-\d{2}$/)
     });
   });
+
+  describe('toString', () => {
+    test.each([
+      { value: '14490435923', expected: '14490435923' },
+      { value: '97286888262', expected: '97286888262' },
+      { value: '621049358-60', expected: '62104935860' },
+      { value: '491.872.350-50', expected: '49187235050' },
+    ])('Deve ser exibido sem máscara', (input) => {
+      const cnh = new CNH(input.value);
+
+      expect(cnh.toString()).toBe(input.expected);
+      expect(cnh.toString()).toHaveLength(11);
+      
+      expect(cnh.value).toBe(input.expected);
+      expect(cnh.value).toHaveLength(11);
+      
+    });
+  });
+
+
 });
