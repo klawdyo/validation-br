@@ -87,7 +87,7 @@ export class CNH extends Base {
   //
 
   protected normalize(): void {
-    this._value = this._value.replace(/^[.-]$/, '');
+    this._value = this._value.replace(/[.-]/g, '');
   }
 
   /**
