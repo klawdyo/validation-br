@@ -70,4 +70,23 @@ describe('PIS', () => {
       }
     );
   });
+
+  describe('toString', () => {
+    test.each([
+      { input: '71282677380',    expected: '71282677380', },
+      { input: '23795126955',    expected: '23795126955', },
+      { input: '50012973803',    expected: '50012973803', },
+      { input: '27890141144',    expected: '27890141144', },
+      { input: '268.27649.96-0', expected: '26827649960', },
+      { input: '613.01862.91-7', expected: '61301862917', },
+    ])('Deve exibir o valor sem o caracteres especiais', (item) => {
+      const pis = new PIS(item.input);
+      
+      expect(pis.toString()).toBe(item.expected);
+      expect(pis.toString()).toHaveLength(11);
+      
+      expect(pis.value).toBe(item.expected);
+      expect(pis.value).toHaveLength(11);
+    });
+  });
 });
