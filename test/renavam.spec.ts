@@ -68,4 +68,21 @@ describe('Renavam', () => {
       }
     );
   });
+
+  describe('toString', () => {
+    test.each([
+      { input: '03607626105',  expected: '03607626105' },
+      { input: '6409041616-0', expected: '64090416160' },
+      { input: '8049968837-4', expected: '80499688374' },
+    ])('Deve exibir o valor sem o caracteres especiais', (item) => {
+      const renavam = new Renavam(item.input);
+
+      expect(renavam.toString()).toBe(item.expected);
+      expect(renavam.toString()).toHaveLength(11);
+
+      expect(renavam.value).toBe(item.expected);
+      expect(renavam.value).toHaveLength(11);
+    });
+  });
+
 });
