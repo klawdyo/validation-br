@@ -42,7 +42,10 @@ describe('CEP', () => {
       'CEP %s deve ser exibido sem máscara',
       (value) => {
         expect(new CEP(value).toString()).toBe('59650000');
+        expect(new CEP(value).toString()).toHaveLength(8)
+        
         expect(new CEP(value).value).toBe('59650000');
+        expect(new CEP(value).value).toHaveLength(8)
       }
     );
   });
