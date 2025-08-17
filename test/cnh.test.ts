@@ -1,4 +1,4 @@
-import isCNH, { dv, fake, mask, validate, validateOrFail } from '../src/cnh'
+import isCNH, { dv, fake, mask, unmask, validate, validateOrFail } from '../src/cnh'
 import * as _cnh from '../src/cnh'
 
 describe('CNH', () => {
@@ -109,6 +109,24 @@ describe('CNH', () => {
 
       expect(masked).toBe(item.expected)
       expect(masked).toHaveLength(12)
+    })
+  })
+
+  test('unmask() - Testando se remove a máscara corretamente', () => {
+    const list = [
+      { value: '501954711-43', expected: '50195471143' },
+      { value: '583164745-34', expected: '58316474534' },
+      { value: '690444711-46', expected: '69044471146' },
+      { value: '50195471143', expected: '50195471143' },
+      { value: '58316474534', expected: '58316474534' },
+      { value: '69044471146', expected: '69044471146' },
+    ]
+
+    list.forEach((item) => {
+      const masked = unmask(item.value)
+
+      expect(masked).toBe(item.expected)
+      expect(masked).toHaveLength(11)
     })
   })
 })
