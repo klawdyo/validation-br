@@ -54,7 +54,7 @@ describe('CarPlate', () => {
     });
   });
 
-  describe('checlsum', () => {
+  describe('checksum', () => {
     test('Car plate não tem DV', () => {
       expect(() => CarPlate.checksum('MYN-7442'));
     });
@@ -88,4 +88,16 @@ describe('CarPlate', () => {
       expect(CarPlate.checksum).toThrow()
     })
   })
+
+    describe('toString', () => {
+      test('Deve exibir o valor sem os caracteres especiais', () => {
+        const carplate = new CarPlate('AAA-0000');
+        
+        expect(carplate.toString()).toBe('AAA0000')
+        expect(carplate.toString()).toHaveLength(7)
+        
+        expect(carplate.value).toBe('AAA0000')
+        expect(carplate.value).toHaveLength(7)
+      });
+    });
 });
