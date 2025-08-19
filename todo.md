@@ -30,3 +30,4 @@
 - [ ] isCAEPF
   - https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/caepf/legislacao
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isCAEPF.ts
+  - https://contrafbrasil.org.br/system/uploads/ck/files/PERGUNTAS-E-RESPOSTAS.pdf
