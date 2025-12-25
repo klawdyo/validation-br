@@ -78,14 +78,6 @@ export const dv = (value: string | number): string => {
 }
 
 /**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export const mask = (value: string | number): string => String(value).toLocaleUpperCase()
-
-/**
  * fake()
  * Gera um número válido
  *
@@ -136,5 +128,13 @@ export const validate = (value: string): boolean => {
     return false
   }
 }
+
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+export const mask = (value: string | number): string => String(value).toLocaleUpperCase()
 
 export default validate
