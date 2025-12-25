@@ -2,6 +2,7 @@ src
 node_modules
 coverage
 docs
+test
 .github
 dist/*.test.js
 dist/*.test.js.map
