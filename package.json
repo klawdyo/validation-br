@@ -1,11 +1,11 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "1.6.0-d",
+  "version": "1.6.1",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
-    "dist/src",
+    "dist",
     "package.json",
     "package-lock.json",
     "readme.md"
@@ -14,13 +14,15 @@
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "rm dist -r && tsc && cp package*.json dist && rm -r test && cp dist/src/* dist",
-    "publish": "npm publish dist",
+    "build": "./publish.sh",
+    "prepublish": "npm run build",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
     "format": "prettier --write \"./**/*.{js,ts,json}\"",
-    "prepublish": "npm run build"
+    
+    
+    "__:build": "rm dist -r && tsc && rm -r dist/test && mv dist/src/* dist && rm dist/src -r && cp package*.json readme.md dist"
     
   },
   "lint-staged": {
