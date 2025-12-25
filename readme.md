@@ -76,7 +76,7 @@ validateOrFail('01234567890'); // -> true
 - [PIS](#pis) - Validação de PIS, PASEP, NIS e NIT
 - [Código de Rastreamento Postal](#código-de-rastreamento-postal-dos-correios) - Validação de Objetos Registrados dos Correios
 - [Renavam](#renavam) - Validação de RENAVAM
-- [Titulo de Eleitor](#titulo-de-eleitor) - Validação do Título de Eleitor
+- [Titulo de Eleitor](#título-de-eleitor) - Validação do Título de Eleitor
 
 ## Usando em outras bibliotecas de validação
 
