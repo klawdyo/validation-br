@@ -1,4 +1,4 @@
-import isPostalCode, { dv, fake, normalize, validate, validateOrFail } from '../src/postalCode';
+import isPostalCode, { dv, fake, normalize, mask, validate, validateOrFail } from '../src/postalCode';
 import * as _postalCode from '../src/postalCode';
 
 describe('PostalCode', () => {
@@ -99,5 +99,16 @@ describe('PostalCode', () => {
 
     expect(normalized).toBe(item.expected);
     expect(normalized).toHaveLength(13);
+  });
+
+  test.each([
+    { value: 'pn718252423br', expected: 'PN718252423BR' },
+    { value: 'po925539762br', expected: 'PO925539762BR' },
+    { value: 'jt194690698br', expected: 'JT194690698BR' },
+  ])('mask() - Deve normalizar o valor inicial corretamente', (item) => {
+    const masked = mask(item.value);
+
+    expect(masked).toBe(item.expected);
+    expect(masked).toHaveLength(13);
   });
 });

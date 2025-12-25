@@ -138,4 +138,14 @@ export const validate = (value: string): boolean => {
  */
 export const normalize = (value: string | number): string => String(value).toLocaleUpperCase();
 
+/**
+ * Alias para normalize(). PostalCode não possui máscara.
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+export const mask = (value: string | number): string => normalize(value);
+
+
+
 export default validate;
