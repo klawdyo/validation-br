@@ -1,134 +1,114 @@
-import isPostalCode, { dv, fake, mask, validate, validateOrFail } from '../src/postalCode'
-import * as _postalCode from '../src/postalCode'
+import isPostalCode, { dv, fake, normalize, mask, validate, validateOrFail } from '../src/postalCode';
+import * as _postalCode from '../src/postalCode';
 
 describe('PostalCode', () => {
-  test('isPostalCode() - Números válidos', () => {
-    const list = [
-      'PN718252423BR',
-      'PO925539762BR',
-      'JT194690698BR',
-      'SV143851674BR',
-      'RG727348650CN',
-      'RY747622885CN',
-      'RY728187035CN',
-      'RH940629235CN',
-      'RY686586175CN',
-      'RY648001205CN',
-      'UJ776469464CN',
-      'LZ667841882CN',
-      'RS737783818NL',
-    ]
+  test.each([
+    'PN718252423BR',
+    'PO925539762BR',
+    'JT194690698BR',
+    'SV143851674BR',
+    'RG727348650CN',
+    'RY747622885CN',
+    'RY728187035CN',
+    'RH940629235CN',
+    'RY686586175CN',
+    'RY648001205CN',
+    'UJ776469464CN',
+    'LZ667841882CN',
+    'RS737783818NL',
+  ])('isPostalCode() - Números válidos', (item) => {
 
-    list.forEach((postalCode) => {
-      expect(isPostalCode(postalCode)).toBeTruthy()
-      expect(_postalCode.validate(postalCode)).toBeTruthy()
-    })
-  })
+    expect(isPostalCode(item)).toBeTruthy();
+    expect(_postalCode.validate(item)).toBeTruthy();
 
-  test('validate() - Números válidos', () => {
-    const list = [
-      'PN718252423BR',
-      'PO925539762BR',
-      'JT194690698BR',
-      'SV143851674BR',
-      'RG727348650CN',
-      'RY747622885CN',
-      'RY728187035CN',
-      'RH940629235CN',
-      'RY686586175CN',
-      'RY648001205CN',
-      'UJ776469464CN',
-      'LZ667841882CN',
-      'RS737783818NL',
-    ]
+  });
 
-    list.forEach((postalCode) => {
-      expect(validate(postalCode)).toBeTruthy()
-    })
-  })
+  test.each([
+    'PN718252423BR',
+    'PO925539762BR',
+    'JT194690698BR',
+    'SV143851674BR',
+    'RG727348650CN',
+    'RY747622885CN',
+    'RY728187035CN',
+    'RH940629235CN',
+    'RY686586175CN',
+    'RY648001205CN',
+    'UJ776469464CN',
+    'LZ667841882CN',
+    'RS737783818NL',
+  ])('validate() - Números válidos', (item) => {
 
-  test('validate() - Números inválidos', () => {
-    const list = [
-      'PO925524762BR',
-      'JT194624698BR',
-      'SV143824674BR',
-      'RG727324650CN',
-      'RY747624885CN',
-      'RY728114035CN',
-    ]
+    expect(validate(item)).toBeTruthy();
 
-    list.forEach((postalCode) => {
-      expect(validate(postalCode)).toBeFalsy()
-    })
-  })
+  });
 
-  test('validateOrFail() - Números inválidos', () => {
-    const list = [
-      'PO925524762BR',
-      'JT194624698BR',
-      'SV143824674BR',
-      'RG727324650CN',
-      'RY747624885CN',
-      'RY728114035CN',
-    ]
+  test.each([
+    'PO925524762BR',
+    'JT194624698BR',
+    'SV143824674BR',
+    'RG727324650CN',
+    'RY747624885CN',
+    'RY728114035CN',
+  ])('validate() - Números inválidos', (item) => {
+    expect(validate(item)).toBeFalsy();
+  });
 
-    list.forEach((postalCode) => {
-      expect(() => validateOrFail(postalCode)).toThrow()
-    })
-  })
+  test.each([
+    'PO925524762BR',
+    'JT194624698BR',
+    'SV143824674BR',
+    'RG727324650CN',
+    'RY747624885CN',
+    'RY728114035CN',
+  ])('validateOrFail() - Números inválidos', (item) => {
+    expect(() => validateOrFail(item)).toThrow();
+  });
 
   test('Parâmetro não informado', () => {
-    expect(isPostalCode('')).toBeFalsy()
-    expect(validate('')).toBeFalsy()
-    expect(() => validateOrFail('')).toThrow()
-    expect(() => dv('')).toThrow()
-  })
+    expect(isPostalCode('')).toBeFalsy();
+    expect(validate('')).toBeFalsy();
+    expect(() => validateOrFail('')).toThrow();
+    expect(() => dv('')).toThrow();
+  });
 
-  test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const postalCode = fake()
+  test.each([...Array(5)])('fake() - Gera fakes corretamente', () => {
+    const postalCode = fake();
 
-      expect(validate(postalCode)).toBeTruthy()
-      expect(postalCode).toHaveLength(13)
-    }
-  })
+    expect(validate(postalCode)).toBeTruthy();
+    expect(postalCode).toHaveLength(13);
+  });
 
-  test('fake() - Gera fakes com máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const postalCode = fake(true)
+  test.each([
+    { value: 'PN718252423BR', expected: '3' },
+    { value: 'PO925539762BR', expected: '2' },
+    { value: 'JT194690698BR', expected: '8' },
+  ])('dv() - Verificando se o DV gerado está correto', (item) => {
+    const calcDv = dv(item.value);
 
-      expect(validate(postalCode)).toBeTruthy()
-      expect(postalCode).toHaveLength(13)
-    }
-  })
+    expect(calcDv).toBe(item.expected);
+    expect(typeof calcDv).toBe('string');
+  });
 
-  test('dv() - Verificando se o DV gerado está correto', () => {
-    const list = [
-      { num: 'PN718252423BR', expected: '3' },
-      { num: 'PO925539762BR', expected: '2' },
-      { num: 'JT194690698BR', expected: '8' },
-    ]
+  test.each([
+    { value: 'pn718252423br', expected: 'PN718252423BR' },
+    { value: 'po925539762br', expected: 'PO925539762BR' },
+    { value: 'jt194690698br', expected: 'JT194690698BR' },
+  ])('normalize() - Deve normalizar o valor inicial corretamente', (item) => {
+    const normalized = normalize(item.value);
 
-    list.forEach((item) => {
-      const calcDv = dv(item.num)
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(13);
+  });
 
-      expect(calcDv).toBe(item.expected)
-      expect(typeof calcDv).toBe('string')
-    })
-  })
+  test.each([
+    { value: 'pn718252423br', expected: 'PN718252423BR' },
+    { value: 'po925539762br', expected: 'PO925539762BR' },
+    { value: 'jt194690698br', expected: 'JT194690698BR' },
+  ])('mask() - Deve normalizar o valor inicial corretamente', (item) => {
+    const masked = mask(item.value);
 
-  test('mask() - Testando se a máscara foi gerada corretamente', () => {
-    const list = [
-      { num: 'pn718252423br', expected: 'PN718252423BR' },
-      { num: 'po925539762br', expected: 'PO925539762BR' },
-      { num: 'jt194690698br', expected: 'JT194690698BR' },
-    ]
-
-    list.forEach((item) => {
-      const masked = mask(item.num)
-
-      expect(masked).toBe(item.expected)
-      expect(masked).toHaveLength(13)
-    })
-  })
-})
+    expect(masked).toBe(item.expected);
+    expect(masked).toHaveLength(13);
+  });
+});

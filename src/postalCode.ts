@@ -30,8 +30,10 @@
  *
  *  - O somatório encontrado é dividido por 11 e o resultado é subtraído de 11
  *    234 / 11 tem resto 3. 11 - 3 = 8. DV1 é 8.
- *    Obs.: Caso o cálculo de DV1 retorne 0, o resultado será 5.
- *          Caso retorne 1, o resto será 0
+ *    
+ *  Especificidades: 
+ *  - Caso o cálculo de DV1 retorne 0, o resultado será 5.
+ *  - Caso retorne 1, o resto será 0
  *
  *
  *
@@ -42,8 +44,8 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './ValidationBRError'
-import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from './utils';
 
 /**
  * dv()
@@ -53,37 +55,29 @@ import { sumElementsByMultipliers, clearValue, fakeNumber, randomLetter } from '
  * @returns {String}
  */
 export const dv = (value: string | number): string => {
-  if (!value) throw ValidationBRError.EMPTY_VALUE
+  if (!value) throw ValidationBRError.EMPTY_VALUE;
 
   const postalCode = String(value)
     .replace(/[^0-9]+/gi, '')
     .padStart(8, '0')
-    .substring(0, 8)
+    .substring(0, 8);
 
-  const sum = sumElementsByMultipliers(postalCode, [8, 6, 4, 2, 3, 5, 9, 7])
+  const sum = sumElementsByMultipliers(postalCode, [8, 6, 4, 2, 3, 5, 9, 7]);
 
-  const rest = sum % 11
+  const rest = sum % 11;
   // const specificities = { 0: { dv: 5 }, 1: { dv: 0 } }
 
   const specificities = [
     { rest: 0, dv: 5 },
     { rest: 1, dv: 0 },
-  ]
+  ];
 
-  const specifity = specificities.find((item) => item.rest === rest)
+  const specifity = specificities.find((item) => item.rest === rest);
 
-  const DV = specifity ? specifity.dv : 11 - rest
+  const DV = specifity ? specifity.dv : 11 - rest;
 
-  return String(DV)
-}
-
-/**
- * Aplica uma máscara ao número informado
- *
- * @param {String} value Número de Processo
- * @returns {String} Valor com a máscara
- */
-export const mask = (value: string | number): string => String(value).toLocaleUpperCase()
+  return String(DV);
+};
 
 /**
  * fake()
@@ -91,14 +85,13 @@ export const mask = (value: string | number): string => String(value).toLocaleUp
  *
  * @returns {String}
  */
-export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(8, true)
+export const fake = (): string => {
+  const num = fakeNumber(8, true);
 
-  const postalCode = `${randomLetter()}${randomLetter()}${num}${dv(num)}BR`
+  const postalCode = `${randomLetter()}${randomLetter()}${num}${dv(num)}BR`;
 
-  if (withMask) return mask(postalCode)
-  return postalCode
-}
+  return postalCode;
+};
 
 /**
  * validateOrFail()
@@ -110,17 +103,17 @@ export const fake = (withMask: boolean = false): string => {
  */
 export const validateOrFail = (value: string): boolean => {
   if (!/^[a-z]{2}([\d]{9})[a-z]{2}$/gi.test(String(value))) {
-    throw new Error('O número não está no formato "XX000000000XX"')
+    throw new Error('O número não está no formato "XX000000000XX"');
   }
 
-  const postalCode = clearValue(value.substring(2, 11), 9)
+  const postalCode = clearValue(value.substring(2, 11), 9);
 
   if (dv(value.substring(2, 11)) !== postalCode.substring(8, 9)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * validate()
@@ -131,10 +124,28 @@ export const validateOrFail = (value: string): boolean => {
  */
 export const validate = (value: string): boolean => {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
-export default validate
+/**
+ * Aplica uma máscara ao número informado
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+export const normalize = (value: string | number): string => String(value).toLocaleUpperCase();
+
+/**
+ * Alias para normalize(). PostalCode não possui máscara.
+ *
+ * @param {String} value Número de Processo
+ * @returns {String} Valor com a máscara
+ */
+export const mask = (value: string | number): string => normalize(value);
+
+
+
+export default validate;
