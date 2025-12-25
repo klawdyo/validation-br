@@ -141,7 +141,7 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const judicialProcess = unmask(value)
+  const judicialProcess = normalize(value);
   const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
 
   if (processWithoutDV.substring(11, 12) === '0') {
@@ -198,7 +198,7 @@ export function _getSubCourt(courte: string | undefined = undefined): string {
  * @param {String|Number} value Valor a remover máscara
  * @returns {String}
  */
-export const unmask = (value: string | number): string => {
+export const normalize = (value: string | number): string => {
   return clearValue(value, 20, {
     fillZerosAtLeft: true,
     rejectEmpty: true,

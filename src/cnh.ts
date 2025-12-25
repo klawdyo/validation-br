@@ -86,7 +86,7 @@ export const dv = (value: string | number): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnh = unmask(value)
+  const cnh = normalize(value);
 
   if (dv(cnh) !== cnh.substring(9, 11)) {
     throw ValidationBRError.INVALID_DV
@@ -138,7 +138,7 @@ export const fake = (withMask: boolean = false): string => {
  * @param {String|Number} value Valor a remover máscara
  * @returns {String}
  */
-export const unmask = (value: string | number): string => {
+export const normalize = (value: string | number): string => {
   return clearValue(value, 11, {
     fillZerosAtLeft: true,
     rejectEmpty: true,

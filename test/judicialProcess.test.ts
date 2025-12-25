@@ -5,7 +5,7 @@ import isJudicialProcess, {
   validate,
   validateOrFail,
   _getSubCourt,
-  unmask,
+  normalize,
 } from '../src/judicialProcess';
 
 import * as _judicialProcess from '../src/judicialProcess';
@@ -87,14 +87,14 @@ describe('JudicialProcess', () => {
     { value: '0011006-07.2016.8.20.0100', expected: '00110060720168200100' },
     { value: '0800278-55.2013.4.05.8400', expected: '08002785520134058400' },
     { value: '0800273-28.2016.4.05.8400', expected: '08002732820164058400' },
-    // Already unmasked values
+    // Already normalized values
     { value: '20802520125150049', expected: '00020802520125150049' },
     { value: '61052838320098130024', expected: '61052838320098130024' },
     { value: '110060720168200100', expected: '00110060720168200100' },
     { value: '8002785520134058400', expected: '08002785520134058400' },
     { value: '8002732820164058400', expected: '08002732820164058400' },
-  ])('unmask() - Testando se remove a máscara corretamente', (item) => {
-    const masked = unmask(item.value);
+  ])('normalize() - Testando se remove a máscara corretamente', (item) => {
+    const masked = normalize(item.value);
     expect(masked).toBe(item.expected);
     expect(masked).toHaveLength(20);
   });

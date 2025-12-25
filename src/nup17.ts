@@ -124,7 +124,7 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const nup = unmask(value)
+  const nup = normalize(value);
 
   if (dv(nup) !== nup.substring(15, 17)) {
     throw ValidationBRError.INVALID_DV
@@ -148,7 +148,7 @@ export const validate = (value: string): boolean => {
   }
 }
 
-export const unmask = (value: string | number): string => {
+export const normalize = (value: string | number): string => {
   return clearValue(value, 17, {
     rejectEmpty: true,
     rejectHigherLength: true,

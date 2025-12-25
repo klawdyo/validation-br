@@ -1,4 +1,4 @@
-import isCNPJ, { dv, fake, mask, validate, validateOrFail, unmask } from '../src/cnpj';
+import isCNPJ, { dv, fake, mask, validate, validateOrFail, normalize } from '../src/cnpj';
 import * as _cnpj from '../src/cnpj';
 
 describe('CNPJ', () => {
@@ -155,10 +155,10 @@ describe('CNPJ', () => {
     { value: '06.946.762/0001-61', expected: '06946762000161' },
     { value: '96.051.576/0001-57', expected: '96051576000157' },
     { value: '55.585.709/0001-98', expected: '55585709000198' },
-  ])('unmask() - Deve remover a máscara corretamente', (item) => {
-    const unmasked = unmask(item.value);
-    expect(unmasked).toBe(item.expected);
-    expect(unmasked).toHaveLength(14);
+  ])('normalize() - Deve remover a máscara corretamente', (item) => {
+    const normalized = normalize(item.value);
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(14);
   });
 
 });

@@ -1,4 +1,4 @@
-import isPIS, { dv, fake, mask, unmask, validate, validateOrFail } from '../src/pisPasep';
+import isPIS, { dv, fake, mask, normalize, validate, validateOrFail } from '../src/pisPasep';
 import * as _pisPasep from '../src/pisPasep';
 
 describe('PIS', () => {
@@ -115,12 +115,12 @@ describe('PIS', () => {
 
   test.each([
     { value: '712.82677.38-0', expected: '71282677380', },
-    { value: '237.95126.95-5', expected: '23795126955',  },
+    { value: '237.95126.95-5', expected: '23795126955', },
     { value: '500.12973.80-3', expected: '50012973803', },
-  ])('unmask() - Deve remover a máscara corretamente', (item) => {
-    const unmasked = unmask(item.value);
+  ])('normalize() - Deve remover a máscara corretamente', (item) => {
+    const normalized = normalize(item.value);
 
-    expect(unmasked).toBe(item.expected);
-    expect(unmasked).toHaveLength(11);
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(11);
   });
 });

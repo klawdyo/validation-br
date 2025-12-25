@@ -1,4 +1,4 @@
-import isRenavam, { dv, fake, mask, unmask, validate, validateOrFail } from '../src/renavam';
+import isRenavam, { dv, fake, mask, normalize, validate, validateOrFail } from '../src/renavam';
 
 
 describe('Renavam', () => {
@@ -69,9 +69,9 @@ describe('Renavam', () => {
     { value: '1952519770-3', expected: '19525197703', },
     { value: '0952519770-3', expected: '09525197703', },
     { value: '0052519770-3', expected: '00525197703', },
-  ])('unmask() - Deve remover a máscara corretamente', (item) => {
-    const unmasked = unmask(item.value);
-    expect(unmasked).toBe(item.expected);
-    expect(unmasked).toHaveLength(11);
+  ])('normalize() - Deve remover a máscara corretamente', (item) => {
+    const normalized = normalize(item.value);
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(11);
   });
 });

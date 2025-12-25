@@ -135,6 +135,6 @@ export const validate = (value: string): boolean => {
  * @param {String} value Número de Processo
  * @returns {String} Valor com a máscara
  */
-export const mask = (value: string | number): string => String(value).toLocaleUpperCase()
+export const normalize = (value: string | number): string => String(value).toLocaleUpperCase();
 
 export default validate

@@ -1,4 +1,4 @@
-import isTituloEleitor, { dv, fake, mask, unmask, validate, validateOrFail } from '../src/tituloEleitor'
+import isTituloEleitor, { dv, fake, mask, normalize, validate, validateOrFail } from '../src/tituloEleitor';
 
 describe('TituloEleitor', () => {
   test.each([
@@ -95,16 +95,16 @@ describe('TituloEleitor', () => {
   })
 
   test.each([
-      { value: '1023.8501.0671', expected: '102385010671', },
-      { value: '8365.7137.1619', expected: '836571371619', },
-      { value: '7436.5064.1660', expected: '743650641660', },
-      { value: '0111.2222.3360', expected: '011122223360', },
-      { value: '0011.2222.3336', expected: '001122223336', },
-    ]
-  )('unmask() - Deve remover a máscara corretamente', (item) => {
-    const unmasked = unmask(item.value)
+    { value: '1023.8501.0671', expected: '102385010671', },
+    { value: '8365.7137.1619', expected: '836571371619', },
+    { value: '7436.5064.1660', expected: '743650641660', },
+    { value: '0111.2222.3360', expected: '011122223360', },
+    { value: '0011.2222.3336', expected: '001122223336', },
+  ]
+  )('normalize() - Deve remover a máscara corretamente', (item) => {
+    const normalized = normalize(item.value);
 
-    expect(unmasked).toBe(item.expected)
-    expect(unmasked).toHaveLength(12)
-  })
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(12);
+  });
 })

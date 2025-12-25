@@ -1,4 +1,4 @@
-import isNUP17, { dv, fake, mask, unmask, validate, validateOrFail } from '../src/nup17';
+import isNUP17, { dv, fake, mask, normalize, validate, validateOrFail } from '../src/nup17';
 import * as _nup17 from '../src/nup17';
 
 describe('NUP17', () => {
@@ -132,11 +132,11 @@ describe('NUP17', () => {
     { value: '23037.001462/2021-65', expected: '23037001462202165', },
     { value: '23037.001537/2021-16', expected: '23037001537202116', },
     { value: '23037.001086/2021-17', expected: '23037001086202117', },
-  ])('unmask() - Deve remover a máscara corretamente', (item) => {
+  ])('normalize() - Deve remover a máscara corretamente', (item) => {
 
-    const unmasked = unmask(item.value);
+    const normalized = normalize(item.value);
 
-    expect(unmasked).toBe(item.expected);
-    expect(unmasked).toHaveLength(17);
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(17);
   });
 });

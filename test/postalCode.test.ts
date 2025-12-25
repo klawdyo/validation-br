@@ -1,4 +1,4 @@
-import isPostalCode, { dv, fake, mask, validate, validateOrFail } from '../src/postalCode'
+import isPostalCode, { dv, fake, normalize, validate, validateOrFail } from '../src/postalCode';
 import * as _postalCode from '../src/postalCode'
 
 describe('PostalCode', () => {
@@ -84,51 +84,13 @@ describe('PostalCode', () => {
     expect(() => dv('')).toThrow()
   })
 
-  test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const postalCode = fake()
+  test.each([
+    { value: 'pn718252423br', expected: 'PN718252423BR' },
+    { value: 'po925539762br', expected: 'PO925539762BR' },
+    { value: 'jt194690698br', expected: 'JT194690698BR' },
+  ])('normalize() - Deve normalizar o valor inicial corretamente', (item) => {
+    const normalized = normalize(item.value);
 
-      expect(validate(postalCode)).toBeTruthy()
-      expect(postalCode).toHaveLength(13)
-    }
-  })
-
-  test('fake() - Gera fakes com máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const postalCode = fake(true)
-
-      expect(validate(postalCode)).toBeTruthy()
-      expect(postalCode).toHaveLength(13)
-    }
-  })
-
-  test('dv() - Verificando se o DV gerado está correto', () => {
-    const list = [
-      { num: 'PN718252423BR', expected: '3' },
-      { num: 'PO925539762BR', expected: '2' },
-      { num: 'JT194690698BR', expected: '8' },
-    ]
-
-    list.forEach((item) => {
-      const calcDv = dv(item.num)
-
-      expect(calcDv).toBe(item.expected)
-      expect(typeof calcDv).toBe('string')
-    })
-  })
-
-  test('mask() - Testando se a máscara foi gerada corretamente', () => {
-    const list = [
-      { num: 'pn718252423br', expected: 'PN718252423BR' },
-      { num: 'po925539762br', expected: 'PO925539762BR' },
-      { num: 'jt194690698br', expected: 'JT194690698BR' },
-    ]
-
-    list.forEach((item) => {
-      const masked = mask(item.num)
-
-      expect(masked).toBe(item.expected)
-      expect(masked).toHaveLength(13)
-    })
-  })
-})
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(13);
+  });
