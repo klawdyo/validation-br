@@ -72,9 +72,9 @@ validateOrFail('01234567890'); // -> true
 - [CPF](#cpf) - Validação do CPF
 - [CNPJ](#cnpj) - Validação do CNPJ
 - [NUP-17](#nup-17) - Validação de Número Unificado de Protocolo do Governo Federal
-- [Processo Judicial](#processo-judicial) - Validação de Números de Processos Judiciais
+- [Processo Judicial](#processos-judiciais) - Validação de Números de Processos Judiciais
 - [PIS](#pis) - Validação de PIS, PASEP, NIS e NIT
-- [Código de Rastreamento Postal](#codigo-de-rastreamento-postal-dos-correios) - Validação de Objetos Registrados dos Correios
+- [Código de Rastreamento Postal](#código-de-rastreamento-postal-dos-correios) - Validação de Objetos Registrados dos Correios
 - [Renavam](#renavam) - Validação de RENAVAM
 - [Titulo de Eleitor](#titulo-de-eleitor) - Validação do Título de Eleitor
 
@@ -452,7 +452,7 @@ Github actions executados nas versões 18, 20 e 22 do Node.
 
 - **25/12/2025**:
   - 1.6.0
-    - Incluída a função normalize() que retorna o valor normlizado, somente números (ou letras maiúsculas quando couber).
+    - Incluída a função normalize() que retorna o valor normalizado, somente números (ou letras maiúsculas quando couber).
 - **16/12/2023**:
   - 1.5.0
     - CNPJ alfanumérico
