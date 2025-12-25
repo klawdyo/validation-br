@@ -2,80 +2,65 @@ import isNUP17, { dv, fake, mask, normalize, validate, validateOrFail } from '..
 import * as _nup17 from '../src/nup17';
 
 describe('NUP17', () => {
-  test('isNUP17() - Números válidos', () => {
-    const list = [
-      // Masked
-      '23037.001380/2021-11',
-      '23037.001434/2021-48',
-      '23037.001321/2021-42',
-      // String
-      '23037001462202165',
-      '23037001537202116',
-      '23037001086202117',
-    ];
+  test.each([
+    // Masked
+    '23037.001380/2021-11',
+    '23037.001434/2021-48',
+    '23037.001321/2021-42',
+    // String
+    '23037001462202165',
+    '23037001537202116',
+    '23037001086202117',
+  ])('isNUP17() - Números válidos', (item) => {
 
-    list.forEach((nup17) => {
-      expect(isNUP17(nup17)).toBeTruthy();
-      expect(_nup17.validate(nup17)).toBeTruthy();
-    });
+    expect(isNUP17(item)).toBeTruthy();
+    expect(_nup17.validate(item)).toBeTruthy();
   });
 
-  test('validate() - Números válidos', () => {
-    const list = [
-      // Masked
-      '23037.001380/2021-11',
-      '23037.001434/2021-48',
-      '23037.001321/2021-42',
-      // String
-      '23037001462202165',
-      '23037001537202116',
-      '23037001086202117',
-    ];
+  test.each([
+    // Masked
+    '23037.001380/2021-11',
+    '23037.001434/2021-48',
+    '23037.001321/2021-42',
+    // String
+    '23037001462202165',
+    '23037001537202116',
+    '23037001086202117',
+  ])('validate() - Números válidos', (item) => {
 
-    list.forEach((nup17) => {
-      expect(validate(nup17)).toBeTruthy();
-    });
+    expect(validate(item)).toBeTruthy();
+
   });
 
-  test('validate() - Números inválidos', () => {
-    const list = [
-      // Masked
-      '23037001380202112',
-      '23037001434202142',
-      '23037001462202162',
-      '23037001537202112',
-    ];
+  test.each([
+    // Masked
+    '23037001380202112',
+    '23037001434202142',
+    '23037001462202162',
+    '23037001537202112',
+  ])('validate() - Números inválidos', (item) => {
 
-    list.forEach((nup17) => {
-      expect(validate(nup17)).toBeFalsy();
-    });
+    expect(validate(item)).toBeFalsy();
   });
 
-  test('validateOrFail() - Números inválidos', () => {
-    const list = [
-      // Masked
-      '23037001380202112',
-      '23037001434202142',
-      '23037001462202162',
-      '23037001537202112',
-    ];
+  test.each([
+    // Masked
+    '23037001380202112',
+    '23037001434202142',
+    '23037001462202162',
+    '23037001537202112',
+  ])('validateOrFail() - Números inválidos', (item) => {
 
-    list.forEach((nup17) => {
-      expect(() => validateOrFail(nup17)).toThrow();
-    });
+    expect(() => validateOrFail(item)).toThrow();
   });
 
-  test('validateOrFail() - Números válidos com caracteres adicionais', () => {
-    const list = [
-      // Números válidos com 1 caractere a mais no final
-      '230370014622021650',
-      '230370015372021160',
-      '230370010862021170',
-    ];
-
-    list.forEach((nup17) => {
-      expect(() => validateOrFail(nup17)).toThrow();
-    });
+  test.each([
+    // Números válidos com 1 caractere a mais no final
+    '230370014622021650',
+    '230370015372021160',
+    '230370010862021170',
+  ])('validateOrFail() - Números válidos com caracteres adicionais', (item) => {
+    expect(() => validateOrFail(item)).toThrow();
   });
 
   test('Parâmetro não informado', () => {

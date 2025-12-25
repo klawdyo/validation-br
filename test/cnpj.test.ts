@@ -75,47 +75,37 @@ describe('CNPJ', () => {
     expect(() => dv('')).toThrow();
   });
 
-  test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const cnpj = fake();
-      expect(validate(cnpj)).toBeTruthy();
-      expect(cnpj).toHaveLength(14);
-    }
+  test.each([...Array(5)])('fake() - Gera fakes sem máscara', () => {
+    const cnpj = fake();
+    expect(validate(cnpj)).toBeTruthy();
+    expect(cnpj).toHaveLength(14);
   });
 
-  test('fake() - Gera fakes com máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const cnpj = fake(true);
-      expect(validate(cnpj)).toBeTruthy();
-      expect(cnpj).toHaveLength(18);
-    }
+  test.each([...Array(5)])('fake() - Gera fakes com máscara', () => {
+    const cnpj = fake(true);
+    expect(validate(cnpj)).toBeTruthy();
+    expect(cnpj).toHaveLength(18);
   });
 
-  test('fake() - Gera fakes com máscara usando opções como objeto', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const cnpj = fake({ withMask: true, alphanumeric: false });
-      expect(validate(cnpj)).toBeTruthy();
-      expect(cnpj).toHaveLength(18);
-      expect(cnpj).toMatch(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/);
-    }
+  test.each([...Array(5)])('fake() - Gera fakes com máscara usando opções como objeto', () => {
+    const cnpj = fake({ withMask: true, alphanumeric: false });
+    expect(validate(cnpj)).toBeTruthy();
+    expect(cnpj).toHaveLength(18);
+    expect(cnpj).toMatch(/^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/);
   });
 
-  test('fake() - Gera fakes sem máscara usando opções como objeto', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const cnpj = fake({ withMask: false, alphanumeric: false });
-      expect(cnpj).toMatch(/^\d{14}$/);
-      expect(validate(cnpj)).toBeTruthy();
-      expect(cnpj).toHaveLength(14);
-    }
+  test.each([...Array(5)])('fake() - Gera fakes sem máscara usando opções como objeto', () => {
+    const cnpj = fake({ withMask: false, alphanumeric: false });
+    expect(cnpj).toMatch(/^\d{14}$/);
+    expect(validate(cnpj)).toBeTruthy();
+    expect(cnpj).toHaveLength(14);
   });
 
-  test('fake() - Gera CNPJs alfanuméricos', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const cnpj = fake({ withMask: false, alphanumeric: true });
-      expect(cnpj).toMatch(/^[0-9A-Z]{14}$/);
-      expect(validate(cnpj)).toBeTruthy();
-      expect(cnpj).toHaveLength(14);
-    }
+  test.each([...Array(5)])('fake() - Gera CNPJs alfanuméricos', () => {
+    const cnpj = fake({ withMask: false, alphanumeric: true });
+    expect(cnpj).toMatch(/^[0-9A-Z]{14}$/);
+    expect(validate(cnpj)).toBeTruthy();
+    expect(cnpj).toHaveLength(14);
   });
 
   test.each([

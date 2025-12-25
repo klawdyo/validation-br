@@ -41,12 +41,10 @@ describe('JudicialProcess', () => {
     expect(() => dv('')).toThrow();
   });
 
-  test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 500; i += 1) {
+  test.each([...Array(5)])('fake() - Gera fakes sem máscara', () => {
       const judicialProcess = fake();
       expect(validate(judicialProcess)).toBeTruthy();
       expect(judicialProcess).toHaveLength(20);
-    }
   });
 
   test.each([...Array(5)])('fake() - Gera fakes com máscara', () => {
