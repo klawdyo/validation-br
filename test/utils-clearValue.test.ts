@@ -7,6 +7,7 @@ describe('clearValue()', () => {
       { value: 1234567890, size: 10, expected: '1234567890' },
       { value: '1234567890', size: 10, expected: '1234567890' },
       { value: '12.345.678-90', size: 10, expected: '1234567890' },
+      { value: '1234 5678 9012', size: 10, expected: '123456789012' },
     ]
 
     valid.forEach((item) => {
