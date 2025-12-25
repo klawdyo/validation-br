@@ -1,4 +1,4 @@
-import ValidationBRError from './_exceptions/ValidationBRError'
+import ValidationBRError from './_exceptions/ValidationBRError';
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
@@ -9,7 +9,7 @@ import ValidationBRError from './_exceptions/ValidationBRError'
  * @returns {Integer}
  */
 export function sumToDV(sum: number): number {
-  return sum % 11 < 2 ? 0 : 11 - (sum % 11)
+  return sum % 11 < 2 ? 0 : 11 - (sum % 11);
 }
 
 /**
@@ -23,7 +23,7 @@ export function sumToDV(sum: number): number {
  * 
  */
 export function checkRepeatedSequence(value: string) {
-  return [...value].every(digit => digit === value[0])
+  return [...value].every(digit => digit === value[0]);
 }
 
 /**
@@ -42,7 +42,7 @@ export function sumElementsByMultipliers(value: string, multiplier: number[]): n
   return multiplier.reduce(
     (accu: number, curr: any, i: number) => accu + curr * Number(value[i]),
     0,
-  )
+  );
 }
 
 /**
@@ -60,12 +60,12 @@ export function sumElementsByMultipliers(value: string, multiplier: number[]): n
 export function fakeNumber(length: number, forceLength = false, isAlpha = false): string {
   let value: string;
 
-  if (isAlpha) value = Math.round(Math.random() * 36 ** length).toString(36).toLocaleUpperCase()
-  else value = Math.floor(Math.random() * 10 ** length).toString()
+  if (isAlpha) value = Math.round(Math.random() * 36 ** length).toString(36).toLocaleUpperCase();
+  else value = Math.floor(Math.random() * 10 ** length).toString();
 
-  if (forceLength) return String(value).padStart(length, '0')
+  if (forceLength) return String(value).padStart(length, '0');
 
-  return String(value)
+  return String(value);
 }
 
 /**
@@ -91,29 +91,29 @@ export function clearValue(
   length: number | null = null,
   options?: ClearValueOptions,
 ): string {
-  let clearedValue = String(value).replace(/([/.-\s]+)/gi, '')
+  let clearedValue = String(value).replace(/([/.-\s]+)/gi, '');
 
   if (options) {
     const shouldRejectEmpty = options.rejectEmpty === true && clearedValue.length === 0;
     if (shouldRejectEmpty) {
-      throw ValidationBRError.EMPTY_VALUE
+      throw ValidationBRError.EMPTY_VALUE;
     }
 
     const shouldRejectHigherLength = options.rejectHigherLength === true && length && clearedValue.length > length;
     if (shouldRejectHigherLength) {
-      throw ValidationBRError.MAX_LEN_EXCEDEED
+      throw ValidationBRError.MAX_LEN_EXCEDEED;
     }
 
-    const shouldRejectEqualSequence = options.rejectEqualSequence === true && length
+    const shouldRejectEqualSequence = options.rejectEqualSequence === true && length;
     if (shouldRejectEqualSequence) {
-      if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE
+      if (checkRepeatedSequence(clearedValue)) throw ValidationBRError.REPEATED_SEQUENCE;
     }
 
-    if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0')
-    if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length)
+    if (length && options.fillZerosAtLeft) clearedValue = clearedValue.padStart(length, '0');
+    if (length && options.trimAtRight) clearedValue = clearedValue.substring(0, length);
   }
 
-  return clearedValue
+  return clearedValue;
 }
 
 /**
@@ -131,7 +131,7 @@ export function clearValue(
  *
  */
 export function insertAtPosition(value: string, insertValue: string, position: number): string {
-  return `${value.substring(0, position)}${insertValue}${value.substring(position)}`
+  return `${value.substring(0, position)}${insertValue}${value.substring(position)}`;
 }
 
 /**
@@ -153,7 +153,7 @@ export function removeFromPosition(
   startPosition: number,
   endPosition: number,
 ): string {
-  return [value.slice(0, startPosition), value.slice(endPosition)].join('')
+  return [value.slice(0, startPosition), value.slice(endPosition)].join('');
 }
 
 /**
@@ -170,16 +170,16 @@ export function removeFromPosition(
  *
  */
 export function applyMask(value: string | number, mask: string): string {
-  const maskLen = clearValue(mask).length
-  let masked = clearValue(value, maskLen, { fillZerosAtLeft: true, trimAtRight: true })
-  const specialChars = ['/', '-', '.', '(', ')', ' ']
+  const maskLen = clearValue(mask).length;
+  let masked = clearValue(value, maskLen, { fillZerosAtLeft: true, trimAtRight: true });
+  const specialChars = ['/', '-', '.', '(', ')', ' '];
 
   for (let position = 0; position < mask.length; position += 1) {
-    const current = mask[position]
-    if (specialChars.includes(current)) masked = insertAtPosition(masked, current, position)
+    const current = mask[position];
+    if (specialChars.includes(current)) masked = insertAtPosition(masked, current, position);
   }
 
-  return masked
+  return masked;
 }
 
 /**
@@ -193,8 +193,8 @@ export function applyMask(value: string | number, mask: string): string {
  * @returns {String}
  */
 export function randomLetter(): string {
-  const idx = Math.floor(1 + Math.random() * 26)
-  return String.fromCharCode(idx + 64)
+  const idx = Math.floor(1 + Math.random() * 26);
+  return String.fromCharCode(idx + 64);
 }
 
 /**

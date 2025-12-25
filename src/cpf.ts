@@ -58,8 +58,8 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils';
 
 /**
  * dv()
@@ -72,16 +72,16 @@ export const dv = (value: string | number): string => {
   const cpf = clearValue(value, 9, {
     trimAtRight: true,
     rejectEmpty: true,
-  })
+  });
 
-  const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2])
-  const dv1 = sumToDV(sum1)
+  const sum1 = sumElementsByMultipliers(cpf, [10, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const dv1 = sumToDV(sum1);
 
-  const sum2 = sumElementsByMultipliers(cpf + dv1, [11, 10, 9, 8, 7, 6, 5, 4, 3, 2])
-  const dv2 = sumToDV(sum2)
+  const sum2 = sumElementsByMultipliers(cpf + dv1, [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]);
+  const dv2 = sumToDV(sum2);
 
-  return `${dv1}${dv2}`
-}
+  return `${dv1}${dv2}`;
+};
 
 /**
  * Aplica uma máscara ao número informado
@@ -89,7 +89,7 @@ export const dv = (value: string | number): string => {
  * @param {String} value Número de Processo
  * @returns {String} Valor com a máscara
  */
-export const mask = (value: string | number): string => applyMask(value, '000.000.000-00')
+export const mask = (value: string | number): string => applyMask(value, '000.000.000-00');
 
 /**
  * fake()
@@ -98,13 +98,13 @@ export const mask = (value: string | number): string => applyMask(value, '000.00
  * @returns {String}
  */
 export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(9, true)
+  const num = fakeNumber(9, true);
 
-  const cpf = `${num}${dv(num)}`
+  const cpf = `${num}${dv(num)}`;
 
-  if (withMask) return mask(cpf)
-  return cpf
-}
+  if (withMask) return mask(cpf);
+  return cpf;
+};
 
 /**
  * validateOrFail()
@@ -118,11 +118,11 @@ export const validateOrFail = (value: string | number): boolean => {
   const cpf = normalize(value);
 
   if (dv(cpf) !== cpf.substring(9, 11)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * validate()
@@ -133,11 +133,11 @@ export const validateOrFail = (value: string | number): boolean => {
  */
 export const validate = (value: string | number): boolean => {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
 /**
  * Retorna String sem máscara
@@ -151,7 +151,7 @@ export const normalize = (value: string | number): string => {
     rejectEmpty: true,
     rejectHigherLength: true,
     rejectEqualSequence: true,
-  })
-}
+  });
+};
 
-export default validate
+export default validate;

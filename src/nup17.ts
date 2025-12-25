@@ -60,8 +60,8 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './utils';
 
 /**
  * dv()
@@ -71,25 +71,25 @@ import { sumElementsByMultipliers, clearValue, fakeNumber, applyMask } from './u
  * @returns {String}
  */
 export const dv = (value: string): string => {
-  const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true })
-  const nupReverse = nup.split('').reverse().join('')
+  const nup = clearValue(value, 15, { rejectEmpty: true, trimAtRight: true });
+  const nupReverse = nup.split('').reverse().join('');
 
   const sum1 = sumElementsByMultipliers(
     nupReverse,
     [...Array(15)].map((_, i) => i + 2),
-  )
+  );
 
-  const dv1 = _specificSumToDV(sum1)
+  const dv1 = _specificSumToDV(sum1);
 
   const sum2 = sumElementsByMultipliers(
     dv1 + nupReverse,
     [...Array(16)].map((_, i) => i + 2),
-  )
+  );
 
-  const dv2 = _specificSumToDV(sum2)
+  const dv2 = _specificSumToDV(sum2);
 
-  return `${dv1}${dv2}`
-}
+  return `${dv1}${dv2}`;
+};
 
 /**
  * Aplica uma máscara ao número informado
@@ -97,7 +97,7 @@ export const dv = (value: string): string => {
  * @param {String} value Número de Processo
  * @returns {String} Valor com a máscara
  */
-export const mask = (value: string): string => applyMask(value, '00000.000000/0000-00')
+export const mask = (value: string): string => applyMask(value, '00000.000000/0000-00');
 
 /**
  * fake()
@@ -107,13 +107,13 @@ export const mask = (value: string): string => applyMask(value, '00000.000000/00
  * @returns {String}
  */
 export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(15, true)
+  const num = fakeNumber(15, true);
 
-  const nup = `${num}${dv(String(num))}`
+  const nup = `${num}${dv(String(num))}`;
 
-  if (withMask) return mask(nup)
-  return nup
-}
+  if (withMask) return mask(nup);
+  return nup;
+};
 
 /**
  * validateOrFail()
@@ -127,11 +127,11 @@ export const validateOrFail = (value: string): boolean => {
   const nup = normalize(value);
 
   if (dv(nup) !== nup.substring(15, 17)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * validate()
@@ -142,29 +142,29 @@ export const validateOrFail = (value: string): boolean => {
  */
 export const validate = (value: string): boolean => {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
 export const normalize = (value: string | number): string => {
   return clearValue(value, 17, {
     rejectEmpty: true,
     rejectHigherLength: true,
-  })
-}
+  });
+};
 
-export default validate
+export default validate;
 
 function _specificSumToDV(sum: number): number {
-  const rest = 11 - (sum % 11)
+  const rest = 11 - (sum % 11);
   const exceptions = [
     { rest: 11, dv: 1 },
     { rest: 10, dv: 0 },
-  ]
+  ];
 
-  const inExceptions = exceptions.find((item) => item.rest === rest)
+  const inExceptions = exceptions.find((item) => item.rest === rest);
 
-  return !inExceptions ? rest : inExceptions.dv
+  return !inExceptions ? rest : inExceptions.dv;
 }

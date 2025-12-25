@@ -77,27 +77,27 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, sumToDV, clearValue, fakeNumber, applyMask } from './utils';
 
 type FakeInput = {
   withMask?: boolean;
-  alphanumeric?: boolean
-}
+  alphanumeric?: boolean;
+};
 
 export function dv(value: string | number): string {
   const cnpj = clearValue(value, 12, {
     trimAtRight: true,
     rejectEmpty: true,
-  })
+  });
 
-  const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors)
+  const dv1Factors = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const dv1 = sumToDvWithAlpha(cnpj.substring(0, 12), dv1Factors);
 
-  const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
-  const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors)
+  const dv2Factors = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const dv2 = sumToDvWithAlpha(cnpj.substring(0, 12) + dv1, dv2Factors);
 
-  return `${dv1}${dv2}`
+  return `${dv1}${dv2}`;
 }
 
 /**
@@ -120,14 +120,14 @@ export function fake(input: FakeInput | boolean = false): string {
 
   const options = typeof input === 'boolean'
     ? { withMask: input, alphanumeric: true }
-    : { withMask: false, alphanumeric: true, ...input }
+    : { withMask: false, alphanumeric: true, ...input };
 
   const num = fakeNumber(12, true, options.alphanumeric);
 
   const cnpj = `${num}${dv(num)}`;
 
-  if (options.withMask) return mask(cnpj)
-  return cnpj
+  if (options.withMask) return mask(cnpj);
+  return cnpj;
 }
 
 /**
@@ -142,10 +142,10 @@ export function validateOrFail(value: string | number): boolean {
   const cnpj = normalize(value);
 
   if (dv(cnpj) !== cnpj.substring(12, 14)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
+  return true;
 }
 
 /**
@@ -157,9 +157,9 @@ export function validateOrFail(value: string | number): boolean {
  */
 export function validate(value: string | number): boolean {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
 }
 
@@ -175,10 +175,10 @@ export const normalize = (value: string | number): string => {
     rejectEmpty: true,
     rejectHigherLength: true,
     rejectEqualSequence: true,
-  })
-}
+  });
+};
 
-export default validate
+export default validate;
 
 
 /**
