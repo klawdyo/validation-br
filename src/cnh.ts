@@ -86,12 +86,7 @@ export const dv = (value: string | number): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnh = clearValue(value, 11, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
+  const cnh = unmask(value)
 
   if (dv(cnh) !== cnh.substring(9, 11)) {
     throw ValidationBRError.INVALID_DV
@@ -135,6 +130,21 @@ export const fake = (withMask: boolean = false): string => {
   if (withMask) return mask(cnh)
 
   return cnh
+}
+
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
+export const unmask = (value: string | number): string => {
+  return clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 }
 
 export default validate

@@ -1,4 +1,4 @@
-import isCPF, { dv, fake, mask, validate, validateOrFail } from '../src/cpf'
+import isCPF, { dv, fake, mask, validate, validateOrFail, unmask } from '../src/cpf'
 import * as _cpf from '../src/cpf'
 
 describe('CPF', () => {
@@ -135,6 +135,26 @@ describe('CPF', () => {
 
       expect(masked).toBe(item.expected)
       expect(masked).toHaveLength(14)
+    })
+  })
+
+  test('unmask() - Testando se remove a máscara corretamente', () => {
+    const list = [
+      { value: '741.723.160-85', expected: '74172316085' },
+      { value: '158.864.890-70', expected: '15886489070' },
+      { value: '908.894.770-86', expected: '90889477086' },
+      { value: '008.894.770-86', expected: '00889477086' },
+      { value: '74172316085', expected: '74172316085' },
+      { value: '15886489070', expected: '15886489070' },
+      { value: '90889477086', expected: '90889477086' },
+      { value: '889477086', expected: '00889477086' },
+    ]
+
+    list.forEach((item) => {
+      const masked = unmask(item.value)
+
+      expect(masked).toBe(item.expected)
+      expect(masked).toHaveLength(11)
     })
   })
 })

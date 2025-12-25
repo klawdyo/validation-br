@@ -139,12 +139,7 @@ export function fake(input: FakeInput | boolean = false): string {
  * @returns {Boolean}
  */
 export function validateOrFail(value: string | number): boolean {
-  const cnpj = clearValue(value, 14, {
-    fillZerosAtLeft: false,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
+  const cnpj = unmask(value)
 
   if (dv(cnpj) !== cnpj.substring(12, 14)) {
     throw ValidationBRError.INVALID_DV
@@ -166,6 +161,21 @@ export function validate(value: string | number): boolean {
   } catch (error) {
     return false
   }
+}
+
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
+export const unmask = (value: string | number): string => {
+  return clearValue(value, 14, {
+    fillZerosAtLeft: false,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  })
 }
 
 export default validate
