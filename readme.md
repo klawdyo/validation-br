@@ -1,8 +1,10 @@
 # validation-br
 
-Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ (numérico e alfanumérico), Título Eleitoral, PIS/PASEP, CNH. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal e Objetos registrados de Rastreamento dos Correios.
+> **A primeira biblioteca a inserir o suporte ao CNPJ alfanumérico**
 
-Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores.
+Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ (numérico e **alfanumérico**), Título Eleitoral, PIS/PASEP, CNH. 
+
+`Validation-BR` também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal e Objetos registrados de Rastreamento dos Correios, além de permitir a criação de números fake para facilitar o desenvolvimento e testes, aplicar máscaras e calcular somente os dígitos verificadores.
 
 # Instalação
 
@@ -10,7 +12,6 @@ Validation-BR também permite criação de números fake para facilitar o desenv
 # Usando yarn
 yarn add validation-br
 
-## OU
 # Usando npm
 npm install validation-br
 
@@ -20,69 +21,66 @@ npm install validation-br
 
 ## Importação direta
 
-Permite realizar diretamente uma validação a partir do objeto principal
-
 ```js
 // Modules
-const { isCPF, isCNPJ } = require('validation-br')
+const { isCPF, isCNPJ } = require('validation-br');
 
-// ES6
-import { isCPF, isCNPJ } from 'validation-br'
+// ES6 - Importação a partir do objeto principal
+import { isCPF, isCNPJ } from 'validation-br';
 ```
 
 ## Importação de submódulos
 
 Importando os submódulos, é possível criar máscaras, números fake para testes de desenvolvimento e calcular dígitos verificadores.
 
-### Exemplos
+> As funções dos exemplos abaixo se aplicam a todos os tipos de documentos.
 
 ```js
-// ES6
-import { dv, fake, mask, validate } from 'validation-br/dist/cpf'
-// ou
-import * as cpf from 'validation-br/dist/cpf'
+// Importação direta
+import { isCPF } from 'validation-br';
+isCPF('01234567890'); // -> true
+isCPF('01234567891'); // -> false
 
-// CommonJS
-const cpf = require('validation-br/dist/cpf')
-const { dv, fake, mask, validate } = require('validation-br/dist/cpf')
+// Importe de submódulos
+import { dv, fake, mask, validate } from 'validation-br/dist/cpf';
 
 // Calculo do dígito verificador de um CPF. Os métodos aceitam inteiros e strings, inclusive com máscaras.
-cpf.dv(906259666) // -> '51'
-cpf.dv('906259666') // -> '51'
-cpf.dv('906.259.666') // -> '51'
+dv(906259666); // -> '51'
+dv('906259666'); // -> '51'
+dv('906.259.666'); // -> '51'
 
 // Cria um número fake de CPF para fins de testes.
-cpf.fake() // -> 90625966651
+fake(); // -> 90625966651
 // Passe um parâmetro true para gerar o número com máscara
-cpf.fake(true) // -> 906.259.666-51
+fake(true); // -> 906.259.666-51
 
 // Aplique uma máscara a um cpf
-cpf.mask(90625966651) // -> 906.259.666-51
+mask(90625966651); // -> 906.259.666-51
 
-// Valida um número
-cpf.validate('01234567890') // -> true
+// Normalize o número do documento
+normalize('906.259.666-51'); // -> 90625966651
 
 // Valida um número e retorna exceção se a validação falhar
-cpf.validateOrFail('01234567890') // -> true
+validateOrFail('01234567890'); // -> true
 ```
 
 ## Tabela de Conteúdo
 
 ### Funções de Validação
 
-- [isCNH](#isCNH-value-) - Validação do CNH
-- [isCPF](#isCPF-value-) - Validação do CPF
-- [isCNPJ](#isCNPJ-value-) - Validação do CNPJ
-- [isNUP17](#isNUP17-value-) - Validação de Número Unificado de Protocolo do Governo Federal
-- [isJudicialProcess](#isJudicialProcess-value-) - Validação de Números de Processos Judiciais
-- [isPIS](#isPIS-value-) - Validação de PIS, PASEP, NIS e NIT
-- [isPostalCode](#isPostalCode-value-) - Validação de Objetos Registrados dos Correios
-- [isRenavam](#isRenavam-value-) - Validação de RENAVAM
-- [isTituloEleitor](#isTituloEleitor-value-) - Validação do Título de Eleitor
+- [CNH](#cnh) - Validação do CNH
+- [CPF](#cpf) - Validação do CPF
+- [CNPJ](#cnpj) - Validação do CNPJ
+- [NUP-17](#nup-17) - Validação de Número Unificado de Protocolo do Governo Federal
+- [Processo Judicial](#processo-judicial) - Validação de Números de Processos Judiciais
+- [PIS](#pis) - Validação de PIS, PASEP, NIS e NIT
+- [Código de Rastreamento Postal](#codigo-de-rastreamento-postal-dos-correios) - Validação de Objetos Registrados dos Correios
+- [Renavam](#renavam) - Validação de RENAVAM
+- [Titulo de Eleitor](#titulo-de-eleitor) - Validação do Título de Eleitor
 
-### Usando em outras bibliotecas de validação
+## Usando em outras bibliotecas de validação
 
-Validation-BR pode ser utilizado em conjunto com quaisquer bibliotecas de validação que permita estender seus métodos.
+`Validation-BR` pode ser utilizado em conjunto com quaisquer bibliotecas de validação que permita estender seus métodos.
 Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca favorita em nosso wiki.
 
 - [Vuelidate](https://github.com/klawdyo/validation-br/wiki/Vuelidate) - Usado para validação de estado no vuejs
@@ -91,105 +89,113 @@ Abaixo seguem alguns exemplos. Sinta-se convidado a adicionar a sua biblioteca f
 - [Joi](https://github.com/klawdyo/validation-br/wiki/Joi) - Joi é um validador de esquemas usado em aplicações node, react, vue etc.
 - [Yup](https://github.com/klawdyo/validation-br/wiki/Yup) - Yup é usado para validar estado em aplicações react.
 
-### isCNH( `value` )
+## CNH
 
 Valida o documento da carteira nacional de habilitação.
 
 ```js
-// Importação somente da validação
-import { isCNH } from 'validation-br'
-// ou
+// Importação direta
+import { isCNH } from 'validation-br';
+isCNH('69044271146'); //-> true
+isCNH('62472927637'); //-> true
+isCNH('46190476839'); //-> false
+
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/cnh'
-// ou
-import * as cnh from 'validation-br/dist/cnh'
+import { validate, mask, normalize, fake, dv } from 'validation-br/dist/cnh';
 
 // Valida
-isCNH('69044271146') //-> true
-isCNH('62472927637') //-> true
-isCNH('46190476839') //-> false
-cnh.validate('62472927637') //-> true
-cnh.validateOrFail('62472927637') //-> true
+validate('624729276-37'); //-> true
+validateOrFail('62472927637'); //-> true
 
 // Número fake com e sem máscara
-cnh.fake() // -> 62472927637
-cnh.fake(true) // -> 624729276-37
+fake(); // -> 62472927637
+fake(true); // -> 624729276-37
 
 // Aplica uma máscara
-cnh.mask('62472927637') // -> 624729276-37
+mask('62472927637'); // -> 624729276-37
+
+// Normalize o número do documento
+normalize('624729276-37'); // -> 62472927637
 
 // Calcula o DV
-cnh.dv('624729276') // -> '37'
+dv('624729276'); // -> '37'
 ```
 
-### isCNPJ( `value` )
+## CNPJ
 
-Valida um CNPJ
+Valida um CNPJ **numérico** e **alfanumérico**.
 
+> **Primeira biblioteca a inserir o suporte ao CNPJ alfanumérico.**
+>
 > A partir da [Nota Técnica conjunta COCAD/SUARA/RFB nº 49 de 14 de maio de 2024](https://github.com/user-attachments/files/15851229/Nota.COCAD.SUARA.2024.05.49.CNPJ.Alfanumerico-1.pdf), os números de CNPJ poderão ser alfanuméricos. A alteração entra em uso em 2026.
 
 ```js
-// Importação somente da validação
-import { isCNPJ } from 'validation-br'
+// Importação direta
+import { isCNPJ } from 'validation-br';
+isCNPJ('73.797.980/0001-79'); //-> true
+isCNPJ('55585709000198'); //-> true
+isCNPJ('99362238000180'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/cnpj'
-// ou
-import * as cnpj from 'validation-br/dist/cnpj'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/cnpj';
 
 // Valida
-isCNPJ('73.797.980/0001-79') //-> true
-isCNPJ('55585709000198') //-> true
-isCNPJ('99362238000180') //-> false
-cnpj.validate('99362238000180') //-> true
-cnpj.validateOrFail('99362238000180') //-> true
+
+validate('99362238000180'); //-> true
+validateOrFail('99362238000180'); //-> true
 
 // Número fake com e sem máscara
-cnpj.fake() // -> 55585709000198
-cnpj.fake(true) // -> 55.585.709/0001-98
-cnpj.fake({ withMask: true}) // -> 55.585.709/0001-98
-cnpj.fake({ withMask: true, alphanumeric: true}) // -> A1.222.333/0001-50
-cnpj.fake({ withMask: false, alphanumeric: true}) // -> A1222333/0001-50
+fake(); // -> 55585709000198
+fake(true); // -> 55.585.709/0001-98
+fake({ withMask: true }); // -> 55.585.709/0001-98
+fake({ withMask: true, alphanumeric: true }); // -> A1.222.333/0001-50
+fake({ withMask: false, alphanumeric: true }); // -> A1222333/0001-50
 
 // Aplica uma máscara
-cnpj.mask('99362238000180') // -> 99.362.238/0001-80
+mask('99362238000180'); // -> 99.362.238/0001-80
+
+// Normalize o número do documento
+normalize('99.362.238/0001-80'); // -> 99362238000180
 
 // Calcula o DV
-cnpj.dv('993622380001') // -> '80'
+dv('993622380001'); // -> '80'
 ```
 
-### isCPF( `value` )
+## CPF
 
 Valida um CPF
 
 ```js
-// Importação somente da validação
-import { isCPF } from 'validation-br'
+// Importação direta
+import { isCPF } from 'validation-br';
+isCPF('01234567890'); //-> true
+isCPF('012.345.678-90'); //-> true
+isCPF('01234567891'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/cpf'
-// ou
-import * as cpf from 'validation-br/dist/cpf'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/cpf';
 
 // Valida
-isCPF('01234567890') //-> true
-isCPF('012.345.678-90') //-> true
-isCPF('01234567891') //-> false
-cpf.validate('01234567890') //-> true
-cpf.validateOrFail('01234567890') //-> true
+validate('01234567890'); //-> true
+validateOrFail('01234567890'); //-> true
 
 // Número fake com e sem máscara
-cpf.fake() // -> 01234567891
-cpf.fake(true) // -> 012.345.678-91
+fake(); // -> 01234567891
+fake(true); // -> 012.345.678-91
 
 // Aplica uma máscara
-cpf.mask('01234567890') // -> 012.345.678-90
+mask('01234567890'); // -> 012.345.678-90
+
+// Normalize o número do documento
+normalize('012.345.678-90'); // -> 01234567890
 
 // Calcula o DV
-cpf.dv('012345678') // -> '90'
+dv('012345678'); // -> '90'
 ```
 
-### isJudicialProcess( `value` )
+## Processos Judiciais
 
 Valida números de processo da esfera judicial. Esta padronização foi adotada em 2010 e de lá para cá todos os processos judiciais abertos no país seguem o mesmo padrão, seja eleitoral, cível, militar etc.
 
@@ -214,34 +220,41 @@ O número é composto por 6 partes:
 6. Código da unidade de origem do processo com 4 caracteres
 
 ```js
-// Importação somente da validação
-import { isJudicialProcess } from 'validation-br'
-// ou
-// Importação do submódulo
-import { validate, mask } from 'validation-br/dist/judicialProcess'
-// ou
-import * as judicialProcess from 'validation-br/dist/judicialProcess'
+// Importação direta
+import { isJudicialProcess } from 'validation-br';
+isJudicialProcess('20802520125150049'); //-> true
+isJudicialProcess('0011006-07.2016.8.20.0100'); //-> true
+isJudicialProcess('00110060720168200101'); //-> false
 
-// Valida
-isJudicialProcess('20802520125150049') //-> true
-isJudicialProcess('0011006-07.2016.8.20.0100') //-> true
-isJudicialProcess('00110060720168200101') //-> false
-judicialProcess.validate('00110060720168200100') //-> true
-judicialProcess.validateOrFail('00110060720168200100') //-> true
+// Importação do submódulo
+import {
+  validate,
+  mask,
+  dv,
+  normalize,
+  fake,
+  validateOrFail,
+} from 'validation-br/dist/judicialProcess';
+
+validate('00110060720168200100'); //-> true
+validateOrFail('00110060720168200100'); //-> true
 
 // Número fake com e sem máscara
-judicialProcess.fake() // -> 00110060720168200100
-judicialProcess.fake(true) // -> 0011006-07.2016.8.20.0100
+fake(); // -> 00110060720168200100
+fake(true); // -> 0011006-07.2016.8.20.0100
 
 // Aplica uma máscara
-judicialProcess.mask('00110060720168200100') // -> 0011006-07.2016.8.20.0100
+mask('00110060720168200100'); // -> 0011006-07.2016.8.20.0100
+
+// Normalize o número do documento
+normalize('0011006-07.2016.8.20.0100'); // -> 00110060720168200100
 
 // Calcula o DV.
 // Obs.: Antes do cálculo, é necessário que o número do processo não possua o dígito verificador para que o resultado seja correto. Isso é necessário pois o DV fica no meio da numeração, na posição 8 e 9.
-judicialProcess.dv('001100620168200100') // -> '07'
+dv('001100620168200100'); // -> '07'
 ```
 
-### isNUP17( `value` )
+## NUP-17
 
 Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é usada pelo Governo Federal como forma única de numerar processos em todas os órgãos do executivo.
 
@@ -251,64 +264,68 @@ Válida um Número Unificado de Protocolo de 17 dígitos. Esta numeração é us
 4. Os caracteres 16 a 17 são o dígito verificador
 
 ```js
-// Importação somente da validação
-import { isNUP17 } from 'validation-br'
+// Importação direta
+import { isNUP17 } from 'validation-br';
+isNUP17('23037001462202165'); //-> true
+isNUP17('23037.001462/2021-65'); //-> true
+isNUP17('23037.001462/2021-66'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/nup17'
-// ou
-import * as nup from 'validation-br/dist/nup17'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/nup17';
 
 // Valida
-isNUP17('23037001462202165') //-> true
-isNUP17('23037.001462/2021-65') //-> true
-isNUP17('23037.001462/2021-66') //-> false
-nup.validate('23037.001462/2021-65') //-> true
-nup.validateOrFail('23037.001462/2021-65') //-> true
+validate('23037.001462/2021-65'); //-> true
+validateOrFail('23037.001462/2021-65'); //-> true
 
 // Número fake com e sem máscara
-nup.fake() // -> 71282677380
-nup.fake(true) // -> 712.82677.38-0
+fake(); // -> 23037001462202165
+fake(true); // -> 23037.001462/2021-65
 
 // Aplica uma máscara
-nup.mask('23037001462202165') // -> 23037.001462/2021-65
+mask('23037001462202165'); // -> 23037.001462/2021-65
+
+// Normalize o número do documento
+normalize('23037.001462/2021-65'); // -> 23037001462202165
 
 // Calcula o DV
-nup.dv('230370014622021') // -> '65'
+dv('230370014622021'); // -> '65'
 ```
 
-### isPIS( `value` )
+## PIS
 
 Valida códigos PIS, PASEP, NIS e NIT, que usam o mesmo algoritmo. Aceita números com e sem pontos e traços.
 
 ```js
-// Importação somente da validação
-import { isPIS } from 'validation-br'
+// Importação direta
+import { isPIS } from 'validation-br';
+isPIS('71282677380'); //-> true
+isPIS('237.95126.95-5'); //-> true
+isPIS('500.12973.80-1'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/pisPasep'
-// ou
-import * as pis from 'validation-br/dist/pisPasep'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/pisPasep';
 
 // Valida
-isPIS('71282677380') //-> true
-isPIS('237.95126.95-5') //-> true
-isPIS('500.12973.80-1') //-> false
-pis.validate('71282677380') //-> true
-pis.validateOrFail('71282677380') //-> true
+validate('71282677380'); //-> true
+validateOrFail('71282677380'); //-> true
 
 // Número fake com e sem máscara
-pis.fake() // -> 71282677380
-pis.fake(true) // -> 712.82677.38-0
+fake(); // -> 71282677380
+fake(true); // -> 712.82677.38-0
+
+// Normalize o número do documento
+normalize('712.82677.38-0'); // -> 71282677380
 
 // Aplica uma máscara
-pis.mask('71282677380') // -> 712.82677.38-0
+mask('71282677380'); // -> 712.82677.38-0
 
 // Calcula o DV
-pis.dv('7128267738') // -> '0'
+dv('7128267738'); // -> '0'
 ```
 
-### isPostalCode( `value` )
+## Código de Rastreamento Postal dos Correios
 
 Valida um código de rastreamento de objetos postais no formato XX00000000DYY, onde:
 
@@ -318,113 +335,127 @@ Valida um código de rastreamento de objetos postais no formato XX00000000DYY, o
 - YY: País de origem do objeto com 2 dígitos.
 
 ```js
-// Importação somente da validação
-import { isPostalCode } from 'validation-br'
+// Importação direta
+import { isPostalCode } from 'validation-br';
+isPostalCode('PN718252423BR'); //-> true
+isPostalCode('RY728187035CN'); //-> true
+isPostalCode('JT194624698BR'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/postalCode'
-// ou
-import * as postalCode from 'validation-br/dist/postalCode'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/postalCode';
 
 // Valida
-isPostalCode('PN718252423BR') //-> true
-isPostalCode('RY728187035CN') //-> true
-isPostalCode('JT194624698BR') //-> false
-postalCode.validate('PN718252423BR') //-> true
-postalCode.validateOrFail('PN718252423BR') //-> true
+validate('PN718252423BR'); //-> true
+validateOrFail('PN718252423BR'); //-> true
 
 // Número fake com e sem máscara.
-postalCode.fake() // -> PN718252423BR
-postalCode.fake(true) // -> PN718252423BR
+fake(); // -> PN718252423BR
+fake(true); // -> PN718252423BR
 
 // Aplica uma máscara
-// No caso de PostalCode, a máscara apenas coloca as letras em maiúsculas
-postalCode.mask('pn718252423br') // -> PN718252423BR
+// No caso de PostalCode, a máscara apenas coloca as letras em maiúsculas, servindo como normalização
+mask('pn718252423br'); // -> PN718252423BR
+
+// Normalize o número do documento
+normalize('pn718252423br'); // -> PN718252423BR
 
 // Calcula o DV
-postalCode.dv('PN718252423BR') // -> '3'
+dv('PN718252423BR'); // -> '3'
 ```
 
-### isRenavam( `value` )
+## RENAVAM
 
 Valida o número de um RENAVAM de 11 dígitos
 
 ```js
-// Importação somente da validação
-import { isRenavam } from 'validation-br'
+// Importação direta
+import { isRenavam } from 'validation-br';
+isRenavam('14283256656'); //-> true
+isRenavam('95059845976'); //-> true
+isRenavam('67747331626'); //-> false
+
 // ou
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/renavam'
-// ou
-import * as renavam from 'validation-br/dist/renavam'
+import { validate, mask, dv, normalize, fake, validateOrFail } from 'validation-br/dist/renavam';
 
 // Valida
-isRenavam('14283256656') //-> true
-isRenavam('95059845976') //-> true
-isRenavam('67747331626') //-> false
-renavam.validate('95059845976') //-> true
-renavam.validateOrFail('95059845976') //-> true
+validate('95059845976'); //-> true
+validateOrFail('95059845976'); //-> true
 
 // Número fake com e sem máscara
-renavam.fake() // -> 95059845976
-renavam.fake(true) // -> 9505984597-6
+fake(); // -> 95059845976
+fake(true); // -> 9505984597-6
+
+// Normaliza o número do documento
+normalize('9505984597-6'); // -> 95059845976
 
 // Aplica uma máscara
-renavam.mask('95059845976') // -> 9505984597-6
+mask('95059845976'); // -> 9505984597-6
 
 // Calcula o DV
-renavam.dv('950598459') // -> '76'
+dv('950598459'); // -> '76'
 ```
 
-### isTituloEleitor( `value` )
+## Título de Eleitor
 
 Valida um título eleitoral
 
 ```js
-// Importação somente da validação
-import { isTituloEleitor } from 'validation-br'
-// ou
+// Importação direta
+import { isTituloEleitor } from 'validation-br';
+isTituloEleitor('743650641660'); //-> true
+isTituloEleitor('525028881694'); //-> true
+isTituloEleitor('153016161686'); //-> false
+
 // Importação do submódulo
-import { validate, mask } from 'validation-br/dist/tituloEleitor'
-// ou
-import * as titulo from 'validation-br/dist/tituloEleitor'
+import {
+  validate,
+  mask,
+  dv,
+  normalize,
+  fake,
+  validateOrFail,
+} from 'validation-br/dist/tituloEleitor';
 
 // Valida
-isTituloEleitor('743650641660') //-> true
-isTituloEleitor('525028881694') //-> true
-isTituloEleitor('153016161686') //-> false
-titulo.validate('01234567890') //-> true
-titulo.validateOrFail('01234567890') //-> true
+validate('01234567890'); //-> true
+validateOrFail('01234567890'); //-> true
 
 // Número fake com e sem máscara
-titulo.fake() // -> 153016161686
-titulo.fake(true) // -> 1530.1616.1686
+fake(); // -> 153016161686
+fake(true); // -> 1530.1616.1686
+
+// Normalize o número do documento
+normalize('1530.1616.1686'); // -> 153016161686
 
 // Aplica uma máscara
-titulo.mask('525028881694') // -> 5250.2888.1694
+mask('525028881694'); // -> 5250.2888.1694
 
 // Calcula o DV
-titulo.dv('5250288816') // -> '94'
+dv('5250288816'); // -> '94'
 ```
 
 # Testes
 
 Todos os testes passando com 100% de cobertura
 
-![Testes passando com 100% de cobertura](https://github.com/user-attachments/assets/86c75eda-077f-4386-ba9c-20b588b6bd36)
-
+![Testes passando com 100% de cobertura](https://github.com/user-attachments/assets/195a6acb-3a8a-4370-b503-184b8240fe66)
 
 # Github Actions
 
 Github actions executados nas versões 18, 20 e 22 do Node.
 
-![Github actions executados nas versões 18, 20 e 22 do Node](https://github.com/user-attachments/assets/34b2b82d-67e3-4c00-b9c6-7160279123d2)
+![Github actions executados nas versões 18, 20 e 22 do Node](https://github.com/user-attachments/assets/72799ba2-757c-497a-b958-b2de948fd666)
 
 # Changelog
 
+- **25/12/2025**:
+  - 1.6.0
+    - Incluída a função normalize() que retorna o valor normlizado, somente números (ou letras maiúsculas quando couber).
 - **16/12/2023**:
   - 1.5.0
-    - CNPJ alfanumérico 
+    - CNPJ alfanumérico
     - Removidos github actions dos node 12, 14 e 16 e acrescentado o 22
 - **16/12/2023**:
   - 1.4.5
