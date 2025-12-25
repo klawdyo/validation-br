@@ -54,8 +54,8 @@
  * @returns {Boolean}
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue, applyMask, fakeNumber } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { sumElementsByMultipliers, sumToDV, clearValue, applyMask, fakeNumber } from './utils';
 
 /**
  * Calcula o Dígito Verificador de um RENAVAM informado
@@ -66,16 +66,16 @@ export const dv = (value: string | number): string => {
   const cnh = clearValue(value, 9, {
     trimAtRight: true,
     rejectEmpty: true,
-  })
+  });
 
-  const sum1 = sumElementsByMultipliers(cnh.substring(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10])
-  const dv1 = sumToDV(sum1)
+  const sum1 = sumElementsByMultipliers(cnh.substring(0, 9), [2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const dv1 = sumToDV(sum1);
 
-  const sum2 = sumElementsByMultipliers(cnh.substring(0, 9) + dv1, [3, 4, 5, 6, 7, 8, 9, 10, 11, 2])
-  const dv2 = sumToDV(sum2)
+  const sum2 = sumElementsByMultipliers(cnh.substring(0, 9) + dv1, [3, 4, 5, 6, 7, 8, 9, 10, 11, 2]);
+  const dv2 = sumToDV(sum2);
 
-  return `${dv1}${dv2}`
-}
+  return `${dv1}${dv2}`;
+};
 
 /**
  * validateOrFail()
@@ -86,19 +86,14 @@ export const dv = (value: string | number): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string | number): boolean => {
-  const cnh = clearValue(value, 11, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-    rejectEqualSequence: true,
-  })
+  const cnh = normalize(value);
 
   if (dv(cnh) !== cnh.substring(9, 11)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * validate()
@@ -109,18 +104,18 @@ export const validateOrFail = (value: string | number): boolean => {
  */
 export const validate = (value: string | number): boolean => {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
 /**
  * Aplica uma máscara a uma string
  *
  * @returns String string com a máscara aplicada
  */
-export const mask = (value: string | number): string => applyMask(value, '000000000-00')
+export const mask = (value: string | number): string => applyMask(value, '000000000-00');
 
 /**
  * Cria um número fake
@@ -128,13 +123,28 @@ export const mask = (value: string | number): string => applyMask(value, '000000
  * @returns String Número fake porém válido
  */
 export const fake = (withMask: boolean = false): string => {
-  const value = fakeNumber(9, true)
+  const value = fakeNumber(9, true);
 
-  const cnh = `${value}${dv(value)}`
+  const cnh = `${value}${dv(value)}`;
 
-  if (withMask) return mask(cnh)
+  if (withMask) return mask(cnh);
 
-  return cnh
-}
+  return cnh;
+};
 
-export default validate
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
+export const normalize = (value: string | number): string => {
+  return clearValue(value, 11, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+    rejectEqualSequence: true,
+  });
+};
+
+export default validate;

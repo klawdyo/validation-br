@@ -1,14 +1,9 @@
-import { randomLetter } from '../src/utils'
+import { randomLetter } from '../src/utils';
 
 describe('randomLetter()', () => {
-  test('forceLength = false', () => {
-    const list = [...Array(1000)]
-
-    list.forEach(() => {
-      const letter = randomLetter()
-
-      expect(letter).toMatch(/^[A-Z]{1}$/)
-      expect(typeof letter).toBe('string')
-    })
-  })
-})
+  test.each([...Array(1000)])('forceLength = false', () => {
+    const letter = randomLetter();
+    expect(letter).toMatch(/^[A-Z]{1}$/);
+    expect(typeof letter).toBe('string');
+  });
+});

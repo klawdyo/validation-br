@@ -1,143 +1,126 @@
-import isPIS, { dv, fake, mask, validate, validateOrFail } from '../src/pisPasep'
-import * as _pisPasep from '../src/pisPasep'
+import isPIS, { dv, fake, mask, normalize, validate, validateOrFail } from '../src/pisPasep';
+import * as _pisPasep from '../src/pisPasep';
 
 describe('PIS', () => {
-  test('isPIS() - Números válidos', () => {
-    const list = [
-      // string
-      '71282677380',
-      '23795126955',
-      // integer
-      50012973803,
-      27890141144,
-      // masked
-      '268.27649.96-0',
-      '613.01862.91-7',
-    ]
+  test.each([
+    // string
+    '71282677380',
+    '23795126955',
+    // integer
+    50012973803,
+    27890141144,
+    // masked
+    '268.27649.96-0',
+    '613.01862.91-7',
+  ])('isPIS() - Números válidos', (item) => {
+    expect(isPIS(item)).toBeTruthy();
+    expect(_pisPasep.validate(item)).toBeTruthy();
+  });
 
-    list.forEach((pis) => {
-      expect(isPIS(pis)).toBeTruthy()
-      expect(_pisPasep.validate(pis)).toBeTruthy()
-    })
-  })
+  test.each([
+    // string
+    '71282677380',
+    '23795126955',
+    // integer
+    50012973803,
+    27890141144,
+    // masked
+    '268.27649.96-0',
+    '613.01862.91-7',
+  ])('validate() - Números válidos', (item) => {
 
-  test('validate() - Números válidos', () => {
-    const list = [
-      // string
-      '71282677380',
-      '23795126955',
-      // integer
-      50012973803,
-      27890141144,
-      // masked
-      '268.27649.96-0',
-      '613.01862.91-7',
-    ]
+    expect(validate(item)).toBeTruthy();
+  });
 
-    list.forEach((pis) => {
-      expect(validate(pis)).toBeTruthy()
-    })
-  })
+  test.each([
+    // string
+    '712826773809',
+    '237951269559',
+    // integer
+    500129738039,
+    278901411449,
+    // masked
+    '268.27649.96-09',
+    '613.01862.91-79',
+  ])('validate() - Números válidos com caracteres adicionais', (item) => {
 
-  test('validate() - Números válidos com caracteres adicionais', () => {
-    const list = [
-      // string
-      '712826773809',
-      '237951269559',
-      // integer
-      500129738039,
-      278901411449,
-      // masked
-      '268.27649.96-09',
-      '613.01862.91-79',
-    ]
+    expect(validate(item)).toBeFalsy();
+  });
 
-    list.forEach((pis) => {
-      expect(validate(pis)).toBeFalsy()
-    })
-  })
-  test('validate() - Números inválidos', () => {
-    const list = [
-      '712.82677.38-2',
-      '237.95126.95-4',
-      '500.12973.80-1',
-      '278.90141.14-9',
-      '268.27649.96-2',
-      '613.01862.91-4',
-      '111.11111.11-1',
-    ]
+  test.each([
+    '712.82677.38-2',
+    '237.95126.95-4',
+    '500.12973.80-1',
+    '278.90141.14-9',
+    '268.27649.96-2',
+    '613.01862.91-4',
+    '111.11111.11-1',
+  ])('validate() - Números inválidos', (item) => {
+    expect(validate(item)).toBeFalsy();
+  });
 
-    list.forEach((pis) => {
-      expect(validate(pis)).toBeFalsy()
-    })
-  })
-
-  test('validateOrFail() - Números inválidos', () => {
-    const list = [
-      '712.82677.38-2',
-      '237.95126.95-4',
-      '500.12973.80-1',
-      '278.90141.14-9',
-      '268.27649.96-2',
-      '613.01862.91-4',
-      '111.11111.11-1',
-    ]
-
-    list.forEach((pis) => {
-      expect(() => validateOrFail(pis)).toThrow()
-    })
-  })
+  test.each([
+    '712.82677.38-2',
+    '237.95126.95-4',
+    '500.12973.80-1',
+    '278.90141.14-9',
+    '268.27649.96-2',
+    '613.01862.91-4',
+    '111.11111.11-1',
+  ])('validateOrFail() - Números inválidos', (item) => {
+    expect(() => validateOrFail(item)).toThrow();
+  });
 
   test('Parâmetro não informado', () => {
-    expect(isPIS('')).toBeFalsy()
-    expect(validate('')).toBeFalsy()
-    expect(() => validateOrFail('')).toThrow()
-    expect(() => dv('')).toThrow()
-  })
+    expect(isPIS('')).toBeFalsy();
+    expect(validate('')).toBeFalsy();
+    expect(() => validateOrFail('')).toThrow();
+    expect(() => dv('')).toThrow();
+  });
 
-  test('fake() - Gera fakes sem máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const pis = fake()
-      expect(validate(pis)).toBeTruthy()
-      expect(pis).toHaveLength(11)
-    }
-  })
+  test.each([...Array(5)])('fake() - Gera fakes sem máscara', () => {
+    const pis = fake();
+    expect(validate(pis)).toBeTruthy();
+    expect(pis).toHaveLength(11);
+  });
 
-  test('fake() - Gera fakes com máscara', () => {
-    for (let i = 0; i < 5; i += 1) {
-      const pis = fake(true)
-      expect(validate(pis)).toBeTruthy()
-      expect(pis).toHaveLength(14)
-    }
-  })
+  test.each([...Array(5)])('fake() - Gera fakes com máscara', () => {
+    const pis = fake(true);
+    expect(validate(pis)).toBeTruthy();
+    expect(pis).toHaveLength(14);
 
-  test('dv() - Verificando se o DV gerado está correto', () => {
-    const list = [
-      { num: '7128267738', expected: '0' },
-      { num: 2379512695, expected: '5' },
-      { num: '5001297380', expected: '3' },
-    ]
+  });
 
-    list.forEach((item) => {
-      const calcDv = dv(item.num)
+  test.each([
+    { value: '7128267738', expected: '0' },
+    { value: 2379512695, expected: '5' },
+    { value: '5001297380', expected: '3' },
+  ])('dv() - Verificando se o DV gerado está correto', (item) => {
+    const calcDv = dv(item.value);
+    expect(calcDv).toBe(item.expected);
+    expect(typeof calcDv).toBe('string');
 
-      expect(calcDv).toBe(item.expected)
-      expect(typeof calcDv).toBe('string')
-    })
-  })
+  });
 
-  test('mask() - Testando se a máscara foi gerada corretamente', () => {
-    const list = [
-      { num: '71282677380', expected: '712.82677.38-0' },
-      { num: 23795126955, expected: '237.95126.95-5' },
-      { num: '50012973803', expected: '500.12973.80-3' },
-    ]
+  test.each([
+    { value: '71282677380', expected: '712.82677.38-0' },
+    { value: 23795126955, expected: '237.95126.95-5' },
+    { value: '50012973803', expected: '500.12973.80-3' },
+  ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {
+    const masked = mask(item.value);
 
-    list.forEach((item) => {
-      const masked = mask(item.num)
+    expect(masked).toBe(item.expected);
+    expect(masked).toHaveLength(14);
+  });
 
-      expect(masked).toBe(item.expected)
-      expect(masked).toHaveLength(14)
-    })
-  })
-})
+  test.each([
+    { value: '712.82677.38-0', expected: '71282677380', },
+    { value: '237.95126.95-5', expected: '23795126955', },
+    { value: '500.12973.80-3', expected: '50012973803', },
+  ])('normalize() - Deve remover a máscara corretamente', (item) => {
+    const normalized = normalize(item.value);
+
+    expect(normalized).toBe(item.expected);
+    expect(normalized).toHaveLength(11);
+  });
+});

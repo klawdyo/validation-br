@@ -78,24 +78,24 @@
  * Fonte: https://juslaboris.tst.jus.br/bitstream/handle/20.500.12178/30318/2008_res0065_cnj_rep01.pdf?sequence=2
  */
 
-import ValidationBRError from './_exceptions/ValidationBRError'
-import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition } from './utils'
+import ValidationBRError from './_exceptions/ValidationBRError';
+import { clearValue, fakeNumber, applyMask, insertAtPosition, removeFromPosition } from './utils';
 
 /**
  *
  *
  */
 export const dv = (value: string): string => {
-  const judicialProcess = clearValue(value, 18, { trimAtRight: true, rejectEmpty: true })
+  const judicialProcess = clearValue(value, 18, { trimAtRight: true, rejectEmpty: true });
 
-  const num = judicialProcess.substring(0, 7)
-  const yearAndCourt = judicialProcess.substring(7, 14)
-  const origin = judicialProcess.substring(14, 18)
+  const num = judicialProcess.substring(0, 7);
+  const yearAndCourt = judicialProcess.substring(7, 14);
+  const origin = judicialProcess.substring(14, 18);
 
   return String(
     98 - (Number(`${Number(`${Number(num) % 97}${yearAndCourt}`) % 97}${origin}00`) % 97),
-  ).padStart(2, '0')
-}
+  ).padStart(2, '0');
+};
 
 /**
  * Aplica uma máscara ao número informado
@@ -104,33 +104,33 @@ export const dv = (value: string): string => {
  * @returns {String} Valor com a máscara
  */
 export const mask = (value: string | number): string =>
-  applyMask(value, '0000000-00.0000.0.00.0000')
+  applyMask(value, '0000000-00.0000.0.00.0000');
 
 /**
  *
  *
  */
 export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(7, true)
-  const year = new Date().getFullYear() - +fakeNumber(1)
+  const num = fakeNumber(7, true);
+  const year = new Date().getFullYear() - +fakeNumber(1);
 
-  let courte1 = fakeNumber(1, true) // Não pode ser '0'
-  courte1 = courte1 === '0' ? '1' : courte1
+  let courte1 = fakeNumber(1, true); // Não pode ser '0'
+  courte1 = courte1 === '0' ? '1' : courte1;
 
-  const courte2 = _getSubCourt()
+  const courte2 = _getSubCourt();
 
-  const courte = `${courte1}${courte2}`
+  const courte = `${courte1}${courte2}`;
 
-  const origin = fakeNumber(4, true)
+  const origin = fakeNumber(4, true);
 
-  const judicialProcess = `${num}${year}${courte}${origin}`
-  const digits = dv(judicialProcess)
+  const judicialProcess = `${num}${year}${courte}${origin}`;
+  const digits = dv(judicialProcess);
 
-  const finalNumber = insertAtPosition(judicialProcess, digits, 7)
+  const finalNumber = insertAtPosition(judicialProcess, digits, 7);
 
-  if (withMask) return mask(finalNumber)
-  return finalNumber
-}
+  if (withMask) return mask(finalNumber);
+  return finalNumber;
+};
 
 /**
  * validateOrFail()
@@ -141,23 +141,19 @@ export const fake = (withMask: boolean = false): string => {
  * @returns {Boolean}
  */
 export const validateOrFail = (value: string): boolean => {
-  const judicialProcess = clearValue(value, 20, {
-    fillZerosAtLeft: true,
-    rejectEmpty: true,
-    rejectHigherLength: true,
-  })
-  const processWithoutDV = removeFromPosition(judicialProcess, 7, 9)
+  const judicialProcess = normalize(value);
+  const processWithoutDV = removeFromPosition(judicialProcess, 7, 9);
 
   if (processWithoutDV.substring(11, 12) === '0') {
-    throw new Error('Código do Órgão Judiciário não pode ser "0"')
+    throw new Error('Código do Órgão Judiciário não pode ser "0"');
   }
 
   if (dv(processWithoutDV) !== judicialProcess.substring(7, 9)) {
-    throw ValidationBRError.INVALID_DV
+    throw ValidationBRError.INVALID_DV;
   }
 
-  return true
-}
+  return true;
+};
 
 /**
  * validate()
@@ -168,11 +164,11 @@ export const validateOrFail = (value: string): boolean => {
  */
 export const validate = (value: string): boolean => {
   try {
-    return validateOrFail(value)
+    return validateOrFail(value);
   } catch (error) {
-    return false
+    return false;
   }
-}
+};
 
 // ////////////////////////////////////////////
 //
@@ -192,8 +188,22 @@ export const validate = (value: string): boolean => {
  *
  */
 export function _getSubCourt(courte: string | undefined = undefined): string {
-  courte = courte ?? fakeNumber(2, true).toString()
-  return +courte === 0 ? '01' : courte
+  courte = courte ?? fakeNumber(2, true).toString();
+  return +courte === 0 ? '01' : courte;
 }
 
-export default validate
+/**
+ * Retorna String sem máscara
+ * 
+ * @param {String|Number} value Valor a remover máscara
+ * @returns {String}
+ */
+export const normalize = (value: string | number): string => {
+  return clearValue(value, 20, {
+    fillZerosAtLeft: true,
+    rejectEmpty: true,
+    rejectHigherLength: true,
+  });
+};
+
+export default validate;
