@@ -14,7 +14,7 @@
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "echo 'Executa o build' && rm -r ./dist && tsc",
+    "build": "tsc",
     "prepublishOnly": "./publish.sh",
     "test": "jest",
     "test:watch": "jest --watch",
