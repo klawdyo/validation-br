@@ -1,11 +1,11 @@
+.github
 node_modules
 coverage
-docs
 src
-dist/src
 test
+
+dist/src
 dist/test
-.github
 dist/*.test.js
 dist/*.test.js.map
 dist/*.test.d.ts

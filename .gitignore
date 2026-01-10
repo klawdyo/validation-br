@@ -19,3 +19,5 @@ coverage
 .env
 
 docs/*
+
+output
