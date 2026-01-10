@@ -1,10 +1,16 @@
 #!/bin/bash
 
+echo 'Inicia execução do publish'
+
 # Remove o dist originalmente para não deixar lixo
+echo 'Remove o ./dist para não deixar lixo'
 rm dist -r
 
 # Executa o build do typescript
+echo 'Executa o build do typescript'
 tsc
+
+
 
 # Remove os testes copiadps pelo build
 # rm -r dist/test
