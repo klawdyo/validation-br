@@ -122,8 +122,9 @@ export function fake(input: FakeInput | boolean = false): string {
     ? { withMask: input, alphanumeric: true }
     : { withMask: false, alphanumeric: true, ...input };
 
-  const num = fakeNumber(12, true, options.alphanumeric);
-
+  const first = fakeNumber(8, true, options.alphanumeric);
+  const branch = '0001';
+  const num = first + branch;
   const cnpj = `${num}${dv(num)}`;
 
   if (options.withMask) return mask(cnpj);

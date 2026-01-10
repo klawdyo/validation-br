@@ -6,7 +6,7 @@
     "target": "ES2018",
     "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "./dist",
+    "outDir": "./output",
     "declaration": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
