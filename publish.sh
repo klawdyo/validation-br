@@ -13,7 +13,8 @@ tsc
 mv dist/src/* dist
 
 # Remove o dist/src
-# rm dist/src -r
+rm dist/src -r
+rm dist/test -r
 
 # Copia package.json, package-lock.json, readme.md para dentro de dist
 # cp package*.json readme.md dist

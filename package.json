@@ -14,8 +14,8 @@
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "./publish.sh",
-    "prepublish": "npm run build",
+    "build": "rm -r ./dist && tsc",
+    "prepublish": "./publish.sh",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
