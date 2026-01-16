@@ -1,4 +1,4 @@
-import  { EmptyValueException, TooLongException, RepeatedSequenceException, TooShortException } from './_exceptions/ValidationBRError'
+import { EmptyValueException, TooLongException, RepeatedSequenceException, TooShortException } from './_exceptions/ValidationBRError'
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
@@ -68,7 +68,7 @@ export function clearValue(
   length: number | null = null,
   options?: ClearValueOptions,
 ): string {
-  let clearedValue = String(value).replace(/([/.-]+)/gi, '')
+  let clearedValue = String(value).replace(/([/.\s-])+/gi, '')
 
   if (options) {
     const shouldRejectEmpty = options.rejectEmpty === true && clearedValue.length === 0;
