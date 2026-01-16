@@ -28,6 +28,10 @@
  * ---------------------------------------------------------------------------------
  */
 
+import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import { Base } from './base';
+import { clearValue, sumElementsByMultipliers } from './utils';
+
 export enum CertidaoTipoLivro {
     Nascimento = '1',
     Casamento = '2',
@@ -59,75 +63,57 @@ export interface FakeCertidaoOptions {
     termo?: number;
 }
 
-// Classe base fictícia para demonstrar a herança da máscara
-class BaseDocumento {
-    protected _mask: string = '';
-    protected _value: string = '';
-
-    get masked(): string {
-        let i = 0;
-        return this._mask.replace(/0/g, () => this._value[i++] || '0');
-    }
-}
-
-export class Certidao extends BaseDocumento {
+export class Certidao extends Base {
     protected _mask = '000000 00 00 0000 0 00000 000 0000000 00';
 
-    constructor(numero: string) {
-        super();
-        this._value = numero;
+    constructor(protected _value: string) {
+        super(_value);
         this.normalize();
-    }
 
-    /**
-     * Remove caracteres não numéricos e limita a 32 dígitos
-     */
-    public normalize(): void {
-        this._value = this._value.replace(/\D/g, '').substring(0, 32);
-    }
-
-    get value(): string {
-        return this._value;
-    }
-
-    public toString(): string {
-        return this._value;
-    }
-
-    /**
-     * Calcula o DV para uma sequência de 30 dígitos
-     */
-    public checksum(base30: string): string {
-        if (base30.length !== 30) return '';
-
-        // Cálculo do Primeiro Dígito (DV1)
-        let soma1 = 0;
-        for (let i = 0; i < 30; i++) {
-            soma1 += parseInt(base30[i]) * (31 - i);
+        if (!this.validate()) {
+            throw new InvalidChecksumException();
         }
-        let dv1 = soma1 % 11;
-        if (dv1 === 10) dv1 = 1;
+    }
 
-        // Cálculo do Segundo Dígito (DV2)
-        const base31 = base30 + dv1.toString();
-        let soma2 = 0;
-        for (let i = 0; i < 31; i++) {
-            soma2 += parseInt(base31[i]) * (32 - i);
-        }
-        let dv2 = soma2 % 11;
-        if (dv2 === 10) dv2 = 1;
-
-        return `${dv1}${dv2}`;
+    protected normalize(): void {
+        this._value = this._value.replace(/([. -])/g, '');
     }
 
     /**
      * Valida se a certidão atual possui o DV correto e tamanho 32
      */
     public validate(): boolean {
-        if (this._value.length !== 32) return false;
-        const base = this._value.substring(0, 30);
-        const dvInformado = this._value.substring(30, 32);
-        return this.checksum(base) === dvInformado;
+        const certidao = clearValue(this._value, 32, {
+            rejectEmpty: true,
+            rejectIfLonger: true,
+            rejectIfShorter: true,
+            rejectEqualSequence: false, // 32 digits can possibly have sequences, though unlikely to be ALL same.
+        });
+
+        return Certidao.checksum(certidao.substring(0, 30)) === certidao.substring(30, 32);
+    }
+
+    /**
+     * Calcula o DV para uma sequência de 30 dígitos
+     */
+    public static checksum(base30: string): string {
+        if (!base30) throw new EmptyValueException();
+        if (base30.length !== 30) throw new InvalidFormatException();
+
+        // Pesos de 31 a 2
+        const weights1 = Array.from({ length: 30 }, (_, i) => 31 - i);
+        const soma1 = sumElementsByMultipliers(base30, weights1);
+        let dv1 = soma1 % 11;
+        if (dv1 === 10) dv1 = 1;
+
+        // Pesos de 32 a 2
+        const base31 = base30 + dv1.toString();
+        const weights2 = Array.from({ length: 31 }, (_, i) => 32 - i);
+        const soma2 = sumElementsByMultipliers(base31, weights2);
+        let dv2 = soma2 % 11;
+        if (dv2 === 10) dv2 = 1;
+
+        return `${dv1}${dv2}`;
     }
 
     /**
@@ -146,10 +132,7 @@ export class Certidao extends BaseDocumento {
         const termo = options.termo !== undefined ? pad(options.termo, 7) : pad(Math.floor(Math.random() * 9999999), 7);
 
         const base30 = `${cns}${acervo}${servico}${ano}${tipo}${livro}${folha}${termo}`;
-
-        // Instancia temporária para usar o checksum
-        const temp = new Certidao(base30 + '00');
-        const dv = temp.checksum(base30);
+        const dv = Certidao.checksum(base30);
 
         return new Certidao(base30 + dv);
     }
