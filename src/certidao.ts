@@ -26,6 +26,13 @@
  * - Resto = Soma % 11.
  * - Se Resto < 10, DV2 = Resto. Se Resto == 10, DV2 = 1.
  * ---------------------------------------------------------------------------------
+ * 
+ * Links:
+ * - https://www.arpensp.org.br/noticia/10670
+ * - https://www.arpensp.org.br/calculo-de-matricula
+ * - https://www.skyinformatica.com.br/produtos/civil/manual2/module_2_6.html
+ * - https://atos.cnj.jus.br/files/provimento/provimento_2_27042009_26102012180800.pdf
+ * 
  */
 
 import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
