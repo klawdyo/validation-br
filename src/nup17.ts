@@ -66,7 +66,7 @@ import { Base } from './base';
 import {
   sumElementsByMultipliers,
   clearValue,
-} from './utils';
+} from './_helpers/utils';
 
 export class NUP17 extends Base {
   protected _mask = '00000.000000/0000-00';

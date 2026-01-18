@@ -55,7 +55,7 @@ import { EmptyValueException, InvalidChecksumException, InvalidFormatException }
 import { Crockford } from "./_helpers/crockford";
 import { Random } from "./_helpers/random";
 import { Base } from "./base";
-import { clearValue } from "./utils";
+import { clearValue } from "./_helpers/utils";
 
 export class CBISinter extends Base {
   protected _mask: string = "0000000-0"; // Máscara apenas informativa

@@ -37,7 +37,7 @@
 
 import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
-import { clearValue, sumElementsByMultipliers } from './utils';
+import { clearValue, sumElementsByMultipliers } from './_helpers/utils';
 
 export enum CertidaoTipoLivro {
     Nascimento = '1',

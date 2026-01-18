@@ -1,4 +1,4 @@
-import { sumToDV } from '../src/utils'
+import { sumToDV } from '../../../src/_helpers/utils';
 
 describe('sumToDV()', () => {
   test('Os resultados devem ser os esperados', () => {

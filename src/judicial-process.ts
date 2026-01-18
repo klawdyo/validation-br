@@ -89,7 +89,7 @@ import {
   clearValue,
   insertAtPosition,
   removeFromPosition,
-} from './utils';
+} from './_helpers/utils';
 
 export class JudicialProcess extends Base {
   _court!: string;

@@ -41,7 +41,7 @@
  */
 
 import  { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError'
-import { sumElementsByMultipliers, sumToDV, clearValue } from './utils'
+import { sumElementsByMultipliers, sumToDV, clearValue } from './_helpers/utils'
 
 import { Base } from "./base";
 import { Random } from './_helpers/random';

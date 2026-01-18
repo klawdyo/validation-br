@@ -65,7 +65,7 @@ import {
   sumElementsByMultipliers,
   sumToDV,
   clearValue,
-} from './utils';
+} from './_helpers/utils';
 
 export class CNH extends Base {
   protected _mask = '000000000-00';

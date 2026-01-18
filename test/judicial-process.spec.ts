@@ -1,5 +1,5 @@
 import { JudicialProcess } from '../src/judicial-process';
-import { insertAtPosition } from '../src/utils';
+import { insertAtPosition } from '../src/_helpers/utils';
 
 describe('JudicialProcess', () => {
   describe('constructor', () => {
