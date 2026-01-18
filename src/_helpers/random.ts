@@ -10,7 +10,7 @@ export class Random {
    * Devolve um texto aleatório
    */
   static alpha(length = 1, isUppercase = false, isHex = false): string {
-    const letters = isHex  ? '0123456789abcdef' : 'abcdefghijklmnopqrstuvwxyz';
+    const letters = isHex ? '0123456789abcdef' : 'abcdefghijklmnopqrstuvwxyz';
     let result = '';
 
     for (let i = 0; i < length; i++) {
@@ -24,9 +24,31 @@ export class Random {
 
   /**
    * Seleciona um item de um array aleatoramente
+   * 
+   * @example
+   * const array = [1, 2, 3, 4, 5];
+   * 
+   * const singleItem = Random.fromArray(array); // Pode retornar 1, 2, 3, 4 ou 5
+   * const multipleItems = Random.fromArray(array, 3); // Pode retornar [1, 2, 3], [4, 5, 1], etc.
+   * 
+   * 
    */
-  static fromArray<T>(array: T[]): T {
-    return array.at(Random.between(0, array.length-1)) as T;
+  static fromArray<T>(array: T[], length: number): T[];
+  static fromArray<T>(array: T[], length?: 1): T;
+  static fromArray<T>(array: T[], length: number = 1): T | T[] {
+    const _get = (): T => array.at(Random.between(0, array.length - 1)) as T;
+
+    if (length === 1) return _get();
+
+    const result: T[] = [];
+    for (let i = 0; i < length; i++) {
+      const item = _get();
+      if (item !== undefined) {
+        result.push(item);
+      }
+    }
+
+    return result as unknown as T;
   }
 
   /**
