@@ -9,7 +9,6 @@ describe('JudicialProcess', () => {
       '08002785520134058400',
       '08002732820164058400',
     ])('deve estar definido', (input) => {
-      // console.log(new JudicialProcess(input));
       const proc = new JudicialProcess(input)
       expect(proc).toBeDefined();
       expect(proc.processNumber).toBe(input.replace(/\D/g, '').substring(0, 7))

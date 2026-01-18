@@ -77,7 +77,6 @@ describe('Random', () => {
       const possibilities = ['a', 'b', 'c', 'd', 'e'];
       const length = 3
       const result = Random.fromArray(possibilities, length);
-      console.log(result);
       
       expect(result).toBeDefined();
       expect(result.length).toBe(length);

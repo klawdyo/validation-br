@@ -70,8 +70,8 @@ import {
 export class CNH extends Base {
   protected _mask = '000000000-00';
 
-  constructor(protected _value: string) {
-    super(_value);
+  constructor(value: string) {
+    super(value);
     this.normalize();
 
     if (!this.validate()) {
@@ -140,11 +140,11 @@ export class CNH extends Base {
 
   /**
    *
-   * Cria um número fake
+   * Cria uma instância com um número válido aleatório
    *
    */
   static fake(): CNH {
-    const value = Random.number(9, true);
-    return new CNH(`${value}${CNH.checksum(value)}`);
+    const base = Random.number(9, true);
+    return new CNH(`${base}${CNH.checksum(base)}`);
   }
 }
