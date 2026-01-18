@@ -91,4 +91,18 @@ describe('Crockford', () => {
       expect(() => Crockford.intToChar(32)).toThrow('O valor deve estar entre 0 e 31 para conversão em Base32.');
     });
   });
+
+  describe('getAlphabet', () => {
+    it('should return the alphabet as a string by default', () => {
+      expect(Crockford.getAlphabet()).toBe('0123456789ABCDEFGHJKMNPQRSTVWXYZ');
+    });
+
+    it('should return the alphabet as a string when returnArray is false', () => {
+      expect(Crockford.getAlphabet({ returnArray: false })).toBe('0123456789ABCDEFGHJKMNPQRSTVWXYZ');
+    });
+
+    it('should return the alphabet as an array when returnArray is true', () => {
+      expect(Crockford.getAlphabet({ returnArray: true })).toEqual('0123456789ABCDEFGHJKMNPQRSTVWXYZ'.split(''));
+    });
+  });
 });

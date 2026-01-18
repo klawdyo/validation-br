@@ -59,5 +59,25 @@ export class Crockford {
 
     return this.ALPHABET[value];
   }
+
+  /**
+   * 
+   * Retorna o alfabeto utilizado
+   */
+  public static getAlphabet(): string;
+  public static getAlphabet(options: { returnArray: false }): string;
+  public static getAlphabet(options: { returnArray: true }): string[];
+  public static getAlphabet(options?: GetAlphabetOptions): string | string[] {
+    const { returnArray = false } = options || {};
+
+    if (returnArray) {
+      return this.ALPHABET.split('');
+    }
+
+    return this.ALPHABET;
+  }
 }
 
+interface GetAlphabetOptions {
+  returnArray?: boolean;
+}
