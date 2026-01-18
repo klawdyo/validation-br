@@ -5,13 +5,12 @@ describe('TituloEleitor', () => {
     test.each([
       // masked
       '1023.8501.0671',
-      '8365.7137.1619',
+      '8365 7137 1619',
       // string
       '153036161686',
       '525028881694',
-      // integer
-      '011122223360',
-      '001122223336',
+      '011122222364',
+      '001122222330',
     ])('deve estar definido', (input) => {
       expect(new TituloEleitor(input)).toBeDefined();
     });
@@ -43,8 +42,8 @@ describe('TituloEleitor', () => {
       { num: '102385010671', expected: '1023.8501.0671' },
       { num: '836571371619', expected: '8365.7137.1619' },
       { num: '743650641660', expected: '7436.5064.1660' },
-      { num: '011122223360', expected: '0111.2222.3360' },
-      { num: '001122223336', expected: '0011.2222.3336' },
+      { num: '011122222364', expected: '0111.2222.2364' },
+      { num: '001122222330', expected: '0011.2222.2330' },
     ])('mask() - Testando se a máscara foi gerada corretamente', (item) => {
       const masked = new TituloEleitor(item.num).mask();
 
@@ -65,7 +64,8 @@ describe('TituloEleitor', () => {
       { num: '1023850106', expected: '71' },
       { num: '8365713716', expected: '19' },
       { num: '7436506416', expected: '60' },
-      { num: '0011222233', expected: '36' },
+      { num: '0111222223', expected: '64' },
+      { num: '0011222223', expected: '30' },
     ])('dv() - Verificando se o DV gerado está correto', (item) => {
       const calcDv = TituloEleitor.checksum(item.num);
 
@@ -85,8 +85,8 @@ describe('TituloEleitor', () => {
       { input: '102385010671', expected: '102385010671' },
       { input: '836571371619', expected: '836571371619' },
       { input: '7436.5064.1660', expected: '743650641660' },
-      { input: '0111.2222.3360', expected: '011122223360' },
-      { input: '0011.2222.3336', expected: '001122223336' },
+      { input: '0111 2222 2364', expected: '011122222364' },
+      { input: '0011 2222 2330', expected: '001122222330' },
     ])('Deve exibir o valor sem o caracteres especiais', (item) => {
       const titulo = new TituloEleitor(item.input);
 
