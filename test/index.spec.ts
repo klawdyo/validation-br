@@ -12,7 +12,7 @@ import {
   isPostalTrackCode,
   isRenavam,
   isTituloEleitor,
-} from '../src/main'
+} from '../src'
 
 describe('ValidateBR', () => {
   test('Deve importar isCNH', () => {

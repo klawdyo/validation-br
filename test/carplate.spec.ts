@@ -1,5 +1,5 @@
 import { CarPlate } from '../src/carplate';
-import { isCarPlate } from '../src/main';
+import { isCarPlate } from '../src';
 
 describe('CarPlate', () => {
   describe('construtor', () => {
