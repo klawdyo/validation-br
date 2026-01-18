@@ -36,7 +36,7 @@ export class Random {
   static fromArray<T>(array: T[], length: number): T[];
   static fromArray<T>(array: T[], length?: 1): T;
   static fromArray<T>(array: T[], length: number = 1): T | T[] {
-    const _get = (): T => array.at(Random.between(0, array.length - 1)) as T;
+    const _get = (): T => array[Random.between(0, array.length - 1)] as T;
 
     if (length === 1) return _get();
 
