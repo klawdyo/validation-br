@@ -47,9 +47,9 @@ describe('Random', () => {
       expect(num.length).toBe(length || 1);
     });
 
-    test.only.each([undefined, 1, 2, 5, 10])('deve gerar caracteres hexadecimais aleatórios', (length) => {
+    test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres hexadecimais aleatórios', (length) => {
       const num = Random.alpha(length as any, false, true);
-      
+
       expect(num).toBeDefined();
       expect(num).toMatch(/^[0-9a-f]+$/)
       expect(num.length).toBe(length || 1);
@@ -59,9 +59,32 @@ describe('Random', () => {
   describe('fromArray', () => {
     test('deve pegar um valor aleatório do array', () => {
       const possibilities = [1, 2, 3, 4, 5];
-      const num = Random.fromArray(possibilities);
-      expect(num).toBeDefined();
-      expect(possibilities.includes(num)).toBeTruthy();
+      const result = Random.fromArray(possibilities);
+      
+      expect(result).toBeDefined();
+      expect(possibilities.includes(result)).toBeTruthy();
+    });
+
+    test('deve pegar exatamente um valor aleatório do array', () => {
+      const possibilities = ['a', 'b', 'c', 'd', 'e'];
+      const result = Random.fromArray(possibilities, 1);
+      expect(result).toBeDefined();
+      expect(result.length).toBe(1);
+      expect(possibilities.includes(result)).toBeTruthy();
+    });
+
+    test('deve pegar mais de um valor aleatório do array', () => {
+      const possibilities = ['a', 'b', 'c', 'd', 'e'];
+      const length = 3
+      const result = Random.fromArray(possibilities, length);
+      
+      expect(result).toBeDefined();
+      expect(result.length).toBe(length);
+      result.forEach(char => {
+        expect(possibilities.includes(char)).toBeTruthy();
+      });
+
+
     });
   });
 });

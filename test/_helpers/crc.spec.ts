@@ -2,7 +2,6 @@ import { CRC } from '../../src/_helpers/crc';
 
 describe('CRC', () => {
   test('Converte string para o formato CRC16', () => {
-    // console.log(CRC(12345678))
     expect(new CRC('12345678').calculate()).toBe('A12B');
     expect(new CRC('12345678').calculate(true)).toBe('2BA1');
     expect(
