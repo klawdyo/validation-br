@@ -33,7 +33,7 @@ describe('TituloEleitor', () => {
       expect(() => new TituloEleitor(input as any)).toThrow();
     });
 
-    test.only('Deve lançar exceção se a UF for maior que 28', () => {
+    test('Deve lançar exceção se a UF for maior que 28', () => {
       expect(() => new TituloEleitor('1122 3344 2992')).toThrow()
     });
   });
