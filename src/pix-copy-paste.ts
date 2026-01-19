@@ -29,7 +29,8 @@ export class PixCopyPaste extends Base {
 
     const parse = PixPart.parse(this._value);
     if (!parse || !Array.isArray(parse)) throw new InvalidFormatException();
-    if (parse.at(-1)!.code !== '63' || parse.at(-1)!.size !== 4) throw new InvalidFormatException();
+    const last = parse[parse.length - 1];
+    if (last.code !== '63' || last.size !== 4) throw new InvalidFormatException();
 
     return true;
   }

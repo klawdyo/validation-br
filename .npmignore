@@ -2,7 +2,14 @@ src
 node_modules
 coverage
 docs
+test
 .github
-dist/*.test.js
-dist/*.test.js.map
-dist/*.test.d.ts
+jest*
+eslint*
+.prettier*
+.npmignore
+readme*
+todo*
+.vscode
+!dist/src
+!package-lock.json
