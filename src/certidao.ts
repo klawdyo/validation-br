@@ -1,43 +1,70 @@
 /**
- * DETALHAMENTO DO CÁLCULO DA MATRÍCULA (CNJ - 32 DÍGITOS)
- * ---------------------------------------------------------------------------------
- * A matrícula é composta por 32 algarismos, divididos em 9 blocos:
- * 1. CNS (6 dígitos): Código Nacional da Serventia (Cartório).
- * 2. Acervo (2 dígitos): "01" para próprio, "02" para incorporado.
- * 3. Serviço (2 dígitos): Tipo de registro (ex: 55 para Registro Civil).
- * 4. Ano (4 dígitos): Ano em que o registro foi feito.
- * 5. Tipo de Livro (1 dígito): 1 (Nascimento), 2 (Casamento), etc.
- * 6. Número do Livro (5 dígitos): Sequencial do livro.
- * 7. Número da Folha (3 dígitos): Página do registro.
- * 8. Número do Termo (7 dígitos): Sequencial do registro.
- * 9. DV (2 dígitos): Dígitos verificadores calculados via Módulo 11.
- * * CÁLCULO DO DÍGITO VERIFICADOR (Módulo 11):
- * Para os dois últimos dígitos (DV1 e DV2):
- * * DV1 (31º dígito):
- * - Toma-se os primeiros 30 dígitos.
- * - Multiplica-se cada dígito por pesos decrescentes de 31 a 2.
- * - Soma-se os resultados.
- * - Resto = Soma % 11.
- * - Se Resto < 10, DV1 = Resto. Se Resto == 10, DV1 = 1.
- * * DV2 (32º dígito):
- * - Toma-se os 31 dígitos (30 originais + DV1 calculado).
- * - Multiplica-se cada dígito por pesos decrescentes de 32 a 2.
- * - Soma-se os resultados.
- * - Resto = Soma % 11.
- * - Se Resto < 10, DV2 = Resto. Se Resto == 10, DV2 = 1.
- * ---------------------------------------------------------------------------------
- * 
+ * Certidao
+ * Detalhamento do cálculo da matrícula (CNJ - 32 dígitos)
+ *
+ * @doc
+ * O Número de Matrícula tem a configuração aaaaaa.bb.cc.dddd.e.fffff.ggg.hhhhhhh-ii, onde:
+ *
+ * - aaaaaa: Código Nacional da Serventia (identificação única do cartório) ex.: 10453-9
+ * - bb: Código do Acervo (01-Acervo Próprio e 02-Acervos incorporados)
+ * - cc: Tipo de Serviço Prestado (55 - Serviço de Registro Civil das Pessoas Naturais)
+ * - dddd: Ano do Registro - ex.: 2013
+ * - e: Tipo do livro
+ *    1 - Livro A (Nascimento)
+ *    2 - Livro B (Casamento)
+ *    3 - Livro B Auxiliar (Registro de casamentos religiosos para fins civis)
+ *    4 - Livro C (Óbito)
+ *    5 - Livro C Auxiliar (Registro de Natimortos)
+ *    6 - Livro D (Registro de Proclamas)
+ *    7 - Livro E (Demais atos relativos ao Registro Civil ou Livro E único)
+ *    8 - Livro E (Desdobrado para registro específico das Emancipações)
+ *    9 - Livro E (Desdobrado para registro específico das Interdições)
+ * - fffff: Número do livro - ex.: 00012
+ * - ggg: Número da folha - ex.: 021
+ * - hhhhhhh: Número do Termo - ex.: 0000123
+ * - ii: Dígito Verificador DV, cujo cálculo obedece ao esquema de MÓDULO 11.
+ *
+ * Exemplo de Cálculo: 104539.01.55.2013.1.00012.021.0000123-21
+ *
+ * 1) Cálculo do primeiro DV.
+ *  - Soma-se o produto dos 30 primeiros dígitos por pesos específicos:
+ *    Pesos: 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+ *
+ *    1  0  4  5  3  9  0  1  5  5  2  0  1  3  1  0  0  0  1  2  0  2  1  0  0  0  0  1  2  3
+ *    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ *    2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9
+ *
+ *    Soma = 288
+ *
+ *  - O somatório encontrado é dividido por 11.
+ *    288 ÷ 11 = 26, com resto 2.
+ *    DV1 = Resto (2). Se resto for 10, DV1 será 1.
+ *
+ * 2) Cálculo do segundo DV.
+ *  - Soma-se o produto dos 31 primeiros dígitos (incluindo DV1) por novos pesos.
+ *    Pesos: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+ *
+ *    1  0  4  5  3  9  0  1  5  5  2  0  1  3  1  0  0  0  1  2  0  2  1  0  0  0  0  1  2  3  2
+ *    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ *    1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9
+ *
+ *    Soma = 309
+ *
+ *  - O somatório encontrado é dividido por 11.
+ *    309 ÷ 11 = 28, com resto 1.
+ *    DV2 = Resto (1). Se resto for 10, DV2 será 1.
+ *
  * Links:
- * - https://www.arpensp.org.br/noticia/10670
+ * - http://ghiorzi.org/DVnew.htm#zc
  * - https://www.arpensp.org.br/calculo-de-matricula
- * - https://www.skyinformatica.com.br/produtos/civil/manual2/module_2_6.html
- * - https://atos.cnj.jus.br/files/provimento/provimento_2_27042009_26102012180800.pdf
- * 
+ *
+ * @param {String} value Matrícula da Certidão
+ * @returns {Boolean}
  */
 
 import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
 import { Base } from './base';
-import { clearValue, sumElementsByMultipliers } from './_helpers/utils';
+import { clearValue } from './_helpers/utils';
 
 export enum CertidaoTipoLivro {
     Nascimento = '1',
@@ -102,22 +129,43 @@ export class Certidao extends Base {
 
     /**
      * Calcula o DV para uma sequência de 30 dígitos
+     * Algoritmo Módulo 97:
      */
     public static checksum(base30: string): string {
         if (!base30) throw new EmptyValueException();
         if (base30.length !== 30) throw new InvalidFormatException();
 
-        // Pesos de 31 a 2
-        const weights1 = Array.from({ length: 30 }, (_, i) => 31 - i);
-        const soma1 = sumElementsByMultipliers(base30, weights1);
-        let dv1 = soma1 % 11;
+        // Pesos específicos conforme solicitação:
+        // DV1: 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        const weights1 = [
+            2, 3, 4, 5, 6, 7, 8, 9, 10, 0,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        ];
+
+        let sum1 = 0;
+        for (let i = 0; i < 30; i++) {
+            sum1 += parseInt(base30[i], 10) * weights1[i];
+        }
+
+        let dv1 = sum1 % 11;
         if (dv1 === 10) dv1 = 1;
 
-        // Pesos de 32 a 2
+        // DV2: Inclui o DV1 no final
+        // Pesos: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
         const base31 = base30 + dv1.toString();
-        const weights2 = Array.from({ length: 31 }, (_, i) => 32 - i);
-        const soma2 = sumElementsByMultipliers(base31, weights2);
-        let dv2 = soma2 % 11;
+        const weights2 = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        ];
+
+        let sum2 = 0;
+        for (let i = 0; i < 31; i++) {
+            sum2 += parseInt(base31[i], 10) * weights2[i];
+        }
+
+        let dv2 = sum2 % 11;
         if (dv2 === 10) dv2 = 1;
 
         return `${dv1}${dv2}`;
@@ -128,6 +176,8 @@ export class Certidao extends Base {
      */
     public static fake(options: FakeCertidaoOptions = {}): Certidao {
         const pad = (n: number | string, size: number) => n.toString().padStart(size, '0');
+        const meupa = clearValue(0, 3, { fillZerosAtLeft: true })
+
 
         const cns = options.cns ? pad(options.cns, 6) : pad(Math.floor(Math.random() * 999999), 6);
         const acervo = options.acervo ? pad(options.acervo, 2) : '01';
