@@ -47,7 +47,7 @@ import {
   InvalidChecksumException,
   InvalidFormatException,
 } from './_exceptions/ValidationBRError';
-import { sumElementsByMultipliers, clearValue } from './utils';
+import { sumElementsByMultipliers, clearValue } from './_helpers/utils';
 
 import { Base } from './base';
 import { Random } from './_helpers/random';
@@ -55,8 +55,8 @@ import { Random } from './_helpers/random';
 export class PostalTrackCode extends Base {
   protected _mask = null;
 
-  constructor(protected _value: string) {
-    super(_value);
+  constructor(value: string) {
+    super(value);
     this.normalize();
     this.validate();
   }

@@ -1,4 +1,4 @@
-import { clearValue, insertAtPosition } from '../utils';
+import { clearValue, insertAtPosition } from './utils';
 
 export class Mask {
   constructor(private _value: string) {}

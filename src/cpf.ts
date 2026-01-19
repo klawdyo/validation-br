@@ -65,7 +65,7 @@ import {
   sumElementsByMultipliers,
   sumToDV,
   clearValue,
-} from './utils';
+} from './_helpers/utils';
 
 export class CPF extends Base {
   protected _mask = '000.000.000-00';

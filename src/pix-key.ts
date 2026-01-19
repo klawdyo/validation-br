@@ -4,7 +4,7 @@ import { Base } from './base';
 import { CNPJ } from './cnpj';
 import { CPF } from './cpf';
 import { Email } from './email';
-import { isCNPJ, isCPF, isEmail, isPhone, isUUID } from './main';
+import { isCNPJ, isCPF, isEmail, isPhone, isUUID } from '.';
 import { Phone } from './phone';
 import { UUID } from './uuid';
 

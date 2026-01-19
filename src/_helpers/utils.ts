@@ -1,4 +1,4 @@
-import { EmptyValueException, TooLongException, RepeatedSequenceException, TooShortException } from './_exceptions/ValidationBRError'
+import { EmptyValueException, TooLongException, RepeatedSequenceException, TooShortException } from '../_exceptions/ValidationBRError'
 
 /**
  * Calcula o DV verificador a partir das regras do MOD11:
