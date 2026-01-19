@@ -1,7 +1,7 @@
 import { Certidao, CertidaoServico, CertidaoTipoLivro } from '../src/certidao';
 import { InvalidChecksumException } from '../src/_exceptions/ValidationBRError';
 
-describe('Certidao Class', () => {
+describe('Certidao', () => {
 
     test('deve normalizar o valor no construtor', () => {
         // Gera um válido
@@ -24,7 +24,6 @@ describe('Certidao Class', () => {
         '001234 01 55 2026 1 00567 078 0099999 92',
     ])('deve validar uma matrícula correta', (input) => {
         const data = new Certidao(input);
-        console.log(data);
         expect(data.validate()).toBe(true);
     });
 
@@ -69,9 +68,7 @@ describe('Certidao Class', () => {
             termo: 99999
         })
 
-        console.log(fake.mask());
         const checksum = Certidao.checksum(fake.value.substring(0, 30));
-        console.log('checksum calculado', checksum, 'checksum correto', 92);
 
         expect(checksum).toBe('92');
 
