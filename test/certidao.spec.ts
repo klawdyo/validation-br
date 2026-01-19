@@ -15,9 +15,17 @@ describe('Certidao Class', () => {
         expect(cert.value).toBe(fake.value);
     });
 
-    test('deve validar uma matrícula correta', () => {
-        const fake = Certidao.fake();
-        expect(fake.validate()).toBe(true);
+    test.each([
+        '131128 01 55 2010 1 00014 192 0006001 00',
+        '094003 01 55 2011 1 00110 002 0051917 43',
+        '094003 01 55 2010 1 00109 151 0051816 26',
+        '094300 01 55 2010 1 00020 112 0000120-87',
+        '094946 01 55 2011 1 00241 196 0099147 54',
+        '001234 01 55 2026 1 00567 078 0099999 92',
+    ])('deve validar uma matrícula correta', (input) => {
+        const data = new Certidao(input);
+        console.log(data);
+        expect(data.validate()).toBe(true);
     });
 
     test('deve lançar exceção para matrícula com DV errado', () => {
@@ -48,6 +56,27 @@ describe('Certidao Class', () => {
         expect(cert.value.substring(8, 10)).toBe(CertidaoServico.RegistroImoveis);
         expect(cert.validate()).toBe(true);
     });
+
+    test('Gera um fake válido com parâmetros', () => {
+        const fake = Certidao.fake({
+            cns: '1234',
+            acervo: '1',
+            servico: CertidaoServico.RegistroCivilPessoasNaturais,
+            ano: 2026,
+            tipoLivro: CertidaoTipoLivro.Nascimento,
+            livro: 567,
+            folha: 78,
+            termo: 99999
+        })
+
+        console.log(fake.mask());
+        const checksum = Certidao.checksum(fake.value.substring(0, 30));
+        console.log('checksum calculado', checksum, 'checksum correto', 92);
+
+        expect(checksum).toBe('92');
+
+
+    })
 
     test('deve retornar string pura no toString()', () => {
         const fake = Certidao.fake();
