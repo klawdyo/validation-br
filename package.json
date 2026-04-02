@@ -3,7 +3,15 @@
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
   "version": "1.6.4",
   "main": "dist/index.js",
+  "module": "dist/esm/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/index.js"
+    }
+  },
  
   "files": [
     "dist/*",
@@ -15,7 +23,7 @@
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc -p tsconfig.esm.json",
     "prepublishOnly": "./publish.sh",
     "test": "jest",
     "test:watch": "jest --watch",
