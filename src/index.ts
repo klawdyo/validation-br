@@ -3,6 +3,7 @@ import { validate as cnpj } from './cnpj';
 import { validate as cpf } from './cpf';
 import { validate as judicialProcess } from './judicialProcess';
 import { validate as nup17 } from './nup17';
+import { validate as phone } from './phone';
 import { validate as pisPasep } from './pisPasep';
 import { validate as postalCode } from './postalCode';
 import { validate as renavam } from './renavam';
@@ -12,6 +13,7 @@ export const isCNH = (value: string | number): boolean => cnh(value);
 export const isCNPJ = (value: string | number): boolean => cnpj(value);
 export const isCPF = (value: string | number): boolean => cpf(value);
 export const isJudicialProcess = (value: string): boolean => judicialProcess(value);
+export const isPhone = (value: string | number): boolean => phone(value);
 export const isPIS = (value: string): boolean => pisPasep(value);
 export const isPostalCode = (value: string): boolean => postalCode(value);
 export const isRenavam = (value: string): boolean => renavam(value);
@@ -23,6 +25,7 @@ export default {
   isCNPJ,
   isCPF,
   isJudicialProcess,
+  isPhone,
   isPIS,
   isPostalCode,
   isRenavam,

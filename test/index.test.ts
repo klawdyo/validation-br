@@ -4,6 +4,7 @@ import ValidateBR, {
   isCPF,
   isJudicialProcess,
   isNUP17,
+  isPhone,
   isPIS,
   isPostalCode,
   isRenavam,
@@ -49,6 +50,14 @@ describe('ValidateBR', () => {
 
     expect(ValidateBR.isNUP17('23037001462202165')).toBeTruthy();
     expect(isNUP17('23037001462202165')).toBeTruthy();
+  });
+
+  test('Deve importar isPhone', () => {
+    expect(ValidateBR.isPhone).toBeDefined();
+    expect(isPhone).toBeDefined();
+
+    expect(ValidateBR.isPhone('11987654321')).toBeTruthy();
+    expect(isPhone('11987654321')).toBeTruthy();
   });
 
   test('Deve importar isPIS', () => {
