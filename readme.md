@@ -77,6 +77,7 @@ validateOrFail('01234567890'); // -> true
 - [Código de Rastreamento Postal](#código-de-rastreamento-postal-dos-correios) - Validação de Objetos Registrados dos Correios
 - [Renavam](#renavam) - Validação de RENAVAM
 - [Titulo de Eleitor](#título-de-eleitor) - Validação do Título de Eleitor
+- [Telefone](#telefone) - Validação de telefones fixos e celulares
 
 ## Usando em outras bibliotecas de validação
 
@@ -436,6 +437,35 @@ mask('525028881694'); // -> 5250.2888.1694
 dv('5250288816'); // -> '94'
 ```
 
+## Telefone
+
+Valida um número de telefone fixo ou celular, com ou sem DDD. Por não possuir dígito verificador, o submódulo não expõe a função `dv`.
+
+```js
+// Importação direta
+import { isPhone } from 'validation-br';
+isPhone('11987654321'); //-> true
+isPhone('1133334444'); //-> true
+isPhone('11111111111'); //-> false
+
+// Importação do submódulo
+import { validate, mask, normalize, fake, validateOrFail } from 'validation-br/dist/phone';
+
+// Valida
+validate('(11) 9 8765-4321'); //-> true
+validateOrFail('11987654321'); //-> true
+
+// Número fake com e sem máscara
+fake(); // -> 11987654321
+fake(true); // -> (11) 9 8765-4321
+
+// Normalize o número do telefone
+normalize('(11) 9 8765-4321'); // -> 11987654321
+
+// Aplica uma máscara
+mask('11987654321'); // -> (11) 9 8765-4321
+```
+
 # Testes
 
 Todos os testes passando com 100% de cobertura
@@ -450,6 +480,8 @@ Github actions executados nas versões 18, 20 e 22 do Node.
 
 # Changelog
 
+- **18/06/2026**:
+  - Adicionada a função isPhone para validação de telefones fixos e celulares
 - **25/12/2025**:
   - 1.6.0
     - Incluída a função normalize() que retorna o valor normalizado, somente números (ou letras maiúsculas quando couber).
