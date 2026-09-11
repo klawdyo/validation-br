@@ -41,6 +41,23 @@ let cjsEntry: string;
 let esmEntry: string;
 let consumerDir: string;
 
+// Um valor válido conhecido por validador, espelhando test/index.test.ts,
+// pra garantir que TODOS os validadores exportados por src/index.ts
+// funcionam de ponta a ponta no pacote publicado (require e import),
+// não só uma amostra.
+const VALIDATORS: Record<string, string> = {
+  isCNH: '69044271146',
+  isCNPJ: '32432147000147',
+  isCPF: '15886489070',
+  isJudicialProcess: '08002732820164058400',
+  isNUP17: '23037001462202165',
+  isPhone: '11987654321',
+  isPIS: '23795126955',
+  isPostalCode: 'PN718252423BR',
+  isRenavam: '80499688374',
+  isTituloEleitor: '153036161686',
+};
+
 function run(args: string[]) {
   execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'pipe' });
 }
@@ -111,17 +128,23 @@ describe('pacote publicado (dual CJS/ESM)', () => {
     expect(pkg.exports['.'].import).toBe('./dist/esm/index.js');
   });
 
-  test('build CJS: require() carrega o pacote e os validadores funcionam', () => {
+  test.each(Object.entries(VALIDATORS))(
+    'build CJS: require() carrega o pacote e %s funciona (named export e default)',
+    (name, validValue) => {
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const lib = require(cjsEntry);
+
+      expect(typeof lib[name]).toBe('function');
+      expect(typeof lib.default[name]).toBe('function');
+      expect(lib[name](validValue)).toBe(true);
+      expect(lib.default[name](validValue)).toBe(true);
+    },
+  );
+
+  test('build CJS: require() rejeita um valor inválido', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const lib = require(cjsEntry);
-
-    expect(typeof lib.isCPF).toBe('function');
-    expect(typeof lib.isCNPJ).toBe('function');
-    expect(typeof lib.default.isCPF).toBe('function');
-
-    expect(lib.isCPF('15886489070')).toBe(true);
     expect(lib.isCPF('11111111111')).toBe(false);
-    expect(lib.isCNPJ('32432147000147')).toBe(true);
   });
 
   test('build ESM: nenhum import relativo fica sem extensão .js (quebraria o resolvedor nativo do Node)', () => {
@@ -141,16 +164,18 @@ describe('pacote publicado (dual CJS/ESM)', () => {
     expect(bareSpecifiers).toEqual([]);
   });
 
-  test('build ESM: import nativo do Node carrega o pacote e os validadores funcionam', () => {
+  test('build ESM: import nativo do Node carrega o pacote e TODOS os validadores funcionam (named export e default)', () => {
     const script = `
       import * as lib from '${esmEntry.replace(/\\/g, '\\\\')}';
-      const result = {
-        hasIsCPF: typeof lib.isCPF === 'function',
-        hasDefaultIsCPF: typeof lib.default?.isCPF === 'function',
-        validCPF: lib.isCPF('15886489070'),
-        invalidCPF: lib.isCPF('11111111111'),
-        validCNPJ: lib.isCNPJ('32432147000147'),
-      };
+      const validators = ${JSON.stringify(VALIDATORS)};
+      const result = {};
+      for (const [name, validValue] of Object.entries(validators)) {
+        result[name] = {
+          named: typeof lib[name] === 'function' && lib[name](validValue),
+          default: typeof lib.default[name] === 'function' && lib.default[name](validValue),
+        };
+      }
+      result.invalidCPF = lib.isCPF('11111111111');
       process.stdout.write(JSON.stringify(result));
     `;
 
@@ -158,13 +183,11 @@ describe('pacote publicado (dual CJS/ESM)', () => {
       encoding: 'utf8',
     });
 
-    expect(JSON.parse(stdout)).toEqual({
-      hasIsCPF: true,
-      hasDefaultIsCPF: true,
-      validCPF: true,
-      invalidCPF: false,
-      validCNPJ: true,
-    });
+    const result = JSON.parse(stdout);
+    for (const name of Object.keys(VALIDATORS)) {
+      expect(result[name]).toEqual({ named: true, default: true });
+    }
+    expect(result.invalidCPF).toBe(false);
   });
 
   test('build ESM: dist/esm/package.json marca o diretório como módulo ESM', () => {
