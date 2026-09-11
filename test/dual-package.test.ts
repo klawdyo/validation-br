@@ -13,7 +13,27 @@ import * as path from 'path';
 
 jest.setTimeout(60000);
 
-const ROOT = path.resolve(__dirname, '..');
+/**
+ * O tsconfig.json principal inclui "./test/**\/*", então o build de CJS
+ * também compila este arquivo para output/test/dual-package.test.js, e
+ * o Jest (sem roots/testPathIgnorePatterns configurados neste projeto)
+ * acaba executando essa cópia também, a partir de um __dirname um nível
+ * mais fundo. Por isso a raiz do projeto é localizada subindo os
+ * diretórios até achar o tsconfig.esm.json, em vez de assumir "..".
+ */
+function findProjectRoot(startDir: string): string {
+  let dir = startDir;
+  while (!fs.existsSync(path.join(dir, 'tsconfig.esm.json'))) {
+    const parent = path.dirname(dir);
+    if (parent === dir) {
+      throw new Error('Não foi possível localizar a raiz do projeto (tsconfig.esm.json não encontrado)');
+    }
+    dir = parent;
+  }
+  return dir;
+}
+
+const ROOT = findProjectRoot(__dirname);
 const TSC_BIN = require.resolve('typescript/bin/tsc');
 
 let tmpRoot: string;
