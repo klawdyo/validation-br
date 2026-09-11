@@ -1,4 +1,4 @@
-import { removeFromPosition } from '../src/utils'
+import { removeFromPosition } from '../../../src/_helpers/utils';
 
 describe('removeFromPosition()', () => {
   test('', () => {

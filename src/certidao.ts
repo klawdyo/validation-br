@@ -1,0 +1,196 @@
+/**
+ * Certidao
+ * Detalhamento do cálculo da matrícula (CNJ - 32 dígitos)
+ *
+ * @doc
+ * O Número de Matrícula tem a configuração aaaaaa.bb.cc.dddd.e.fffff.ggg.hhhhhhh-ii, onde:
+ *
+ * - aaaaaa: Código Nacional da Serventia (identificação única do cartório) ex.: 10453-9
+ * - bb: Código do Acervo (01-Acervo Próprio e 02-Acervos incorporados)
+ * - cc: Tipo de Serviço Prestado (55 - Serviço de Registro Civil das Pessoas Naturais)
+ * - dddd: Ano do Registro - ex.: 2013
+ * - e: Tipo do livro
+ *    1 - Livro A (Nascimento)
+ *    2 - Livro B (Casamento)
+ *    3 - Livro B Auxiliar (Registro de casamentos religiosos para fins civis)
+ *    4 - Livro C (Óbito)
+ *    5 - Livro C Auxiliar (Registro de Natimortos)
+ *    6 - Livro D (Registro de Proclamas)
+ *    7 - Livro E (Demais atos relativos ao Registro Civil ou Livro E único)
+ *    8 - Livro E (Desdobrado para registro específico das Emancipações)
+ *    9 - Livro E (Desdobrado para registro específico das Interdições)
+ * - fffff: Número do livro - ex.: 00012
+ * - ggg: Número da folha - ex.: 021
+ * - hhhhhhh: Número do Termo - ex.: 0000123
+ * - ii: Dígito Verificador DV, cujo cálculo obedece ao esquema de MÓDULO 11.
+ *
+ * Exemplo de Cálculo: 104539.01.55.2013.1.00012.021.0000123-21
+ *
+ * 1) Cálculo do primeiro DV.
+ *  - Soma-se o produto dos 30 primeiros dígitos por pesos específicos:
+ *    Pesos: 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+ *
+ *    1  0  4  5  3  9  0  1  5  5  2  0  1  3  1  0  0  0  1  2  0  2  1  0  0  0  0  1  2  3
+ *    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ *    2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9
+ *
+ *    Soma = 288
+ *
+ *  - O somatório encontrado é dividido por 11.
+ *    288 ÷ 11 = 26, com resto 2.
+ *    DV1 = Resto (2). Se resto for 10, DV1 será 1.
+ *
+ * 2) Cálculo do segundo DV.
+ *  - Soma-se o produto dos 31 primeiros dígitos (incluindo DV1) por novos pesos.
+ *    Pesos: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+ *
+ *    1  0  4  5  3  9  0  1  5  5  2  0  1  3  1  0  0  0  1  2  0  2  1  0  0  0  0  1  2  3  2
+ *    x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x  x
+ *    1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9 10  0  1  2  3  4  5  6  7  8  9
+ *
+ *    Soma = 309
+ *
+ *  - O somatório encontrado é dividido por 11.
+ *    309 ÷ 11 = 28, com resto 1.
+ *    DV2 = Resto (1). Se resto for 10, DV2 será 1.
+ *
+ * Links:
+ * - http://ghiorzi.org/DVnew.htm#zc
+ * - https://www.arpensp.org.br/calculo-de-matricula
+ *
+ * @param {String} value Matrícula da Certidão
+ * @returns {Boolean}
+ */
+
+import { EmptyValueException, InvalidChecksumException, InvalidFormatException } from './_exceptions/ValidationBRError';
+import { Base } from './base';
+import { clearValue } from './_helpers/utils';
+
+export enum CertidaoTipoLivro {
+    Nascimento = '1',
+    Casamento = '2',
+    CasamentoReligioso = '3',
+    Obito = '4',
+    Natimorto = '5',
+    Proclamas = '6',
+    Outros = '7'
+}
+
+export enum CertidaoServico {
+    Notas = '51',
+    Protesto = '52',
+    RegistroImoveis = '53',
+    RegistroTitulosDocumentos = '54',
+    RegistroCivilPessoasNaturais = '55',
+    RegistroContratosMaritimos = '56',
+    RegistroDistribuicao = '57'
+}
+
+export interface FakeCertidaoOptions {
+    cns?: string;
+    acervo?: string;
+    servico?: CertidaoServico;
+    ano?: number;
+    tipoLivro?: CertidaoTipoLivro;
+    livro?: number;
+    folha?: number;
+    termo?: number;
+}
+
+export class Certidao extends Base {
+    protected _mask = '000000 00 00 0000 0 00000 000 0000000 00';
+
+    constructor(protected _value: string) {
+        super(_value);
+        this.normalize();
+
+        if (!this.validate()) {
+            throw new InvalidChecksumException();
+        }
+    }
+
+    protected normalize(): void {
+        this._value = this._value.replace(/([. -])/g, '');
+    }
+
+    /**
+     * Valida se a certidão atual possui o DV correto e tamanho 32
+     */
+    public validate(): boolean {
+        const certidao = clearValue(this._value, 32, {
+            rejectEmpty: true,
+            rejectIfLonger: true,
+            rejectIfShorter: true,
+            rejectEqualSequence: false, // 32 digits can possibly have sequences, though unlikely to be ALL same.
+        });
+
+        return Certidao.checksum(certidao.substring(0, 30)) === certidao.substring(30, 32);
+    }
+
+    /**
+     * Calcula o DV para uma sequência de 30 dígitos
+     * Algoritmo Módulo 97:
+     */
+    public static checksum(base30: string): string {
+        if (!base30) throw new EmptyValueException();
+        if (base30.length !== 30) throw new InvalidFormatException();
+
+        // Pesos específicos conforme solicitação:
+        // DV1: 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        const weights1 = [
+            2, 3, 4, 5, 6, 7, 8, 9, 10, 0,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        ];
+
+        let sum1 = 0;
+        for (let i = 0; i < 30; i++) {
+            sum1 += parseInt(base30[i], 10) * weights1[i];
+        }
+
+        let dv1 = sum1 % 11;
+        if (dv1 === 10) dv1 = 1;
+
+        // DV2: Inclui o DV1 no final
+        // Pesos: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        const base31 = base30 + dv1.toString();
+        const weights2 = [
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9,
+            10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+        ];
+
+        let sum2 = 0;
+        for (let i = 0; i < 31; i++) {
+            sum2 += parseInt(base31[i], 10) * weights2[i];
+        }
+
+        let dv2 = sum2 % 11;
+        if (dv2 === 10) dv2 = 1;
+
+        return `${dv1}${dv2}`;
+    }
+
+    /**
+     * Gera uma instância de Certidao válida com dados aleatórios ou específicos
+     */
+    public static fake(options: FakeCertidaoOptions = {}): Certidao {
+        const pad = (n: number | string, size: number) => n.toString().padStart(size, '0');
+        const meupa = clearValue(0, 3, { fillZerosAtLeft: true })
+
+
+        const cns = options.cns ? pad(options.cns, 6) : pad(Math.floor(Math.random() * 999999), 6);
+        const acervo = options.acervo ? pad(options.acervo, 2) : '01';
+        const servico = options.servico || CertidaoServico.RegistroCivilPessoasNaturais;
+        const ano = options.ano || new Date().getFullYear();
+        const tipo = options.tipoLivro || CertidaoTipoLivro.Nascimento;
+        const livro = options.livro !== undefined ? pad(options.livro, 5) : pad(Math.floor(Math.random() * 99999), 5);
+        const folha = options.folha !== undefined ? pad(options.folha, 3) : pad(Math.floor(Math.random() * 999), 3);
+        const termo = options.termo !== undefined ? pad(options.termo, 7) : pad(Math.floor(Math.random() * 9999999), 7);
+
+        const base30 = `${cns}${acervo}${servico}${ano}${tipo}${livro}${folha}${termo}`;
+        const dv = Certidao.checksum(base30);
+
+        return new Certidao(base30 + dv);
+    }
+}

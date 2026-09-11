@@ -1,4 +1,4 @@
-import { insertAtPosition } from '../src/utils'
+import { insertAtPosition } from '../../../src/_helpers/utils';
 
 describe('insertAtPosition()', () => {
   test('Deve inserir um caractere em uma determinada posição da string', () => {

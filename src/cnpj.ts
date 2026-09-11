@@ -87,7 +87,7 @@ import { Base } from './base';
 import {
   sumToDV,
   clearValue,
-} from './utils';
+} from './_helpers/utils';
 
 export class CNPJ extends Base {
   protected _mask = '00.000.000/0000-00';
