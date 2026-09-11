@@ -39,6 +39,7 @@ const TSC_BIN = require.resolve('typescript/bin/tsc');
 let tmpRoot: string;
 let cjsEntry: string;
 let esmEntry: string;
+let consumerDir: string;
 
 function run(args: string[]) {
   execFileSync(process.execPath, args, { cwd: ROOT, stdio: 'pipe' });
@@ -81,6 +82,19 @@ beforeAll(() => {
 
   cjsEntry = path.join(dist, 'index.js');
   esmEntry = path.join(distEsm, 'index.js');
+
+  // Monta um "pacote instalado" de verdade em node_modules/validation-br,
+  // pra exercitar a resolução real do campo "exports" (require/import de
+  // subpaths), não apenas requires/imports relativos diretos aos arquivos.
+  const pkgRoot = path.join(tmpRoot, 'pkg');
+  copyDir(dist, path.join(pkgRoot, 'dist'));
+  const pkgJson = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
+  fs.writeFileSync(path.join(pkgRoot, 'package.json'), JSON.stringify(pkgJson));
+
+  consumerDir = path.join(tmpRoot, 'consumer');
+  const nodeModules = path.join(consumerDir, 'node_modules');
+  fs.mkdirSync(nodeModules, { recursive: true });
+  fs.symlinkSync(pkgRoot, path.join(nodeModules, 'validation-br'), 'dir');
 });
 
 afterAll(() => {
@@ -156,5 +170,38 @@ describe('pacote publicado (dual CJS/ESM)', () => {
   test('build ESM: dist/esm/package.json marca o diretório como módulo ESM', () => {
     const esmPkg = JSON.parse(fs.readFileSync(path.join(path.dirname(esmEntry), 'package.json'), 'utf8'));
     expect(esmPkg.type).toBe('module');
+  });
+
+  test('imports profundos (require): "validation-br/dist/cpf" (documentado no readme) e "validation-br/cpf" continuam funcionando', () => {
+    const script = `
+      const legacy = require('validation-br/dist/cpf');
+      const short = require('validation-br/cpf');
+      process.stdout.write(JSON.stringify({
+        legacyValid: legacy.validate('15886489070'),
+        shortValid: short.validate('15886489070'),
+      }));
+    `;
+
+    const stdout = execFileSync(process.execPath, ['-e', script], { cwd: consumerDir, encoding: 'utf8' });
+
+    expect(JSON.parse(stdout)).toEqual({ legacyValid: true, shortValid: true });
+  });
+
+  test('imports profundos (import nativo): "validation-br/dist/cpf" e "validation-br/cpf" continuam funcionando', () => {
+    const script = `
+      import * as legacy from 'validation-br/dist/cpf';
+      import * as short from 'validation-br/cpf';
+      process.stdout.write(JSON.stringify({
+        legacyValid: legacy.validate('15886489070'),
+        shortValid: short.validate('15886489070'),
+      }));
+    `;
+
+    const stdout = execFileSync(process.execPath, ['--input-type=module', '-e', script], {
+      cwd: consumerDir,
+      encoding: 'utf8',
+    });
+
+    expect(JSON.parse(stdout)).toEqual({ legacyValid: true, shortValid: true });
   });
 });
