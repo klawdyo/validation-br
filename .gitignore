@@ -21,3 +21,4 @@ coverage
 docs/*
 
 output
+output-esm
