@@ -27,7 +27,7 @@
   - toBarcode() devolve o código de barras
   - parse() é chamado no início e já separa as partes
 
-- [ ] isCAEPF - Cadastro de atividades econômicas de pessoa física
+- [x] isCAEPF - Cadastro de atividades econômicas de pessoa física
   - https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/caepf/legislacao
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isCAEPF.ts
   - https://contrafbrasil.org.br/system/uploads/ck/files/PERGUNTAS-E-RESPOSTAS.pdf
