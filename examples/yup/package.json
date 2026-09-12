@@ -1,0 +1,12 @@
+{
+  "name": "validation-br-example-yup",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "yup": "^1.4.0",
+    "validation-br": "file:../.."
+  }
+}

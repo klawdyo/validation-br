@@ -1,0 +1,14 @@
+{
+  "name": "validation-br-example-vuelidate",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "vue": "^3.5.13",
+    "validation-br": "file:../.."
+  }
+}

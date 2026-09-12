@@ -1,0 +1,12 @@
+{
+  "name": "validation-br-example-joi",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "joi": "^17.13.3",
+    "validation-br": "file:../.."
+  }
+}

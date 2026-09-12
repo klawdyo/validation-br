@@ -1,0 +1,12 @@
+{
+  "name": "validation-br-example-indicative",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "indicative": "^7.4.4",
+    "validation-br": "file:../.."
+  }
+}

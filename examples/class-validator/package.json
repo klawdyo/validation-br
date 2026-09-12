@@ -1,0 +1,16 @@
+{
+  "name": "validation-br-example-class-validator",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "tsx index.ts"
+  },
+  "dependencies": {
+    "class-validator": "^0.14.1",
+    "reflect-metadata": "^0.2.2",
+    "validation-br": "file:../.."
+  },
+  "devDependencies": {
+    "tsx": "^4.19.2"
+  }
+}
