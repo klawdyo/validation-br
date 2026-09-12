@@ -92,7 +92,7 @@ describe('Random', () => {
       const possibilities = ['a', 'b', 'c', 'd', 'e'];
       const length = 3
       const result = Random.fromArray(possibilities, length);
-      
+
       expect(result).toBeDefined();
       expect(result.length).toBe(length);
       result.forEach(char => {
@@ -100,6 +100,12 @@ describe('Random', () => {
       });
 
 
+    });
+
+    test('deve devolver um array vazio quando o array de origem estiver vazio', () => {
+      const result = Random.fromArray([] as number[], 3);
+
+      expect(result).toEqual([]);
     });
   });
 });
