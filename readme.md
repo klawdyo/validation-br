@@ -514,6 +514,14 @@ key.type // -> 'cpf'
 // Chave fake (aceita { type: 'cpf' | 'cnpj' | 'email' | 'phone' | 'evp' })
 PixKey.fake() // -> PixKey { value: '...' }
 PixKey.fake({ type: 'email' }).value // -> 'wqdbzdhkmp@hotmail.com'
+
+// Enum com os tipos de chave Pix
+import { PixKeys } from 'validation-br'
+// ou
+import { PixKeys } from 'validation-br/pix-key'
+
+key.type === PixKeys.cpf // -> true
+PixKey.fake({ type: PixKeys.email })
 ```
 
 ### isPixCopyPaste( `value` )
@@ -662,6 +670,13 @@ Certidao.fake() // -> Certidao { value: '...' }
 
 // Calcula o DV a partir dos 30 primeiros dígitos
 Certidao.checksum('827660015520261654035919727867') // -> '31'
+
+// Enums com os tipos de livro e de serviço usados em Certidao.fake()
+import { CertidaoTipoLivro, CertidaoServico } from 'validation-br'
+// ou
+import { CertidaoTipoLivro, CertidaoServico } from 'validation-br/certidao'
+
+Certidao.fake({ tipoLivro: CertidaoTipoLivro.Nascimento, servico: CertidaoServico.RegistroCivilPessoasNaturais })
 ```
 
 ### isCBISinter( `value` )
