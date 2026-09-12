@@ -1,22 +1,5 @@
 import { Boleto } from '../src/boleto';
 
-/**
- * Monta um código de barras válido com um fator de vencimento arbitrário,
- * para testar expirationFactorToDate() isoladamente da geração de fake().
- */
-function buildBoletoWithFactor(factor: string): Boleto {
-  const bank = '001';
-  const currency = '9';
-  const amount = '0000000000';
-  const freeField = '0'.repeat(25);
-
-  const body = `${bank}${currency}${factor}${amount}${freeField}`;
-  const generalChecksum = Boleto.checksum(body);
-  const barcode = `${bank}${currency}${generalChecksum}${factor}${amount}${freeField}`;
-
-  return new Boleto(barcode);
-}
-
 describe('Boleto', () => {
   describe('constructor', () => {
     test.each([...Array(10)])('deve estar definido a partir da linha digitável', () => {
@@ -119,42 +102,13 @@ describe('Boleto', () => {
     });
 
     test('deve calcular expiresAt a partir do fator de vencimento informado', () => {
+      // Os limites da virada de era do fator de vencimento (fev/2025) são testados
+      // em detalhe em test/_helpers/expiration-factor.spec.ts; aqui só confirmamos
+      // que o Boleto está de fato usando o ExpirationFactor.
       const expiresAt = new Date('2024-01-15T00:00:00.000Z');
       const boleto = Boleto.fake({ expiresAt });
 
       expect(boleto.expiresAt?.toISOString().substring(0, 10)).toBe('2024-01-15');
-    });
-
-    describe('virada de era do fator de vencimento (21-22/02/2025)', () => {
-      test.each([
-        { factor: '0000', expected: null },
-        { factor: '0100', expected: '2022-09-06' }, // menor que 6000: era nova (não a antiga, mesmo sendo um fator baixo)
-        { factor: '5999', expected: '2038-10-31' }, // menor que 6000: era nova
-        { factor: '1000', expected: '2025-02-22' }, // início da era nova
-        { factor: '6000', expected: '2014-03-12' }, // maior ou igual a 6000: era antiga
-        { factor: '9999', expected: '2025-02-21' }, // fim da era antiga
-      ])('fator $factor deve corresponder a $expected', ({ factor, expected }) => {
-        const boleto = buildBoletoWithFactor(factor);
-
-        if (expected === null) {
-          expect(boleto.expiresAt).toBeNull();
-        } else {
-          expect(boleto.expiresAt?.toISOString().substring(0, 10)).toBe(expected);
-        }
-      });
-    });
-
-    describe('escolha de era ao converter uma data em fator de vencimento', () => {
-      test.each([
-        { date: '2020-06-15', description: 'antes da virada' },
-        { date: '2025-02-21', description: 'último dia da era antiga' },
-        { date: '2025-02-22', description: 'primeiro dia da era nova' },
-        { date: '2030-05-10', description: 'depois da virada' },
-      ])('deve fazer o round-trip corretamente para uma data $description ($date)', ({ date }) => {
-        const boleto = Boleto.fake({ expiresAt: new Date(`${date}T00:00:00.000Z`) });
-
-        expect(boleto.expiresAt?.toISOString().substring(0, 10)).toBe(date);
-      });
     });
   });
 
@@ -200,6 +154,74 @@ describe('Boleto', () => {
 
     test('deve aceitar valor fixo', () => {
       expect(Boleto.fake({ amount: 1500.5 }).amount).toBe(1500.5);
+    });
+  });
+
+  // Exemplos reais, extraídos de suítes de teste de outras bibliotecas de
+  // boleto open source (não gerados por Boleto.fake()), para validar o
+  // Módulo 10, o Módulo 11 e a conversão entre formatos com dados de bancos
+  // e décadas diferentes.
+  describe('exemplos reais', () => {
+    test('Bradesco (237), linha digitável, mascarada e sem máscara', () => {
+      // https://github.com/mcrvaz/boleto-brasileiro-validator/blob/master/test/boleto-bancario.js
+      const masked = '23793.38128 60007.827136 95000.063305 9 75520000370000';
+      const unmasked = '23793381286000782713695000063305975520000370000';
+
+      const boleto = new Boleto(masked);
+
+      expect(boleto.toString()).toBe(unmasked);
+      expect(boleto.bank).toBe('237');
+      expect(boleto.amount).toBe(3700);
+    });
+
+    test('Banco do Brasil (001), código de barras', () => {
+      // https://github.com/mcrvaz/boleto-brasileiro-validator/blob/master/test/boleto-bancario.js
+      // Exemplo clássico, de bem antes da virada de era do fator de vencimento
+      // (fevereiro/2025): o fator 3737 cai na faixa ambígua (< 6000) e por isso
+      // é interpretado como era nova aqui, mesmo tendo sido originalmente um
+      // vencimento de 1997+3737 dias. Ver ExpirationFactor.toDate().
+      const barcode = '00193373700000001000500940144816060680935031';
+
+      const boleto = new Boleto(barcode);
+
+      expect(boleto.toBarcode()).toBe(barcode);
+      expect(boleto.bank).toBe('001');
+      expect(boleto.amount).toBe(1);
+    });
+
+    test('Safra (422), linha digitável', () => {
+      // https://github.com/Tagliatti/Boleto-Validator-PHP/blob/master/tests/BoletoValidatorTest.php
+      const masked = '42297.11504 00001.954411 60020.034520 2 68610000054659';
+      const unmasked = '42297115040000195441160020034520268610000054659';
+
+      const boleto = new Boleto(masked);
+
+      expect(boleto.toString()).toBe(unmasked);
+      expect(boleto.bank).toBe('422');
+      expect(boleto.amount).toBe(546.59);
+      expect(boleto.expiresAt?.toISOString().substring(0, 10)).toBe('2016-07-20');
+    });
+
+    test('Caixa (104), código de barras e linha digitável equivalentes', () => {
+      // https://github.com/mrmgomes/boleto-utils/blob/master/test/test.js
+      // Essa biblioteca calcula as duas interpretações possíveis do fator 8981
+      // (era antiga: 2022-05-10; era nova: 2046-12-30) exatamente como este
+      // validador calcularia internamente para cada uma das eras -- o que serve
+      // de conferência independente das duas datas-base usadas aqui.
+      const barcode = '10499898100000214032006561000100040099726390';
+      const linha = '10492006506100010004200997263900989810000021403';
+
+      const fromBarcode = new Boleto(barcode);
+      const fromLinha = new Boleto(linha);
+
+      expect(fromBarcode.toString()).toBe(linha);
+      expect(fromLinha.toBarcode()).toBe(barcode);
+
+      expect(fromBarcode.bank).toBe('104');
+      expect(fromBarcode.amount).toBe(214.03);
+      // 8981 >= 6000: interpretado como era antiga, que é a data que este
+      // boleto de fato tinha (confirmado pela fonte acima).
+      expect(fromBarcode.expiresAt?.toISOString().substring(0, 10)).toBe('2022-05-10');
     });
   });
 });
