@@ -12,7 +12,18 @@ import {
   isPostalTrackCode,
   isRenavam,
   isTituloEleitor,
+  isBoleto,
+  isCAEPF,
+  isCEP,
+  isCertidao,
+  isCBISinter,
+  isUF,
 } from '../src'
+import { Boleto } from '../src/boleto'
+import { CAEPF } from '../src/caepf'
+import { CEP } from '../src/cep'
+import { Certidao } from '../src/certidao'
+import { CBISinter } from '../src/cbi_sinter'
 
 describe('ValidateBR', () => {
   test('Deve importar isCNH', () => {
@@ -108,5 +119,35 @@ describe('ValidateBR', () => {
     
     expect(isPixCopyPaste(pixStone)).toBeTruthy()
     expect(isPixCopyPaste(pixManual)).toBeTruthy()
+  })
+
+  test('Deve importar isBoleto', () => {
+    expect(isBoleto).toBeDefined()
+    expect(isBoleto(Boleto.fake().value)).toBeTruthy()
+  })
+
+  test('Deve importar isCAEPF', () => {
+    expect(isCAEPF).toBeDefined()
+    expect(isCAEPF(CAEPF.fake().value)).toBeTruthy()
+  })
+
+  test('Deve importar isCEP', () => {
+    expect(isCEP).toBeDefined()
+    expect(isCEP(CEP.fake().value)).toBeTruthy()
+  })
+
+  test('Deve importar isCertidao', () => {
+    expect(isCertidao).toBeDefined()
+    expect(isCertidao(Certidao.fake().value)).toBeTruthy()
+  })
+
+  test('Deve importar isCBISinter', () => {
+    expect(isCBISinter).toBeDefined()
+    expect(isCBISinter(CBISinter.fake().value)).toBeTruthy()
+  })
+
+  test('Deve importar isUF', () => {
+    expect(isUF).toBeDefined()
+    expect(isUF('RN')).toBeTruthy()
   })
 })
