@@ -48,8 +48,8 @@ export class PixPart {
    * 
    * 
    */
-  static parse(value: string): Part[] {
-    const parts: any[] = [];
+  static parse(value: string): PartNode[] {
+    const parts: PartNode[] = [];
 
     let rest = value;
     while (rest) {
@@ -80,7 +80,7 @@ export class PixPart {
       throw new InvalidFormatException()
     }
 
-    let children: Part[] = [];
+    let children: PartNode[] = [];
 
     const possiblyHasChildren = /^(\d{2})(\d{2})(.*)/.exec(value);
 
@@ -96,11 +96,14 @@ export class PixPart {
   }
 }
 
-interface Part {
+interface PartNode {
   part: string;
   code: string;
   size: number;
   value: string;
+  children: PartNode[];
+}
+
+interface Part extends PartNode {
   rest: string;
-  children: Part[];
 }

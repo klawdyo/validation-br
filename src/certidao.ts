@@ -176,8 +176,6 @@ export class Certidao extends Base {
      */
     public static fake(options: FakeCertidaoOptions = {}): Certidao {
         const pad = (n: number | string, size: number) => n.toString().padStart(size, '0');
-        const meupa = clearValue(0, 3, { fillZerosAtLeft: true })
-
 
         const cns = options.cns ? pad(options.cns, 6) : pad(Math.floor(Math.random() * 999999), 6);
         const acervo = options.acervo ? pad(options.acervo, 2) : '01';

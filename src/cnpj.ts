@@ -190,7 +190,7 @@ function sumToDvWithAlpha(value: string, multiplier: number[]) {
   const sum = [...value]
     .map((character) => asciiTableConverter(character))
     .reduce(
-      (sum: number, asciiChar: any, index: number) =>
+      (sum: number, asciiChar: number, index: number) =>
         sum + asciiChar * multiplier[index],
       0
     );

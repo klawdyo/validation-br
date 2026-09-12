@@ -1,4 +1,4 @@
-import ValidationBRError, { InvalidFormatException } from "./_exceptions/ValidationBRError";
+import ValidationBRError from "./_exceptions/ValidationBRError";
 import { Random } from "./_helpers/random";
 import { Base } from "./base";
 

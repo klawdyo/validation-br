@@ -40,7 +40,7 @@ export function checkRepeatedSequence(value: string) {
  */
 export function sumElementsByMultipliers(value: string, multiplier: number[]): number {
   return multiplier.reduce(
-    (accu: number, curr: any, i: number) => accu + curr * Number(value[i]),
+    (accu: number, curr: number, i: number) => accu + curr * Number(value[i]),
     0,
   )
 }

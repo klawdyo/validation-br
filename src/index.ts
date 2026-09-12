@@ -15,11 +15,11 @@ import { UUID } from './uuid';
 import { Email } from './email';
 
 
-function validate(fn: Function) {
+function validate(fn: () => void) {
   try {
     fn()
     return true
-  } catch (error) {
+  } catch {
     return false
   }
 }

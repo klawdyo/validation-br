@@ -135,7 +135,7 @@ export class CEP extends Base {
    * checksum()
    * Not implemented
    */
-  static checksum(value: string): string {
+  static checksum(_value: string): string {
     throw new NoChecksumException();
   }
 
@@ -167,7 +167,7 @@ export class CEP extends Base {
   static getUFByCEP(value: string): UF {
     const normalized = value.replace(/\D/g, '');
 
-    const foundItem = Object.entries(CEP._ranges).find(([ufShort, ranges]) => {
+    const foundItem = Object.entries(CEP._ranges).find(([_ufShort, ranges]) => {
       const foundRange = ranges.find((range) => {
         return normalized >= range[0] && normalized <= range[1];
       });
