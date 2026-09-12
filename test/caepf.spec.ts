@@ -70,6 +70,11 @@ describe('CAEPF', () => {
         expect(() => CAEPF.checksum(item)).toThrow();
       }
     );
+
+    test('deve converter DV 10 para 0 (Módulo 11 pode gerar resto 10)', () => {
+      // Base escolhida por força bruta: gera resto 10 tanto no cálculo do DV1 quanto do DV2
+      expect(CAEPF.checksum('354897069678')).toBe('12');
+    });
   });
 
   describe('toString', () => {
