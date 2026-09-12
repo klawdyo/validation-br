@@ -21,6 +21,21 @@ describe('Random', () => {
       expect(num.length).toBe(length);
       expect(num).toMatch(/[a-z0-9]/i)
     });
+
+    test.each([1, 2, 5, 10])(
+      'não deve estourar o tamanho quando Math.random() ficar no limite superior (regressão)',
+      (length) => {
+        // Math.random() nunca chega a 1, mas um valor bem próximo já é suficiente pra
+        // reproduzir o bug: Math.round(quase-1 * 36**length) podia arredondar pra
+        // 36**length, que em base 36 tem um caractere a mais do que `length`.
+        const spy = vi.spyOn(Math, 'random').mockReturnValue(0.9999999999999999);
+
+        const num = Random.number(length, true, true);
+        expect(num.length).toBe(length);
+
+        spy.mockRestore();
+      }
+    );
   });
 
   describe('between', () => {

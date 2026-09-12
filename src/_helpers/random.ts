@@ -58,7 +58,10 @@ export class Random {
     let value: string;
 
     if (isAlpha)
-      value = Math.round(Math.random() * 36 ** length)
+      // Math.floor (não Math.round) é essencial aqui: Math.random() nunca atinge 1, mas
+      // arredondar para cima pode levar o valor a 36 ** length exatamente, que em base 36
+      // vira '1' seguido de `length` zeros — um caractere a mais do que o esperado.
+      value = Math.floor(Math.random() * 36 ** length)
         .toString(36)
         .toLocaleUpperCase();
     else value = Math.floor(Math.random() * 10 ** length).toString();
