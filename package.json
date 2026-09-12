@@ -1,7 +1,7 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "2.0.0-next-11",
+  "version": "2.0.0-next-12",
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "sideEffects": false,
@@ -29,9 +29,28 @@
   },
   "typesVersions": {
     "*": {
-      "*": [
-        "dist/cjs/*"
-      ]
+      "base": ["dist/cjs/base.d.ts"],
+      "boleto": ["dist/cjs/boleto.d.ts"],
+      "caepf": ["dist/cjs/caepf.d.ts"],
+      "carplate": ["dist/cjs/carplate.d.ts"],
+      "cbi_sinter": ["dist/cjs/cbi_sinter.d.ts"],
+      "cep": ["dist/cjs/cep.d.ts"],
+      "certidao": ["dist/cjs/certidao.d.ts"],
+      "cnh": ["dist/cjs/cnh.d.ts"],
+      "cnpj": ["dist/cjs/cnpj.d.ts"],
+      "cpf": ["dist/cjs/cpf.d.ts"],
+      "email": ["dist/cjs/email.d.ts"],
+      "judicial-process": ["dist/cjs/judicial-process.d.ts"],
+      "nup17": ["dist/cjs/nup17.d.ts"],
+      "phone": ["dist/cjs/phone.d.ts"],
+      "pis-pasep": ["dist/cjs/pis-pasep.d.ts"],
+      "pix-copy-paste": ["dist/cjs/pix-copy-paste.d.ts"],
+      "pix-key": ["dist/cjs/pix-key.d.ts"],
+      "postal-track-code": ["dist/cjs/postal-track-code.d.ts"],
+      "renavam": ["dist/cjs/renavam.d.ts"],
+      "tituloEleitor": ["dist/cjs/tituloEleitor.d.ts"],
+      "uf": ["dist/cjs/uf.d.ts"],
+      "uuid": ["dist/cjs/uuid.d.ts"]
     }
   },
   "scripts": {
