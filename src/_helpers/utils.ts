@@ -8,8 +8,8 @@ import { EmptyValueException, TooLongException, RepeatedSequenceException, TooSh
  * @param {Integer} sum Soma
  * @returns {Integer}
  */
-export function sumToDV(sum: number): number {
-  return sum % 11 < 2 ? 0 : 11 - (sum % 11)
+export function sumToDV(sum: number, restException: 0 | 1 = 0): number {
+  return sum % 11 < 2 ? restException : 11 - (sum % 11)
 }
 
 /**
