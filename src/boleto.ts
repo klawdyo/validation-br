@@ -87,6 +87,7 @@ import {
 } from './_exceptions/ValidationBRError';
 import { Random } from './_helpers/random';
 import { Mask } from './_helpers/mask';
+import { ExpirationFactor } from './_helpers/expiration-factor';
 import { sumElementsByMultipliers, sumToDV } from './_helpers/utils';
 import { Base } from './base';
 
@@ -99,10 +100,6 @@ export class Boleto extends Base {
     4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4,
     3, 2, 9, 8, 7, 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2,
   ];
-
-  // Datas-base do fator de vencimento (ver expirationFactorToDate())
-  private static readonly oldEraBaseDate = new Date('1997-10-07');
-  private static readonly newEraBaseDate = new Date('2022-05-29');
 
   private _bank!: string;
   private _generalChecksum!: string;
@@ -155,7 +152,7 @@ export class Boleto extends Base {
    * Data de vencimento, ou null se o boleto não tiver vencimento definido
    */
   get expiresAt(): Date | null {
-    return Boleto.expirationFactorToDate(this._expirationFactor);
+    return ExpirationFactor.toDate(this._expirationFactor);
   }
 
   /**
@@ -312,7 +309,7 @@ export class Boleto extends Base {
     const bank = options.bank ?? Random.number(3, true);
     const currency = '9';
     const expirationFactor = options.expiresAt
-      ? Boleto.dateToExpirationFactor(options.expiresAt)
+      ? ExpirationFactor.fromDate(options.expiresAt)
       : Random.number(4, true);
     const amount =
       options.amount !== undefined
@@ -400,46 +397,6 @@ export class Boleto extends Base {
     return String(rest === 0 ? 0 : 10 - rest);
   }
 
-  /**
-   * Converte o fator de vencimento em data. "0000" representa um boleto sem
-   * vencimento definido.
-   *
-   * O fator tem só 4 dígitos (0 a 9999), contados a partir de 07/10/1997. Esse
-   * intervalo esgotou em 21/02/2025 e, a partir de 22/02/2025, a Febraban reiniciou
-   * a contagem em 1000, usando 29/05/2022 como nova data-base. Como o fator não
-   * indica de qual era ele é, usamos 6000 como corte: fatores menores indicam a
-   * era nova (válido até 31/10/2038) e fatores maiores ou iguais indicam a era
-   * antiga (válido até 21/02/2025, quando ela se esgotou).
-   *
-   * Fonte: http://portalabbc.org.br/images/content/manual%20operacional.pdf
-   */
-  private static expirationFactorToDate(factor: string): Date | null {
-    if (factor === '0000') return null;
-
-    // Nota para o futuro: quando a era nova se esgotar (por volta de 2038), a data-base
-    // usada abaixo deixa de ser válida e um novo corte precisará ser calculado.
-    const baseDate = factor < '6000' ? Boleto.newEraBaseDate : Boleto.oldEraBaseDate;
-
-    const msByDay = 1000 * 60 * 60 * 24;
-    const baseDays = baseDate.getTime() / msByDay;
-
-    return new Date((+factor + baseDays) * msByDay);
-  }
-
-  /**
-   * Converte uma data no fator de vencimento equivalente, escolhendo a era
-   * (ver expirationFactorToDate()) a partir da própria data: a era antiga só é usada
-   * para datas até 21/02/2025, quando ela se esgotou.
-   */
-  private static dateToExpirationFactor(date: Date): string {
-    const newEraStart = new Date('2025-02-22');
-    const baseDate = date < newEraStart ? Boleto.oldEraBaseDate : Boleto.newEraBaseDate;
-
-    const msByDay = 1000 * 60 * 60 * 24;
-    const days = Math.round(date.getTime() / msByDay - baseDate.getTime() / msByDay);
-
-    return String(days).padStart(4, '0').slice(-4);
-  }
 }
 
 interface FakeBoletoOptions {
