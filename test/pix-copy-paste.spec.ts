@@ -23,6 +23,26 @@ describe('PixCopyPaste', () => {
       const copyPaste = pixStone.slice(0, 4) + 'D' + pixStone.slice(4);
       expect(() => new PixCopyPaste(copyPaste)).toThrow()
     });
+
+    test('deve lançar um erro quando o último campo não for o CRC (código 63)', () => {
+      // Mesmo pixManual, mas o último campo tem código 64 em vez de 63 (CRC recalculado para o novo conteúdo)
+      const mutated = '00020126550014BR.GOV.BCB.PIX0123alexandrepato@gmail.com0206almoco5204000053039865406100.005802BR5914Alexandre Pato6009Ipanguacu61085950800062490511PIXJS76657250300017BR.GOV.BCB.BRCODE01051.0.06404D05F';
+      expect(() => new PixCopyPaste(mutated)).toThrow()
+    });
+
+    test('deve lançar um erro quando o campo CRC (63) não tiver tamanho 4', () => {
+      // Mesmo pixManual, com um campo extra (99) antes do CRC, e o CRC (63) declarado com tamanho 3
+      const mutated = '00020126550014BR.GOV.BCB.PIX0123alexandrepato@gmail.com0206almoco5204000053039865406100.005802BR5914Alexandre Pato6009Ipanguacu61085950800062490511PIXJS76657250300017BR.GOV.BCB.BRCODE01051.0.0990146303DEB';
+      expect(() => new PixCopyPaste(mutated)).toThrow()
+    });
+
+    test('deve lançar um erro quando PixPart.parse não retornar um array', () => {
+      const spy = vi.spyOn(PixPart, 'parse').mockReturnValueOnce(null as unknown as ReturnType<typeof PixPart.parse>);
+
+      expect(() => new PixCopyPaste(pixStone)).toThrow();
+
+      spy.mockRestore();
+    });
   });
 
   describe('PixPart', () => {
@@ -32,6 +52,11 @@ describe('PixCopyPaste', () => {
 
         expect(parse).toBeDefined();
         expect(Array.isArray(parse)).toBeTruthy();
+      });
+
+      test('deve lançar um erro para evitar loop infinito quando o campo não avança', () => {
+        // 'acvs' não começa com 4 dígitos, então getPart devolve o mesmo "rest" recebido
+        expect(() => PixPart.parse('acvs')).toThrow();
       });
     });
 
