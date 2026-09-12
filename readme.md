@@ -819,9 +819,9 @@ Todos os testes passando com cobertura próxima de 100%.
 
 
 
-<img width="949" height="825" alt="image" src="https://github.com/user-attachments/assets/0a458c8c-1c16-4e01-a98f-efa174dfec79" />
+<img width="800"  alt="image" src="https://github.com/user-attachments/assets/0a458c8c-1c16-4e01-a98f-efa174dfec79" />
 
-<img width="948" height="720" alt="image" src="https://github.com/user-attachments/assets/5e20f498-167e-4fb2-bb8b-1eb58afeb16c" />
+<img width="800"  alt="image" src="https://github.com/user-attachments/assets/5e20f498-167e-4fb2-bb8b-1eb58afeb16c" />
 
 
 
@@ -832,7 +832,7 @@ Todos os testes passando com cobertura próxima de 100%.
 Github actions executados nas versões 18, 20, 22 e 24 do Node, buildando e validando os pacotes CommonJS e ESM em cada versão.
 
 
-<img width="915" height="505" alt="image" src="https://github.com/user-attachments/assets/b4f89db9-33f2-435d-b563-ff694039c074" />
+<img width="800"  alt="image" src="https://github.com/user-attachments/assets/b4f89db9-33f2-435d-b563-ff694039c074" />
 
 # Changelog
 
