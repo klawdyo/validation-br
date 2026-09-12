@@ -94,7 +94,9 @@ describe('Phone', () => {
   });
 
   describe('checksum', () => {
-    expect(() => Phone.checksum()).toThrow()
+    test('deve lançar erro, pois não é implementado', () => {
+      expect(() => Phone.checksum()).toThrow()
+    });
   })
 
   describe('toString', () => {
