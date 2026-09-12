@@ -19,15 +19,15 @@
 - [x] isUF
   - @klawdyo/qrdapio
 
-- isBoleto
+-  [ ] isBoleto
   - Construtor pode receber linha digitável
   - Pra receber o código de barras, use o static fromBarcode()
-  - mask() pode devolver a linha digitável ou o código de barras. Por padrão, a linha digitável
+  - mask() deve devolver a linha digitável
   - toString() devolve a linha digitável
   - toBarcode() devolve o código de barras
   - parse() é chamado no início e já separa as partes
 
-- [ ] isCAEPF
+- [ ] isCAEPF - Cadastro de atividades econômicas de pessoa física
   - https://www.gov.br/receitafederal/pt-br/assuntos/orientacao-tributaria/cadastros/caepf/legislacao
   - https://github.com/VitorLuizC/brazilian-values/blob/master/src/validators/isCAEPF.ts
   - https://contrafbrasil.org.br/system/uploads/ck/files/PERGUNTAS-E-RESPOSTAS.pdf
