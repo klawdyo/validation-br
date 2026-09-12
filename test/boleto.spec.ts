@@ -44,9 +44,23 @@ describe('Boleto', () => {
       expect(() => new Boleto(wrongChecksum)).toThrow();
     });
 
-    test('deve lançar erro quando um DV de campo da linha digitável estiver errado', () => {
+    test('deve lançar erro quando o DV do 1º campo da linha digitável estiver errado', () => {
       const line = Boleto.fake().toString();
       const wrongChecksum = line.substring(0, 9) + String((+line[9] + 1) % 10) + line.substring(10);
+
+      expect(() => new Boleto(wrongChecksum)).toThrow();
+    });
+
+    test('deve lançar erro quando o DV do 2º campo da linha digitável estiver errado', () => {
+      const line = Boleto.fake().toString();
+      const wrongChecksum = line.substring(0, 20) + String((+line[20] + 1) % 10) + line.substring(21);
+
+      expect(() => new Boleto(wrongChecksum)).toThrow();
+    });
+
+    test('deve lançar erro quando o DV do 3º campo da linha digitável estiver errado', () => {
+      const line = Boleto.fake().toString();
+      const wrongChecksum = line.substring(0, 31) + String((+line[31] + 1) % 10) + line.substring(32);
 
       expect(() => new Boleto(wrongChecksum)).toThrow();
     });
