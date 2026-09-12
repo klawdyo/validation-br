@@ -1,32 +1,36 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "2.0.0-next-9",
+  "version": "2.0.0-next-10",
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "sideEffects": false,
   "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/cjs/index.d.ts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "types": "./dist/cjs/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/cjs/index.js"
     },
     "./*": {
-      "types": "./dist/*.d.ts",
-      "require": "./dist/*.js",
-      "default": "./dist/*.js"
-    }
+      "types": "./dist/cjs/*.d.ts",
+      "import": "./dist/esm/*.js",
+      "require": "./dist/cjs/*.js",
+      "default": "./dist/cjs/*.js"
+    },
+    "./package.json": "./package.json"
   },
   "typesVersions": {
     "*": {
       "*": [
-        "dist/*"
+        "dist/cjs/*"
       ]
     }
   },
@@ -34,9 +38,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom=src/**/*.ts --coverage",
+    "test:dual-build": "npm run build && node test/dual-build/require.test.cjs && node test/dual-build/import.test.mjs",
     "format": "prettier --write \"./**/*.{js,ts,json}\"",
-    "_build": "rm ./dist -r && npx jest && npx tsc",
-    "build": "rm ./dist -r && npx tsc",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:esm": "tsc -p tsconfig.esm.json",
+    "build": "rm -rf dist && npm run build:cjs && npm run build:esm && node scripts/postbuild.mjs",
     "prepublishOnly": "npm run build"
   },
   "lint-staged": {
@@ -46,12 +52,16 @@
     ]
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/jest": "^27.4.0",
     "@types/node": "^14.14.2",
+    "eslint": "^10.10.0",
+    "globals": "^17.12.0",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5",
     "ts-node": "^9.0.0",
-    "typescript": "^5.6.2"
+    "typescript": "^5.6.2",
+    "typescript-eslint": "^8.70.0"
   },
   "repository": {
     "url": "https://github.com/klawdyo/validation-br"
