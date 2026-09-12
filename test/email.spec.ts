@@ -11,9 +11,16 @@ describe('Email', () => {
   describe('fake', () => {
     test('Deve definir um email fake', () => {
       const email = Email.fake();
-      
+
       expect(new Email(email.toString())).toBeDefined()
       expect(new Email(email.value)).toBeDefined()
+    });
+  });
+
+  describe('mask', () => {
+    test('Deve lançar erro, pois email não possui máscara', () => {
+      const email = new Email('klawdyo@gmail.com');
+      expect(() => email.mask()).toThrow();
     });
   });
 });
