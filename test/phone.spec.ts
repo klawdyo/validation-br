@@ -32,7 +32,7 @@ describe('Phone', () => {
       expect(obj.ddi).toBe('+55');
       expect(obj.ddd).toBe('84');
       expect(obj.phone).toBe('33311454');
-      expect(obj.isMobile).toBeFalsy;
+      expect(obj.isMobile).toBeFalsy();
     });
 
     test.each(['12', '1234567890000', '00999870222'])('Deve lançar exceção', (value) => {

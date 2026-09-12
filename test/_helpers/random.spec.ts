@@ -34,21 +34,21 @@ describe('Random', () => {
 
   describe('alpha', () => {
     test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres aleatórios', (length) => {
-      const num = Random.alpha(length as any);
+      const num = Random.alpha(length);
       expect(num).toBeDefined();
       expect(num).toMatch(/^[a-z]+$/)
       expect(num.length).toBe(length || 1);
     });
 
     test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres maiúsculos aleatórios', (length) => {
-      const num = Random.alpha(length as any, true);
+      const num = Random.alpha(length, true);
       expect(num).toBeDefined();
       expect(num).toMatch(/^[A-Z]+$/)
       expect(num.length).toBe(length || 1);
     });
 
     test.each([undefined, 1, 2, 5, 10])('deve gerar caracteres hexadecimais aleatórios', (length) => {
-      const num = Random.alpha(length as any, false, true);
+      const num = Random.alpha(length, false, true);
 
       expect(num).toBeDefined();
       expect(num).toMatch(/^[0-9a-f]+$/)

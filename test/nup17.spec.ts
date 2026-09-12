@@ -26,7 +26,7 @@ describe('NUP17', () => {
       null,
       undefined,
     ])('%s deve lançar erro', (input) => {
-      expect(() => new NUP17(input as any)).toThrow();
+      expect(() => new NUP17(input as unknown as string)).toThrow();
     });
   });
 

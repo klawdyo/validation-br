@@ -29,7 +29,7 @@ describe('TituloEleitor', () => {
       null,
       undefined,
     ])('deve lançar erro', (input) => {
-      expect(() => new TituloEleitor(input as any)).toThrow();
+      expect(() => new TituloEleitor(input as unknown as string)).toThrow();
     });
 
     test('Deve lançar exceção se a UF for maior que 28', () => {

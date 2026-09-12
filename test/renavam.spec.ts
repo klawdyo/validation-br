@@ -25,7 +25,7 @@ describe('Renavam', () => {
       null,
       undefined,
     ])('deve lançar erro', (input) => {
-      expect(() => new Renavam(input as any)).toThrow();
+      expect(() => new Renavam(input as unknown as string)).toThrow();
     });
   });
 

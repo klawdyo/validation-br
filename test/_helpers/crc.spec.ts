@@ -17,7 +17,6 @@ describe('CRC', () => {
   });
 
   test('numToHex', () => {
-    const crc = new CRC('1234')
     expect(CRC.numToHex(1, 4)).toBe('0001');
     expect(CRC.numToHex(1)).toBe('0001');
     expect(CRC.numToHex(18)).toBe('0012');

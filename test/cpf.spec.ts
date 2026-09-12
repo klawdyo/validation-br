@@ -27,7 +27,7 @@ describe('CPF', () => {
       null,
       undefined,
     ])('deve lançar erro', (input) => {
-      expect(() => new CPF(input as any)).toThrow();
+      expect(() => new CPF(input as unknown as string)).toThrow();
     });
   });
 

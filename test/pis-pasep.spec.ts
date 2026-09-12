@@ -27,7 +27,7 @@ describe('PIS', () => {
       null,
       undefined,
     ])('deve lançar erro', (input) => {
-      expect(() => new PIS(input as any)).toThrow();
+      expect(() => new PIS(input as unknown as string)).toThrow();
     });
   });
 

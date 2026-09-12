@@ -1,5 +1,4 @@
 import { CNPJ } from '../src/cnpj';
-import * as _cnpj from '../src/cnpj';
 
 describe('CNPJ', () => {
   describe('constructor', () => {
@@ -33,7 +32,7 @@ describe('CNPJ', () => {
       undefined, //         undefined
       null, //              null
     ])('deve lançar um erro', (input) => {
-      expect(() => new CNPJ(input as any)).toThrow();
+      expect(() => new CNPJ(input as unknown as string)).toThrow();
     });
   });
 

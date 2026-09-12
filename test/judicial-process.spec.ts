@@ -27,7 +27,7 @@ describe('JudicialProcess', () => {
       null,
       undefined,
     ])('deve lançar erro %s', (input) => {
-      expect(() => new JudicialProcess(input as any)).toThrow();
+      expect(() => new JudicialProcess(input as unknown as string)).toThrow();
     });
   });
 
@@ -171,8 +171,8 @@ describe('JudicialProcess', () => {
       expect(JudicialProcess.getFakeSubCourt('00')).toBe('01')
       // vazio calcula um aleatorio
       expect(JudicialProcess.getFakeSubCourt('').length).toBe(2)
-      expect(JudicialProcess.getFakeSubCourt(null as any).length).toBe(2)
-      expect(JudicialProcess.getFakeSubCourt(undefined as any).length).toBe(2)
+      expect(JudicialProcess.getFakeSubCourt(null as unknown as string).length).toBe(2)
+      expect(JudicialProcess.getFakeSubCourt(undefined as unknown as string).length).toBe(2)
       // se informar um válido, use ele mesmo
       expect(JudicialProcess.getFakeSubCourt('02')).toBe('02')
       // se informar um inválido, use 01

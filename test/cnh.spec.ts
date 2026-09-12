@@ -1,5 +1,4 @@
 import { CNH } from '../src/cnh';
-import * as _cnh from '../src/cnh';
 
 describe('CNH', () => {
   describe('constructor', () => {

@@ -25,7 +25,7 @@ describe('CarPlate', () => {
       null,
       undefined,
     ])('A placa %s deve lançar erro', (input) => {
-      expect(() => new CarPlate(input as any)).toThrow();
+      expect(() => new CarPlate(input as unknown as string)).toThrow();
     });
   });
 
@@ -50,7 +50,7 @@ describe('CarPlate', () => {
       null,
       undefined,
     ])('A placa %s não deve ser válida', (clarPlate) => {
-      expect(isCarPlate(clarPlate as any)).toBeFalsy();
+      expect(isCarPlate(clarPlate as unknown as string)).toBeFalsy();
     });
   });
 

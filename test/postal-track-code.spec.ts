@@ -37,7 +37,7 @@ describe('PostalTrackCode', () => {
       null,
       undefined,
     ])('%s deve lançar erro', (input) => {
-      expect(() => new PostalTrackCode(input as any)).toThrow();
+      expect(() => new PostalTrackCode(input as unknown as string)).toThrow();
     });
   });
 
@@ -83,7 +83,7 @@ describe('PostalTrackCode', () => {
     ])(
       'Deve lançar erro',
       (item) => {
-        expect(() => PostalTrackCode.checksum(item as any)).toThrow();
+        expect(() => PostalTrackCode.checksum(item as unknown as string)).toThrow();
       }
     );
   });

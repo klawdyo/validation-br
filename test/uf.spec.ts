@@ -30,8 +30,8 @@ describe('UF', () => {
 
     test('deve lançar um erro de uf vazia', () => {
       expect(() => new UF('')).toThrow();
-      expect(() => new UF(undefined as any)).toThrow();
-      expect(() => new UF(null as any)).toThrow();
+      expect(() => new UF(undefined as unknown as string)).toThrow();
+      expect(() => new UF(null as unknown as string)).toThrow();
     });
   });
 
