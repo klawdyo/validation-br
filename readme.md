@@ -824,7 +824,7 @@ Todos os testes passando com cobertura próxima de 100%.
 
 Github actions executados nas versões 18, 20, 22 e 24 do Node, buildando e validando os pacotes CommonJS e ESM em cada versão.
 
-![Github actions executados nas versões 18, 20 e 22 e 24 do Node](https://github.com/user-attachments/assets/34b2b82d-67e3-4c00-b9c6-7160279123d2)
+![Github actions executados nas versões 18, 20 e 22 e 24 do Node](assets/3-actions.png)
 
 # Changelog
 
