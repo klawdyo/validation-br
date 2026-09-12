@@ -817,9 +817,7 @@ UUID.fake() // -> UUID { value: '...' }
 
 Todos os testes passando com cobertura próxima de 100%.
 
-![Testes passando](assets/1-test.png)
-
-![Cobertura de testes](assets/2-coverage.png)
+![Testes passando](assets/1-test.png)![Cobertura de testes](assets/2-coverage.png)
 
 
 # Github Actions
