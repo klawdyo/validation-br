@@ -89,4 +89,22 @@ describe('Certidao', () => {
         const cert = new Certidao(base30 + dv);
         expect(cert.validate()).toBe(true);
     });
+
+    test('checksum estático deve converter DV 10 para 1 (Módulo 97 pode gerar resto 10)', () => {
+        // Base escolhida por força bruta: gera resto 10 tanto no cálculo do DV1 quanto do DV2
+        const base30 = '967963821412733584748069235299';
+        const dv = Certidao.checksum(base30);
+
+        expect(dv).toBe('11');
+        expect(new Certidao(base30 + dv).validate()).toBe(true);
+    });
+
+    test('checksum estático deve lançar erro para valor vazio', () => {
+        expect(() => Certidao.checksum('')).toThrow();
+    });
+
+    test('checksum estático deve lançar erro quando a base não tiver 30 dígitos', () => {
+        expect(() => Certidao.checksum('123')).toThrow();
+        expect(() => Certidao.checksum('1'.repeat(31))).toThrow();
+    });
 });
