@@ -54,7 +54,7 @@
  * =  5  +4  +6  +4 +18 +24 +21 +18  +0  +0  +0  +2 = 102
  *
  *  - O somatório encontrado é dividido por 11 e o resultado é subtraído de 11
- *    102 / 11 tem resto 8. 11 - 3 = 8. DV1 é 8.
+ *    102 / 11 tem resto 3. 11 - 3 = 8. DV1 é 8.
  *    Obs.: Caso o cálculo de DV1 retorne 10, o resultado será 0.
  *
  * 3) Cálculo do segundo DV.
