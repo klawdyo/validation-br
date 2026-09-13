@@ -3,9 +3,9 @@ name: Tests
 # on: [push]
 on:
   push:
-    branches: [main, dev]
+    branches: [main, dev, v1]
   pull_request:
-    branches: [main, dev]
+    branches: [main, dev, v1]
 
 jobs:
   build:
