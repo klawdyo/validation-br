@@ -28,7 +28,7 @@
  *  - O somatório encontrado é dividido por 11. O DV1 é 11 subtraído do resto da divisão. Se o
  *    resto for 10, o DV1 é 0.
  *
- * 2.1) 294 / 11 tem resto igual a 8. 11-7 = 3
+ * 2.1) 294 / 11 tem resto igual a 8. 11-8 = 3
  *      DV1 = 3
  *
  * 3) Cálculo do segundo DV

@@ -26,7 +26,7 @@
  *    1   9   4   6   9   0   6   9
  *    x   x   x   x   x   x   x   x
  *    8   6   4   2   3   5   9   7
- * =  8 +54 +16 +12 +18  +0 +54 +63 = 234
+ * =  8 +54 +16 +12 +27  +0 +54 +63 = 234
  *
  *  - O somatório encontrado é dividido por 11 e o resultado é subtraído de 11
  *    234 / 11 tem resto 3. 11 - 3 = 8. DV1 é 8.

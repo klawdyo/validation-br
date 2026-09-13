@@ -19,17 +19,16 @@
  *
  * 2) Cálculo do DV.
  *
- *  - Soma-se o produto das algarismos 3 a 10 pelos números 3, 2, 9, 8, 7, 6, 5, 4, 3, 2
+ *  - Soma-se o produto dos 10 algarismos pelos números 3, 2, 9, 8, 7, 6, 5, 4, 3, 2
  *
  *    2   6   8   2   7   6   4   9   9   6
  *    x   x   x   x   x   x   x   x   x   x
  *    3   2   9   8   7   6   5   4   3   2
- * =  6 +12 +72 +16 +49 +12 +20 +36 +27 +12  =  234
+ * =  6 +12 +72 +16 +49 +36 +20 +36 +27 +12  =  286
  *
  *  - O somatório encontrado é dividido por 11 e o resultado é subtraído de 11
- *    234 / 11 tem resto 3. 11 - 3 = 8. DV1 é 8.
- *    Obs.: Caso o cálculo de DV1 retorne 0, o resultado será 5.
- *          Caso retorne 1, o resto será 0
+ *    286 / 11 tem resto 0. DV é 0.
+ *    Obs.: Se o resto da divisão for 0 ou 1, o DV é 0.
  *
  *
  *
