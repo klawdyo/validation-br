@@ -1,5 +1,7 @@
 # validation-br
 
+> Procurando a versão 1? Veja a [documentação da v1](https://validation-br.js.org/v1/) ou a [branch `v1`](https://github.com/klawdyo/validation-br/tree/v1) no GitHub.
+
 Biblioteca de validação de documentos pessoais do Brasil com suporte a CPF, CNPJ (numérico e alfanumérico), CAEPF, Título Eleitoral, PIS/PASEP, CNH, Telefone, E-mail, UUID, Placa de Veículo (padrão antigo e Mercosul), Chave Pix e Pix Copia e Cola. Também valida numerações de outros tipos de registros como RENAVAM, Processos Judiciais, Número de Protocolo do Governo Federal, Objetos registrados de Rastreamento dos Correios, CEP, Certidões (matrícula CNJ), Código Imobiliário Brasileiro (CIB/SINTER) e Boleto Bancário (linha digitável e código de barras).
 
 Validation-BR também permite criação de números fake para facilitar o desenvolvimento e testes, além de aplicar máscaras e calcular somente os dígitos verificadores.
