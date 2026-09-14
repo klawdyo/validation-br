@@ -107,9 +107,14 @@ export const mask = (value: string): string => applyMask(value, '00000.000000/00
  * @returns {String}
  */
 export const fake = (withMask: boolean = false): string => {
-  const num = fakeNumber(15, true);
+  const orgao = fakeNumber(5, true);
+  const sequencial = fakeNumber(6, true);
 
-  const nup = `${num}${dv(String(num))}`;
+  const currentYear = new Date().getFullYear();
+  const ano = String(Math.floor(Math.random() * (currentYear - 2020 + 1)) + 2020);
+
+  const num = `${orgao}${sequencial}${ano}`;
+  const nup = `${num}${dv(num)}`;
 
   if (withMask) return mask(nup);
   return nup;
