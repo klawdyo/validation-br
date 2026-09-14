@@ -854,6 +854,7 @@ Github actions executados nas versões 18, 20, 22 e 24 do Node, buildando e vali
 # Changelog
 
 - **12/09/2026**:
+  - Adicionadas as validações `PixKey` (chave Pix) e `PixCopyPaste` (Pix Copia e Cola), com seção própria no README (`isPixKey`, `isPixCopyPaste`)
   - Adicionados os atalhos `isBoleto`, `isCAEPF`, `isCEP`, `isCertidao`, `isCBISinter` e `isUF`, que faltavam para essas classes
   - Adicionada a pasta [examples](examples), com um projeto funcional testando a integração do validation-br com Joi, Yup, Class-Validator, Indicative e Vuelidate
   - Breaking Changes reescrito: explica em mais detalhes por que `dv()` virou `checksum()` (deixou de fazer suposições sobre o formato de entrada), reforça a imutabilidade das classes (value objects) e remove itens que não eram breaking changes de fato (UUID e CNPJ alfanumérico não existiam como funções na 1.x)
@@ -875,8 +876,6 @@ Github actions executados nas versões 18, 20, 22 e 24 do Node, buildando e vali
   - Adicionadas as funções `isEmail` e `isUUID`
 - **02/10/2024**:
   - Adicionadas as classes `CEP` (com busca de UF pelo CEP) e `UF`
-- **30/09/2024**:
-  - Adicionadas as funções `isPixKey` e `isPixCopyPaste`
 - **11/09/2024**:
   - Adicionadas as funções `isCarPlate` e `isPhone`
 - **16/12/2023**:
