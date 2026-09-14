@@ -125,8 +125,12 @@ export class NUP17 extends Base {
    *
    */
   static fake(): NUP17 {
-    const fake = Random.number(15, true);
-    return new NUP17(`${fake}${NUP17.checksum(String(fake))}`);
+    const orgao = Random.number(5, true);
+    const sequencial = Random.number(6, true);
+    const ano = Random.between(2020, new Date().getFullYear());
+
+    const fake = `${orgao}${sequencial}${ano}`;
+    return new NUP17(`${fake}${NUP17.checksum(fake)}`);
   }
 
   /**
