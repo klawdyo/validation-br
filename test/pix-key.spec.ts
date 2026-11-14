@@ -32,6 +32,11 @@ describe('PixKey', () => {
       expect(key.type).toBe(PixKeys.phone);
     });
 
+    test.each(['+552123456789', '+551155551234', '+551165551234'])('deve reconhecer telefone fixo %s como phone', (value) => {
+      const key = new PixKey(value);
+      expect(key.type).toBe(PixKeys.phone);
+    });
+
     test('deve falhar ao receber um telefone inválido', () => {
       expect(() => new PixKey('+55849876')).toThrow()
     });

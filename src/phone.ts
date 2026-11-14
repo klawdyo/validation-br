@@ -15,8 +15,14 @@
  * new Phone('8440043214').validate()
  * // -> true
  *
+ * new Phone('(21) 2345-6789').validate()
+ * // -> true (fixos iniciam de 2 a 6)
+ *
+ * new Phone('(11) 7555-1234').validate()
+ * // -> throws error (fixo iniciado em 7 é reserva técnica)
+ *
  * new Phone('(23) 4004-3214').validate()
- * // -> throws error
+ * // -> throws error (DDD 23 não existe)
  *
  * new Phone('(13) 6 6321-875').validate()
  * // -> throws error
@@ -57,7 +63,9 @@ type MaskSettings = {
 export class Phone extends Base {
   protected _mask = null;
 
-  private _regex = /^(?<ddi>\+55)?(?<ddd>\d{2})(?<phone>9\d{8}|[34]\d{7})$/;
+  // Fixos (STFC/SCM): 8 dígitos iniciados em 2 a 6 — Resolução Anatel nº 749/2022, art. 11, I, "a".
+  // Celulares (SMP): 9 dígitos iniciados em 9.
+  private _regex = /^(?<ddi>\+55)?(?<ddd>\d{2})(?<phone>9\d{8}|[2-6]\d{7})$/;
   // private _parts = { ddd: '', phone: '', isMobile: false };
   private static _ddds: string[] = [
     '11', '12', '13', '14', '15', '16', '17', '18', '19', '21',
@@ -171,7 +179,7 @@ export class Phone extends Base {
 
     // Prefixos
     const mobilePrefixes = ['99', '98', '97'];
-    const landLinePrefixes = ['3', '4'];
+    const landLinePrefixes = ['2', '3', '4', '5', '6'];
 
     // Se não informar se quer mobile ou fixo, gere o tipo
     let firstPart;

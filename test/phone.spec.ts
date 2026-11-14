@@ -15,6 +15,10 @@ const phones = [
   '84-3331-1454',
 ];
 
+// Resolução Anatel nº 749/2022, art. 11, I, "a": fixos iniciam de 2 a 6
+const landlinePrefixes = ['2', '3', '4', '5', '6'];
+const reservedPrefixes = ['0', '1', '7', '8', '9'];
+
 describe('Phone', () => {
   describe('constructor', () => {
     test.each(cellPhones)('Celular %s deve estar definido', (value) => {
@@ -33,6 +37,16 @@ describe('Phone', () => {
       expect(obj.ddd).toBe('84');
       expect(obj.phone).toBe('33311454');
       expect(obj.isMobile).toBeFalsy();
+    });
+
+    test.each(landlinePrefixes)('Telefone fixo iniciado em %s deve ser aceito', (prefix) => {
+      const obj = new Phone(`(21) ${prefix}345-6789`);
+      expect(obj.phone).toBe(`${prefix}3456789`);
+      expect(obj.isMobile).toBeFalsy();
+    });
+
+    test.each(reservedPrefixes)('Telefone fixo iniciado em %s (reserva técnica) deve lançar exceção', (prefix) => {
+      expect(() => new Phone(`(21) ${prefix}345-6789`)).toThrow();
     });
 
     test.each(['12', '1234567890000', '00999870222'])('Deve lançar exceção', (value) => {
@@ -68,6 +82,7 @@ describe('Phone', () => {
       expect(fake).toBeDefined();
       expect(fake.isMobile).toBeFalsy();
       expect(fake.phone.length).toBe(8);
+      expect(landlinePrefixes).toContain(fake.phone[0]);
     });
   });
 

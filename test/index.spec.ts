@@ -101,6 +101,10 @@ describe('ValidateBR', () => {
 
     expect(isPhone('+5584987654321')).toBeTruthy()
     expect(isPhone('+558433311454')).toBeTruthy()
+    expect(isPhone('(21) 2345-6789')).toBeTruthy()
+    expect(isPhone('(11) 5555-1234')).toBeTruthy()
+    expect(isPhone('(11) 6555-1234')).toBeTruthy()
+    expect(isPhone('(11) 7555-1234')).toBeFalsy()
   })
   test('Deve importar isPixKey', () => {
     expect(isPixKey).toBeDefined()
