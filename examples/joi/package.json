@@ -6,7 +6,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "joi": "^17.13.3",
+    "joi": "^17.13.9",
     "validation-br": "file:../.."
   }
 }
