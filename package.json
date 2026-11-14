@@ -1,7 +1,7 @@
 {
   "name": "validation-br",
   "description": "Brazilian personal documents validation - cpf, cnpj, titulo, pis/pasep, cnh, renavam, processos judiciais, protocolo federal, código de rastreamento dos correios",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "author": "Cláudio Medeiros <klawdyo@gmail.com>",
   "license": "MIT",
   "sideEffects": false,
@@ -73,13 +73,18 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/node": "^22.20.2",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^4.1.12",
     "eslint": "^10.10.0",
     "globals": "^17.12.0",
     "ts-node": "^9.0.0",
     "typescript": "^5.6.2",
     "typescript-eslint": "^8.70.0",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.12"
+  },
+  "overrides": {
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "^11.0.1"
+    }
   },
   "repository": {
     "url": "https://github.com/klawdyo/validation-br"
